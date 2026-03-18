@@ -1,10 +1,11 @@
 import { Router, Request, Response } from 'express';
+import type { Router as IRouter } from 'express';
 import { z } from 'zod';
 import { validate } from '../middleware/validate';
 import { prisma } from '../lib/prisma';
 import { sendContactNotification } from '../services/email.service';
 
-const router = Router();
+const router: IRouter = Router();
 
 const contactSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),

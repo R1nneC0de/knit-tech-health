@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import type { Router as IRouter } from 'express';
 import {
   listProducts,
   getProductBySlug,
@@ -6,7 +7,7 @@ import {
   listCategories,
 } from '../services/product.service';
 
-const router = Router();
+const router: IRouter = Router();
 
 router.get('/categories', async (_req: Request, res: Response) => {
   const categories = await listCategories();

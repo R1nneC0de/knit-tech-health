@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
+import type { Router as IRouter } from 'express';
 import { z } from 'zod';
 import { validate } from '../middleware/validate';
 import { createOrder } from '../services/order.service';
 
-const router = Router();
+const router: IRouter = Router();
 
 const createOrderSchema = z.object({
   productId: z.string().min(1),
