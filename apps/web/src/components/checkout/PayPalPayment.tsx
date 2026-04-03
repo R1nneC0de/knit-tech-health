@@ -26,28 +26,24 @@ export default function PayPalPayment({ accessToken, onSuccess, onError }: Props
   }
 
   return (
-    <div className="space-y-3">
-      {/* PayPal */}
+    <div className="space-y-4">
+      {/* PayPal button */}
       <PayPalButtons
-        style={{ layout: 'vertical', shape: 'rect', label: 'paypal' }}
+        style={{ layout: 'vertical', shape: 'rect', label: 'paypal', height: 48 }}
         fundingSource={FUNDING.PAYPAL}
         createOrder={createOrder}
         onApprove={async (data) => onSuccess(data.orderID, 'paypal')}
-        onError={() => onError('PayPal payment failed')}
+        onError={() => onError('PayPal payment failed. Please try again.')}
       />
 
-      {/* Venmo (US only) */}
+      {/* Venmo button — US only, hidden automatically outside US */}
       <PayPalButtons
-        style={{ layout: 'vertical', shape: 'rect' }}
+        style={{ layout: 'vertical', shape: 'rect', height: 48 }}
         fundingSource={FUNDING.VENMO}
         createOrder={createOrder}
         onApprove={async (data) => onSuccess(data.orderID, 'venmo')}
-        onError={() => onError('Venmo payment failed')}
+        onError={() => onError('Venmo payment failed. Please try again.')}
       />
-
-      <p className="text-center text-xs text-gray-400">
-        Cash App Pay available via PayPal when signing in to your PayPal account.
-      </p>
     </div>
   );
 }

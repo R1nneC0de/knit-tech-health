@@ -146,7 +146,20 @@ function CheckoutContent() {
                         onError={setError}
                       />
                     </Elements>
-                  ) : null}
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 p-4 text-center">
+                      <p className="text-sm text-gray-500">Could not load payment form.</p>
+                      <button
+                        onClick={() => {
+                          setError('');
+                          setPaymentIntentData(null);
+                        }}
+                        className="mt-2 text-sm font-medium text-brand-blue-700 underline"
+                      >
+                        Try again
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
 
@@ -155,8 +168,9 @@ function CheckoutContent() {
                   options={{
                     clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb-placeholder',
                     currency: 'USD',
-                    enableFunding: 'venmo,cashapp',
-                    disableFunding: '',
+                    intent: 'capture',
+                    components: 'buttons',
+                    enableFunding: 'venmo',
                   }}
                 >
                   <PayPalPayment
