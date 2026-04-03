@@ -28,7 +28,7 @@ function ShopContent() {
     const params = new URLSearchParams(searchParams.toString());
     if (slug) params.set('category', slug);
     else params.delete('category');
-    router.push(`/shop?${params.toString()}`);
+    router.push(`/shop-medical?${params.toString()}`);
   }
 
   return (

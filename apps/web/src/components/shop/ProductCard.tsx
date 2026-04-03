@@ -5,7 +5,7 @@ import ProductImage from '@/components/ui/ProductImage';
 export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link
-      href={`/shop/${product.slug}`}
+      href={`/shop-medical/${product.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
@@ -24,6 +24,11 @@ export default function ProductCard({ product }: { product: Product }) {
         <h3 className="font-heading text-lg font-semibold text-brand-blue-800 group-hover:text-brand-pink-500">
           {product.name}
         </h3>
+        {product.price > 0 && (
+          <p className="mt-1 text-base font-bold text-brand-pink-600">
+            ${Number(product.price).toFixed(2)}
+          </p>
+        )}
         <p className="mt-2 line-clamp-2 flex-1 text-sm text-gray-600">
           {product.description}
         </p>

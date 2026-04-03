@@ -116,7 +116,7 @@ export default function RequestPage() {
           Product Not Found
         </h1>
         <Link
-          href="/shop"
+          href="/shop-medical"
           className="mt-4 inline-block text-brand-blue-700 underline"
         >
           Back to Shop
@@ -138,7 +138,7 @@ export default function RequestPage() {
           <strong>24 hours</strong>.
         </p>
         <Link
-          href="/shop"
+          href="/shop-medical"
           className="mt-8 inline-block rounded-lg bg-brand-blue-700 px-8 py-3 font-semibold text-white"
         >
           Continue Browsing

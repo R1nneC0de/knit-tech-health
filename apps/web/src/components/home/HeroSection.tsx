@@ -16,7 +16,7 @@ export default function HeroSection() {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
-              href="/shop"
+              href="/shop-medical"
               className="rounded-lg bg-brand-blue-700 px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800"
             >
               Browse Equipment

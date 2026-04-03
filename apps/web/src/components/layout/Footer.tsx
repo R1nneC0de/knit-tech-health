@@ -3,16 +3,16 @@ import { Heart, Phone, Mail, MapPin } from 'lucide-react';
 
 const quickLinks = [
   { href: '/', label: 'Home' },
-  { href: '/shop', label: 'Shop Equipment' },
+  { href: '/shop-medical', label: 'Shop Equipment' },
   { href: '/about', label: 'About Us' },
   { href: '/contact', label: 'Contact' },
 ];
 
 const categories = [
-  { href: '/shop?category=mobility', label: 'Mobility' },
-  { href: '/shop?category=respiratory', label: 'Respiratory' },
-  { href: '/shop?category=ppe', label: 'PPE' },
-  { href: '/shop?category=diagnostic-equipment', label: 'Diagnostics' },
+  { href: '/shop-medical?category=mobility', label: 'Mobility' },
+  { href: '/shop-medical?category=respiratory', label: 'Respiratory' },
+  { href: '/shop-medical?category=ppe', label: 'PPE' },
+  { href: '/shop-medical?category=diagnostic-equipment', label: 'Diagnostics' },
 ];
 
 export default function Footer() {

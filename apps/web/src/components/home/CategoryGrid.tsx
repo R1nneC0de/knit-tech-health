@@ -11,6 +11,18 @@ import {
   Shield,
   Activity,
   HandHelping,
+  Gauge,
+  Droplets,
+  Zap,
+  Monitor,
+  FlaskConical,
+  Microscope,
+  Scissors,
+  Bed,
+  Smile,
+  Bell,
+  Package,
+  Cable,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ElementType> = {
@@ -22,6 +34,18 @@ const iconMap: Record<string, React.ElementType> = {
   ppe: Shield,
   'diagnostic-equipment': Activity,
   'aids-daily-living': HandHelping,
+  'anesthesia-equipment': Gauge,
+  'infusion-pumps': Droplets,
+  defibrillators: Zap,
+  'patient-monitoring': Monitor,
+  sterilization: FlaskConical,
+  endoscopy: Microscope,
+  'surgical-equipment': Scissors,
+  'beds-furniture': Bed,
+  'dental-equipment': Smile,
+  'nurse-call-systems': Bell,
+  'consumables-disposables': Package,
+  'cables-sensors': Cable,
 };
 
 export default function CategoryGrid() {
@@ -59,7 +83,7 @@ export default function CategoryGrid() {
             return (
               <Link
                 key={cat.id}
-                href={`/shop?category=${cat.slug}`}
+                href={`/shop-medical?category=${cat.slug}`}
                 className="group rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand-pink-200 hover:shadow-md"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-blue-50 transition group-hover:bg-brand-pink-50">

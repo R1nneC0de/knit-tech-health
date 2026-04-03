@@ -17,6 +17,7 @@ export interface Product {
   description: string;
   features: string[];
   specifications: Record<string, string>;
+  price: number;
   imageUrl: string;
   categoryId: string;
   category?: Category;
@@ -50,6 +51,69 @@ export interface ContactSubmission {
   message: string;
   emailSent: boolean;
   createdAt: string;
+}
+
+export type UserRole = 'CUSTOMER' | 'ADMIN';
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string | null;
+  role: UserRole;
+}
+
+export interface AuthResponse {
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface CartItem {
+  id: string;
+  cartId: string;
+  productId: string;
+  product?: Product;
+  quantity: number;
+}
+
+export interface Cart {
+  id: string;
+  userId: string;
+  items: CartItem[];
+}
+
+export type PurchaseOrderStatus = 'PENDING' | 'PAID' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+
+export interface PurchaseOrder {
+  id: string;
+  userId: string;
+  items: PurchaseOrderItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  status: PurchaseOrderStatus;
+  paymentMethod: string;
+  paymentId: string | null;
+  shippingAddress: ShippingAddress | null;
+  createdAt: string;
+}
+
+export interface PurchaseOrderItem {
+  id: string;
+  productId: string;
+  product?: Product;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface ShippingAddress {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
 }
 
 // ── Constants ──

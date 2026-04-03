@@ -2,14 +2,27 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ShoppingCart } from 'lucide-react';
 import { useProduct } from '@/hooks/useProducts';
 import ProductImage from '@/components/ui/ProductImage';
 import ProductCard from '@/components/shop/ProductCard';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
+import { useState } from 'react';
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: product, isLoading, error } = useProduct(slug);
+  const { user } = useAuth();
+  const { addToCart } = useCart();
+  const [addedToCart, setAddedToCart] = useState(false);
+
+  async function handleAddToCart() {
+    if (!product) return;
+    await addToCart(product.id);
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+  }
 
   if (isLoading) {
     return (
@@ -39,7 +52,7 @@ export default function ProductDetailPage() {
           The product you&apos;re looking for doesn&apos;t exist.
         </p>
         <Link
-          href="/shop"
+          href="/shop-medical"
           className="mt-6 inline-block rounded-lg bg-brand-blue-700 px-6 py-2 text-sm font-semibold text-white"
         >
           Back to Shop
@@ -58,14 +71,14 @@ export default function ProductDetailPage() {
           Home
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <Link href="/shop" className="hover:text-brand-blue-700">
+        <Link href="/shop-medical" className="hover:text-brand-blue-700">
           Shop
         </Link>
         <ChevronRight className="h-4 w-4" />
         {product.category && (
           <>
             <Link
-              href={`/shop?category=${product.category.slug}`}
+              href={`/shop-medical?category=${product.category.slug}`}
               className="hover:text-brand-blue-700"
             >
               {product.category.name}
@@ -97,16 +110,40 @@ export default function ProductDetailPage() {
           <h1 className="font-heading text-3xl font-bold text-brand-blue-900">
             {product.name}
           </h1>
+          {product.price > 0 && (
+            <p className="mt-3 text-2xl font-bold text-brand-pink-600">
+              ${Number(product.price).toFixed(2)}
+            </p>
+          )}
           <p className="mt-4 leading-relaxed text-gray-600">
             {product.description}
           </p>
 
-          <Link
-            href={`/request/${product.slug}`}
-            className="mt-8 inline-block rounded-lg bg-brand-pink-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-pink-600"
-          >
-            Request This Equipment
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {user ? (
+              <button
+                onClick={handleAddToCart}
+                className="flex items-center gap-2 rounded-lg bg-brand-pink-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-pink-600"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {addedToCart ? 'Added!' : 'Add to Cart'}
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center gap-2 rounded-lg bg-brand-pink-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-pink-600"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                Sign in to Add to Cart
+              </Link>
+            )}
+            <Link
+              href={`/request/${product.slug}`}
+              className="rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
+            >
+              Request a Quote
+            </Link>
+          </div>
 
           {/* Features */}
           {product.features.length > 0 && (
