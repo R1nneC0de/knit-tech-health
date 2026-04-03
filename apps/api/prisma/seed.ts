@@ -10,10 +10,29 @@ interface FDADevice {
   product_code?: string;
 }
 
-// loremflickr.com returns real CC-licensed photos by keyword.
-// The "lock" param makes the URL deterministic (same lock = same photo).
-function flickrImg(keyword: string, lock: number, w = 600, h = 400): string {
-  return `https://loremflickr.com/${w}/${h}/${keyword}/all?lock=${lock}`;
+interface PexelsPhoto {
+  src: { large: string };
+}
+
+async function fetchPexelsPhotos(query: string, count = 30): Promise<string[]> {
+  const apiKey = process.env.PEXELS_API_KEY;
+  if (!apiKey) {
+    console.warn('  No PEXELS_API_KEY — images will use placeholder');
+    return [];
+  }
+  try {
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${count}&orientation=landscape`;
+    const res = await fetch(url, { headers: { Authorization: apiKey } });
+    if (!res.ok) return [];
+    const data = (await res.json()) as { photos: PexelsPhoto[] };
+    return data.photos.map(p => p.src.large);
+  } catch {
+    return [];
+  }
+}
+
+function placeholderImg(name: string): string {
+  return `https://placehold.co/600x400/1e3a5f/ffffff?text=${encodeURIComponent(name)}`;
 }
 
 interface CategoryConfig {
@@ -25,7 +44,7 @@ interface CategoryConfig {
   fdaSearches: string[];
   priceRange: [number, number];
   featureTemplates: string[];
-  imgKeyword: string;
+  pexelsQuery: string;
 }
 
 const CATEGORIES: CategoryConfig[] = [
@@ -37,7 +56,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 1,
     fdaSearches: ['wheelchair', 'walker', 'crutch'],
     priceRange: [50, 6000],
-    imgKeyword: 'wheelchair',
+    pexelsQuery: 'wheelchair medical',
     featureTemplates: [
       'Lightweight and durable construction',
       'Adjustable to fit various patient sizes',
@@ -54,7 +73,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 2,
     fdaSearches: ['hospital bed', 'patient lift', 'stretcher'],
     priceRange: [200, 20000],
-    imgKeyword: 'hospital,bed',
+    pexelsQuery: 'hospital bed patient',
     featureTemplates: [
       'Heavy-duty frame supports high weight capacity',
       'Height adjustable for caregiver ergonomics',
@@ -71,7 +90,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 3,
     fdaSearches: ['bath seat', 'shower chair', 'grab bar'],
     priceRange: [25, 600],
-    imgKeyword: 'bathroom,safety',
+    pexelsQuery: 'bathroom safety grab bar',
     featureTemplates: [
       'Slip-resistant surfaces for fall prevention',
       'Corrosion-resistant materials for wet environments',
@@ -88,7 +107,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 4,
     fdaSearches: ['nebulizer', 'ventilator', 'oxygen concentrator'],
     priceRange: [100, 10000],
-    imgKeyword: 'oxygen,medical',
+    pexelsQuery: 'oxygen medical equipment respiratory',
     featureTemplates: [
       'Precise flow control for accurate therapy delivery',
       'Quiet operation minimizes patient disruption',
@@ -105,7 +124,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 5,
     fdaSearches: ['wound dressing', 'bandage', 'wound care'],
     priceRange: [15, 500],
-    imgKeyword: 'bandage,medical',
+    pexelsQuery: 'medical bandage wound care',
     featureTemplates: [
       'Sterile packaging for infection prevention',
       'Breathable materials promote healing',
@@ -122,7 +141,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 6,
     fdaSearches: ['surgical glove', 'face mask', 'protective gown'],
     priceRange: [10, 300],
-    imgKeyword: 'gloves,medical',
+    pexelsQuery: 'medical gloves protective equipment',
     featureTemplates: [
       'Fluid-resistant barrier protection',
       'Comfortable extended-wear design',
@@ -139,7 +158,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 7,
     fdaSearches: ['blood pressure monitor', 'stethoscope', 'thermometer'],
     priceRange: [30, 5000],
-    imgKeyword: 'stethoscope',
+    pexelsQuery: 'stethoscope medical diagnostic',
     featureTemplates: [
       'High accuracy for reliable clinical decisions',
       'Easy-to-read display for quick assessment',
@@ -156,7 +175,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 8,
     fdaSearches: ['orthotic', 'adaptive utensil', 'daily living aid'],
     priceRange: [10, 400],
-    imgKeyword: 'medical,elderly',
+    pexelsQuery: 'elderly medical aid daily living',
     featureTemplates: [
       'Ergonomic design reduces patient strain',
       'Lightweight for easy handling',
@@ -173,7 +192,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 9,
     fdaSearches: ['anesthesia', 'vaporizer anesthesia', 'breathing circuit'],
     priceRange: [500, 60000],
-    imgKeyword: 'anesthesia',
+    pexelsQuery: 'anesthesia operating room medical',
     featureTemplates: [
       'Precision engineering for safe gas delivery',
       'Integrated monitoring and alarm systems',
@@ -190,7 +209,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 10,
     fdaSearches: ['infusion pump', 'syringe pump', 'feeding pump'],
     priceRange: [400, 18000],
-    imgKeyword: 'infusion,pump',
+    pexelsQuery: 'IV drip infusion hospital',
     featureTemplates: [
       'Accurate flow rate control ±2% accuracy',
       'Integrated air-in-line and occlusion detection',
@@ -207,7 +226,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 11,
     fdaSearches: ['defibrillator'],
     priceRange: [1000, 30000],
-    imgKeyword: 'defibrillator',
+    pexelsQuery: 'defibrillator AED emergency medical',
     featureTemplates: [
       'Biphasic waveform technology for effective therapy',
       'AED mode for untrained rescuer use',
@@ -224,7 +243,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 12,
     fdaSearches: ['patient monitor', 'pulse oximeter', 'cardiac monitor'],
     priceRange: [500, 35000],
-    imgKeyword: 'hospital,monitor',
+    pexelsQuery: 'patient monitor hospital ICU',
     featureTemplates: [
       'Multi-parameter simultaneous monitoring',
       'Wireless data transmission to central station',
@@ -241,7 +260,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 13,
     fdaSearches: ['sterilizer', 'autoclave', 'ultrasonic cleaner'],
     priceRange: [300, 25000],
-    imgKeyword: 'autoclave,sterilization',
+    pexelsQuery: 'medical sterilization autoclave equipment',
     featureTemplates: [
       'Validated sterilization cycles per ISO standards',
       'Self-diagnostic system with error reporting',
@@ -258,7 +277,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 14,
     fdaSearches: ['endoscope', 'bronchoscope', 'colonoscope'],
     priceRange: [1000, 60000],
-    imgKeyword: 'endoscopy',
+    pexelsQuery: 'endoscopy medical camera equipment',
     featureTemplates: [
       'High-definition imaging for precise visualization',
       'Single-use options available for infection control',
@@ -275,7 +294,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 15,
     fdaSearches: ['electrosurgical', 'surgical instrument', 'retractor'],
     priceRange: [100, 40000],
-    imgKeyword: 'surgery,equipment',
+    pexelsQuery: 'surgical equipment operating room',
     featureTemplates: [
       'Precision design for minimally invasive procedures',
       'Autoclavable components for full sterility',
@@ -292,7 +311,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 16,
     fdaSearches: ['examination table', 'medical cart', 'procedure chair'],
     priceRange: [300, 20000],
-    imgKeyword: 'hospital,furniture',
+    pexelsQuery: 'hospital examination table medical furniture',
     featureTemplates: [
       'Full-electric adjustment for patient and caregiver comfort',
       'Side rails with integrated controls',
@@ -309,7 +328,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 17,
     fdaSearches: ['dental chair', 'dental drill', 'dental x-ray'],
     priceRange: [200, 20000],
-    imgKeyword: 'dental',
+    pexelsQuery: 'dental equipment dentist chair',
     featureTemplates: [
       'Smooth, quiet operation minimizes patient anxiety',
       'Ergonomic design for practitioner comfort',
@@ -326,7 +345,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 18,
     fdaSearches: ['nurse call', 'patient call system', 'call light'],
     priceRange: [100, 8000],
-    imgKeyword: 'nurse,hospital',
+    pexelsQuery: 'nurse hospital call button',
     featureTemplates: [
       'Two-way communication between patient and staff',
       'Centralized monitoring at nurse station',
@@ -343,7 +362,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 19,
     fdaSearches: ['electrode ecg', 'catheter urinary', 'syringe disposable'],
     priceRange: [10, 400],
-    imgKeyword: 'medical,supplies',
+    pexelsQuery: 'medical supplies disposables syringe',
     featureTemplates: [
       'Sterile individually wrapped for clinical safety',
       'Single-use design prevents cross-contamination',
@@ -360,7 +379,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 20,
     fdaSearches: ['ecg electrode', 'pulse oximeter sensor', 'temperature probe'],
     priceRange: [20, 1500],
-    imgKeyword: 'medical,sensor',
+    pexelsQuery: 'medical sensor electrode ECG cable',
     featureTemplates: [
       'High-signal fidelity for accurate monitoring',
       'Reinforced connector points for clinical durability',
@@ -442,10 +461,15 @@ async function main() {
       },
     });
 
+    // Fetch Pexels photos for this category
+    process.stdout.write(`  Fetching Pexels: "${config.pexelsQuery}"... `);
+    const photos = await fetchPexelsPhotos(config.pexelsQuery, 30);
+    console.log(`${photos.length} photos`);
+
     // Fetch from FDA for each search term
     const allDevices: FDADevice[] = [];
     for (const term of config.fdaSearches) {
-      process.stdout.write(`  Fetching: "${term}"... `);
+      process.stdout.write(`  Fetching FDA: "${term}"... `);
       const devices = await fetchFDA(term, 25);
       console.log(`${devices.length} results`);
       allDevices.push(...devices);
@@ -497,7 +521,9 @@ async function main() {
             'Availability': 'In Stock',
           },
           price,
-          imageUrl: flickrImg(config.imgKeyword, sortOrder),
+          imageUrl: photos.length > 0
+            ? photos[(sortOrder - 1) % photos.length]
+            : placeholderImg(config.name),
           categoryId: category.id,
           sortOrder: sortOrder++,
         },
