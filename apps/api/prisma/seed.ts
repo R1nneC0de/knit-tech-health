@@ -1,187 +1,489 @@
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
+const FDA_API = 'https://api.fda.gov/device/classification.json';
+
+interface FDADevice {
+  device_name: string;
+  definition?: string;
+  device_class?: string;
+  product_code?: string;
+}
+
+interface CategoryConfig {
+  name: string;
+  slug: string;
+  description: string;
+  imageUrl: string;
+  sortOrder: number;
+  fdaSearches: string[];
+  priceRange: [number, number];
+  featureTemplates: string[];
+}
+
+const CATEGORIES: CategoryConfig[] = [
+  {
+    name: 'Mobility',
+    slug: 'mobility',
+    description: 'Wheelchairs, walkers, crutches, and mobility aids to help patients move safely and independently.',
+    imageUrl: '/images/categories/mobility.jpg',
+    sortOrder: 1,
+    fdaSearches: ['wheelchair', 'walker', 'crutch'],
+    priceRange: [50, 6000],
+    featureTemplates: [
+      'Lightweight and durable construction',
+      'Adjustable to fit various patient sizes',
+      'Non-slip grips and safety features',
+      'Foldable design for easy transport and storage',
+      'FDA-registered medical device',
+    ],
+  },
+  {
+    name: 'Patient Support',
+    slug: 'patient-support',
+    description: 'Hospital beds, overbed tables, patient lifts, and bedside equipment for comfortable patient care.',
+    imageUrl: '/images/categories/patient-support.jpg',
+    sortOrder: 2,
+    fdaSearches: ['hospital bed', 'patient lift', 'stretcher'],
+    priceRange: [200, 20000],
+    featureTemplates: [
+      'Heavy-duty frame supports high weight capacity',
+      'Height adjustable for caregiver ergonomics',
+      'Smooth surface for infection control',
+      'Locking casters for patient safety',
+      'Easy-clean materials for rapid turnover',
+    ],
+  },
+  {
+    name: 'Bath & Safety',
+    slug: 'bath-safety',
+    description: 'Shower chairs, grab bars, transfer benches, and bathroom safety products.',
+    imageUrl: '/images/categories/bath-safety.jpg',
+    sortOrder: 3,
+    fdaSearches: ['bath seat', 'shower chair', 'grab bar'],
+    priceRange: [25, 600],
+    featureTemplates: [
+      'Slip-resistant surfaces for fall prevention',
+      'Corrosion-resistant materials for wet environments',
+      'Tool-free or simple installation',
+      'Weight-rated for safety compliance',
+      'Meets ADA accessibility standards',
+    ],
+  },
+  {
+    name: 'Respiratory',
+    slug: 'respiratory',
+    description: 'Nebulizers, CPAP machines, oxygen concentrators, and respiratory care devices.',
+    imageUrl: '/images/categories/respiratory.jpg',
+    sortOrder: 4,
+    fdaSearches: ['nebulizer', 'ventilator', 'oxygen concentrator'],
+    priceRange: [100, 10000],
+    featureTemplates: [
+      'Precise flow control for accurate therapy delivery',
+      'Quiet operation minimizes patient disruption',
+      'Easy-clean components reduce infection risk',
+      'Alarm systems for patient safety monitoring',
+      'Compatible with standard clinical accessories',
+    ],
+  },
+  {
+    name: 'Wound Care',
+    slug: 'wound-care',
+    description: 'Dressings, compression bandages, skin protectants, and wound management supplies.',
+    imageUrl: '/images/categories/wound-care.jpg',
+    sortOrder: 5,
+    fdaSearches: ['wound dressing', 'bandage', 'wound care'],
+    priceRange: [15, 500],
+    featureTemplates: [
+      'Sterile packaging for infection prevention',
+      'Breathable materials promote healing',
+      'Conformable design for complex wound shapes',
+      'Non-adherent surface minimizes trauma on removal',
+      'Moisture-retentive properties for optimal healing',
+    ],
+  },
+  {
+    name: 'PPE',
+    slug: 'ppe',
+    description: 'Personal protective equipment including masks, gloves, face shields, and gowns.',
+    imageUrl: '/images/categories/ppe.jpg',
+    sortOrder: 6,
+    fdaSearches: ['surgical glove', 'face mask', 'protective gown'],
+    priceRange: [10, 300],
+    featureTemplates: [
+      'Fluid-resistant barrier protection',
+      'Comfortable extended-wear design',
+      'Single-use for infection control compliance',
+      'Meets ASTM/ANSI standards',
+      'Latex-free options available',
+    ],
+  },
+  {
+    name: 'Diagnostic Equipment',
+    slug: 'diagnostic-equipment',
+    description: 'Blood pressure monitors, stethoscopes, thermometers, and diagnostic tools.',
+    imageUrl: '/images/categories/diagnostic-equipment.jpg',
+    sortOrder: 7,
+    fdaSearches: ['blood pressure monitor', 'stethoscope', 'thermometer'],
+    priceRange: [30, 5000],
+    featureTemplates: [
+      'High accuracy for reliable clinical decisions',
+      'Easy-to-read display for quick assessment',
+      'Durable construction for frequent clinical use',
+      'Battery and AC power options',
+      'Calibration certificate included',
+    ],
+  },
+  {
+    name: 'Aids & Daily Living',
+    slug: 'aids-daily-living',
+    description: 'Reachers, pill organizers, adaptive utensils, and daily living assistance products.',
+    imageUrl: '/images/categories/aids-daily-living.jpg',
+    sortOrder: 8,
+    fdaSearches: ['orthotic', 'adaptive utensil', 'daily living aid'],
+    priceRange: [10, 400],
+    featureTemplates: [
+      'Ergonomic design reduces patient strain',
+      'Lightweight for easy handling',
+      'Durable materials for long-term daily use',
+      'Adjustable to accommodate different needs',
+      'Helps maintain patient independence',
+    ],
+  },
+  {
+    name: 'Anesthesia Equipment',
+    slug: 'anesthesia-equipment',
+    description: 'Anesthesia workstations, vaporizers, breathing circuits, gas monitors, and ventilator accessories.',
+    imageUrl: '/images/categories/anesthesia-equipment.jpg',
+    sortOrder: 9,
+    fdaSearches: ['anesthesia', 'vaporizer anesthesia', 'breathing circuit'],
+    priceRange: [500, 60000],
+    featureTemplates: [
+      'Precision engineering for safe gas delivery',
+      'Integrated monitoring and alarm systems',
+      'Compatibility with major anesthesia agent brands',
+      'Low-maintenance design for clinical efficiency',
+      'Full service and calibration documentation included',
+    ],
+  },
+  {
+    name: 'Infusion Pumps',
+    slug: 'infusion-pumps',
+    description: 'Large volume IV pumps, syringe pumps, PCA pumps, enteral feeding pumps, and accessories.',
+    imageUrl: '/images/categories/infusion-pumps.jpg',
+    sortOrder: 10,
+    fdaSearches: ['infusion pump', 'syringe pump', 'feeding pump'],
+    priceRange: [400, 18000],
+    featureTemplates: [
+      'Accurate flow rate control ±2% accuracy',
+      'Integrated air-in-line and occlusion detection',
+      'Large backlit display for ICU visibility',
+      'Drug library with dose error reduction software',
+      'Rechargeable battery for patient transport',
+    ],
+  },
+  {
+    name: 'Defibrillators',
+    slug: 'defibrillators',
+    description: 'Automated external defibrillators, manual defibrillators, AED accessories, and electrode pads.',
+    imageUrl: '/images/categories/defibrillators.jpg',
+    sortOrder: 11,
+    fdaSearches: ['defibrillator'],
+    priceRange: [1000, 30000],
+    featureTemplates: [
+      'Biphasic waveform technology for effective therapy',
+      'AED mode for untrained rescuer use',
+      'Clear audio and visual prompts guide operator',
+      'Data logging for post-event clinical review',
+      'Compatible with standard electrode pads',
+    ],
+  },
+  {
+    name: 'Patient Monitoring',
+    slug: 'patient-monitoring',
+    description: 'Bedside monitors, telemetry systems, capnography, fetal monitors, and transport monitors.',
+    imageUrl: '/images/categories/patient-monitoring.jpg',
+    sortOrder: 12,
+    fdaSearches: ['patient monitor', 'pulse oximeter', 'cardiac monitor'],
+    priceRange: [500, 35000],
+    featureTemplates: [
+      'Multi-parameter simultaneous monitoring',
+      'Wireless data transmission to central station',
+      'Customizable alarm thresholds',
+      'Trend display for clinical assessment',
+      'Durable touchscreen interface',
+    ],
+  },
+  {
+    name: 'Sterilization',
+    slug: 'sterilization',
+    description: 'Steam autoclaves, ultrasonic cleaners, plasma sterilizers, endoscope reprocessors, and supplies.',
+    imageUrl: '/images/categories/sterilization.jpg',
+    sortOrder: 13,
+    fdaSearches: ['sterilizer', 'autoclave', 'ultrasonic cleaner'],
+    priceRange: [300, 25000],
+    featureTemplates: [
+      'Validated sterilization cycles per ISO standards',
+      'Self-diagnostic system with error reporting',
+      'Easy-access chamber for loading efficiency',
+      'Printer and USB logging of cycle records',
+      'Automatic door lock during active cycle',
+    ],
+  },
+  {
+    name: 'Endoscopy',
+    slug: 'endoscopy',
+    description: 'Video endoscopy towers, bronchoscopes, light sources, insufflators, and irrigation pumps.',
+    imageUrl: '/images/categories/endoscopy.jpg',
+    sortOrder: 14,
+    fdaSearches: ['endoscope', 'bronchoscope', 'colonoscope'],
+    priceRange: [1000, 60000],
+    featureTemplates: [
+      'High-definition imaging for precise visualization',
+      'Single-use options available for infection control',
+      'Compatible with major endoscopy tower brands',
+      'Ergonomic handle reduces clinician fatigue',
+      'Full sterilization and reprocessing compatibility',
+    ],
+  },
+  {
+    name: 'Surgical Equipment',
+    slug: 'surgical-equipment',
+    description: 'Electrosurgical units, surgical lights, tourniquet systems, patient warming, and smoke evacuators.',
+    imageUrl: '/images/categories/surgical-equipment.jpg',
+    sortOrder: 15,
+    fdaSearches: ['electrosurgical', 'surgical instrument', 'retractor'],
+    priceRange: [100, 40000],
+    featureTemplates: [
+      'Precision design for minimally invasive procedures',
+      'Autoclavable components for full sterility',
+      'Ergonomic handles reduce surgeon fatigue',
+      'Compatible with standard surgical accessories',
+      'CE and FDA cleared for clinical use',
+    ],
+  },
+  {
+    name: 'Beds & Furniture',
+    slug: 'beds-furniture',
+    description: 'Full-electric hospital beds, exam tables, emergency stretchers, medical carts, and patient recliners.',
+    imageUrl: '/images/categories/beds-furniture.jpg',
+    sortOrder: 16,
+    fdaSearches: ['examination table', 'medical cart', 'procedure chair'],
+    priceRange: [300, 20000],
+    featureTemplates: [
+      'Full-electric adjustment for patient and caregiver comfort',
+      'Side rails with integrated controls',
+      'Trendelenburg and reverse Trendelenburg positions',
+      'Locking casters for patient safety',
+      'Compatible with standard hospital mattresses',
+    ],
+  },
+  {
+    name: 'Dental Equipment',
+    slug: 'dental-equipment',
+    description: 'Dental chairs, air compressors, intraoral X-ray units, autoclaves, and curing lights.',
+    imageUrl: '/images/categories/dental-equipment.jpg',
+    sortOrder: 17,
+    fdaSearches: ['dental chair', 'dental drill', 'dental x-ray'],
+    priceRange: [200, 20000],
+    featureTemplates: [
+      'Smooth, quiet operation minimizes patient anxiety',
+      'Ergonomic design for practitioner comfort',
+      'Compatible with standard dental consumables',
+      'Easy sterilization of patient-contact surfaces',
+      'Digital interface for modern practice integration',
+    ],
+  },
+  {
+    name: 'Nurse Call Systems',
+    slug: 'nurse-call-systems',
+    description: 'Master consoles, pillow speakers, call pendants, patient stations, and dome lights.',
+    imageUrl: '/images/categories/nurse-call-systems.jpg',
+    sortOrder: 18,
+    fdaSearches: ['nurse call', 'patient call system', 'call light'],
+    priceRange: [100, 8000],
+    featureTemplates: [
+      'Two-way communication between patient and staff',
+      'Centralized monitoring at nurse station',
+      'Wireless options for flexible installation',
+      'Integration with EMR and bed management systems',
+      'Low-voltage design safe for patient areas',
+    ],
+  },
+  {
+    name: 'Consumables & Disposables',
+    slug: 'consumables-disposables',
+    description: 'ECG electrodes, catheterization kits, syringes, medical paper rolls, and isolation gowns.',
+    imageUrl: '/images/categories/consumables-disposables.jpg',
+    sortOrder: 19,
+    fdaSearches: ['electrode ecg', 'catheter urinary', 'syringe disposable'],
+    priceRange: [10, 400],
+    featureTemplates: [
+      'Sterile individually wrapped for clinical safety',
+      'Single-use design prevents cross-contamination',
+      'Latex-free formulation',
+      'Compatible with standard clinical equipment',
+      'Bulk packaging available for cost efficiency',
+    ],
+  },
+  {
+    name: 'Cables & Sensors',
+    slug: 'cables-sensors',
+    description: 'SpO2 sensors, ECG cable sets, temperature probes, NIBP cuffs, and IBP transducer cables.',
+    imageUrl: '/images/categories/cables-sensors.jpg',
+    sortOrder: 20,
+    fdaSearches: ['ecg electrode', 'pulse oximeter sensor', 'temperature probe'],
+    priceRange: [20, 1500],
+    featureTemplates: [
+      'High-signal fidelity for accurate monitoring',
+      'Reinforced connector points for clinical durability',
+      'Compatible with major patient monitor brands',
+      'Flexible cable design for patient comfort',
+      'Color-coded leads for fast and accurate connection',
+    ],
+  },
+];
+
+function sleep(ms: number) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function fetchFDA(search: string, limit = 25): Promise<FDADevice[]> {
+  try {
+    const url = `${FDA_API}?search=device_name:"${encodeURIComponent(search)}"&limit=${limit}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const json = (await res.json()) as { results?: FDADevice[] };
+    return json.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+function cleanName(raw: string): string {
+  // FDA names come in like "WHEELCHAIR, POWERED" or "PUMP, INFUSION, LARGE VOLUME"
+  // Reorder: last part becomes noun, rest become adjectives
+  const parts = raw.split(',').map(p => p.trim());
+  const reordered = parts.length > 1 ? [...parts.slice(1), parts[0]] : parts;
+  return reordered
+    .join(' ')
+    .toLowerCase()
+    .replace(/\b\w/g, c => c.toUpperCase())
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function toSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+function generatePrice(deviceClass: string | undefined, [min, max]: [number, number]): number {
+  const classMultiplier =
+    deviceClass === '3' ? 0.7 + Math.random() * 0.3 :
+    deviceClass === '2' ? 0.35 + Math.random() * 0.35 :
+    0.1 + Math.random() * 0.25;
+  const value = min + (max - min) * classMultiplier;
+  return Math.round(value / 10) * 10 - 0.01;
+}
 
 async function main() {
-  // Clear existing data
+  console.log('Clearing existing data...');
+  await prisma.cartItem.deleteMany();
+  await prisma.orderItem.deleteMany();
   await prisma.inquiryOrder.deleteMany();
   await prisma.contactSubmission.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
 
-  const categories = [
-    { name: 'Mobility', slug: 'mobility', description: 'Wheelchairs, walkers, crutches, and mobility aids to help patients move safely and independently.', imageUrl: '/images/categories/mobility.jpg', sortOrder: 1 },
-    { name: 'Patient Support', slug: 'patient-support', description: 'Hospital beds, overbed tables, patient lifts, and bedside equipment for comfortable patient care.', imageUrl: '/images/categories/patient-support.jpg', sortOrder: 2 },
-    { name: 'Bath & Safety', slug: 'bath-safety', description: 'Shower chairs, grab bars, transfer benches, and bathroom safety products.', imageUrl: '/images/categories/bath-safety.jpg', sortOrder: 3 },
-    { name: 'Respiratory', slug: 'respiratory', description: 'Nebulizers, CPAP machines, oxygen concentrators, and respiratory care devices.', imageUrl: '/images/categories/respiratory.jpg', sortOrder: 4 },
-    { name: 'Wound Care', slug: 'wound-care', description: 'Dressings, compression bandages, skin protectants, and wound management supplies.', imageUrl: '/images/categories/wound-care.jpg', sortOrder: 5 },
-    { name: 'PPE', slug: 'ppe', description: 'Personal protective equipment including masks, gloves, face shields, and gowns.', imageUrl: '/images/categories/ppe.jpg', sortOrder: 6 },
-    { name: 'Diagnostic Equipment', slug: 'diagnostic-equipment', description: 'Blood pressure monitors, stethoscopes, thermometers, and diagnostic tools.', imageUrl: '/images/categories/diagnostic-equipment.jpg', sortOrder: 7 },
-    { name: 'Aids & Daily Living', slug: 'aids-daily-living', description: 'Reachers, pill organizers, adaptive utensils, and daily living assistance products.', imageUrl: '/images/categories/aids-daily-living.jpg', sortOrder: 8 },
-    { name: 'Anesthesia Equipment', slug: 'anesthesia-equipment', description: 'Anesthesia workstations, vaporizers, breathing circuits, gas monitors, and ventilator accessories.', imageUrl: '/images/categories/anesthesia-equipment.jpg', sortOrder: 9 },
-    { name: 'Infusion Pumps', slug: 'infusion-pumps', description: 'Large volume IV pumps, syringe pumps, PCA pumps, enteral feeding pumps, and accessories.', imageUrl: '/images/categories/infusion-pumps.jpg', sortOrder: 10 },
-    { name: 'Defibrillators', slug: 'defibrillators', description: 'Automated external defibrillators, manual defibrillators, AED accessories, and electrode pads.', imageUrl: '/images/categories/defibrillators.jpg', sortOrder: 11 },
-    { name: 'Patient Monitoring', slug: 'patient-monitoring', description: 'Bedside monitors, telemetry systems, capnography, fetal monitors, and transport monitors.', imageUrl: '/images/categories/patient-monitoring.jpg', sortOrder: 12 },
-    { name: 'Sterilization', slug: 'sterilization', description: 'Steam autoclaves, ultrasonic cleaners, plasma sterilizers, endoscope reprocessors, and supplies.', imageUrl: '/images/categories/sterilization.jpg', sortOrder: 13 },
-    { name: 'Endoscopy', slug: 'endoscopy', description: 'Video endoscopy towers, bronchoscopes, light sources, insufflators, and irrigation pumps.', imageUrl: '/images/categories/endoscopy.jpg', sortOrder: 14 },
-    { name: 'Surgical Equipment', slug: 'surgical-equipment', description: 'Electrosurgical units, surgical lights, tourniquet systems, patient warming, and smoke evacuators.', imageUrl: '/images/categories/surgical-equipment.jpg', sortOrder: 15 },
-    { name: 'Beds & Furniture', slug: 'beds-furniture', description: 'Full-electric hospital beds, exam tables, emergency stretchers, medical carts, and patient recliners.', imageUrl: '/images/categories/beds-furniture.jpg', sortOrder: 16 },
-    { name: 'Dental Equipment', slug: 'dental-equipment', description: 'Dental chairs, air compressors, intraoral X-ray units, autoclaves, and curing lights.', imageUrl: '/images/categories/dental-equipment.jpg', sortOrder: 17 },
-    { name: 'Nurse Call Systems', slug: 'nurse-call-systems', description: 'Master consoles, pillow speakers, call pendants, patient stations, and dome lights.', imageUrl: '/images/categories/nurse-call-systems.jpg', sortOrder: 18 },
-    { name: 'Consumables & Disposables', slug: 'consumables-disposables', description: 'ECG electrodes, catheterization kits, syringes, medical paper rolls, and isolation gowns.', imageUrl: '/images/categories/consumables-disposables.jpg', sortOrder: 19 },
-    { name: 'Cables & Sensors', slug: 'cables-sensors', description: 'SpO2 sensors, ECG cable sets, temperature probes, NIBP cuffs, and IBP transducer cables.', imageUrl: '/images/categories/cables-sensors.jpg', sortOrder: 20 },
-  ];
+  const seenSlugs = new Set<string>();
+  let totalProducts = 0;
 
-  const createdCategories: Record<string, string> = {};
-  for (const cat of categories) {
-    const created = await prisma.category.create({ data: cat });
-    createdCategories[cat.slug] = created.id;
+  for (const config of CATEGORIES) {
+    console.log(`\nCategory: ${config.name}`);
+
+    const category = await prisma.category.create({
+      data: {
+        name: config.name,
+        slug: config.slug,
+        description: config.description,
+        imageUrl: config.imageUrl,
+        sortOrder: config.sortOrder,
+      },
+    });
+
+    // Fetch from FDA for each search term
+    const allDevices: FDADevice[] = [];
+    for (const term of config.fdaSearches) {
+      process.stdout.write(`  Fetching: "${term}"... `);
+      const devices = await fetchFDA(term, 25);
+      console.log(`${devices.length} results`);
+      allDevices.push(...devices);
+      await sleep(400); // rate limit courtesy
+    }
+
+    // Deduplicate within this category
+    const seen = new Set<string>();
+    const unique = allDevices.filter(d => {
+      if (seen.has(d.device_name)) return false;
+      seen.add(d.device_name);
+      return true;
+    });
+
+    const toInsert = unique.slice(0, 30);
+
+    let sortOrder = 1;
+    for (const device of toInsert) {
+      const name = cleanName(device.device_name);
+      if (name.length < 4) continue;
+
+      let slug = toSlug(name);
+      if (seenSlugs.has(slug)) {
+        slug = `${slug}-${(device.product_code ?? String(sortOrder)).toLowerCase()}`;
+      }
+      // If still a duplicate, append category slug
+      if (seenSlugs.has(slug)) {
+        slug = `${slug}-${config.slug}`;
+      }
+      seenSlugs.add(slug);
+
+      const description = device.definition
+        ? device.definition.slice(0, 350).replace(/\s+/g, ' ').trim()
+        : `Professional-grade ${name.toLowerCase()} designed for clinical and healthcare settings. Engineered to meet the demanding requirements of modern medical facilities.`;
+
+      const price = generatePrice(device.device_class, config.priceRange);
+
+      await prisma.product.create({
+        data: {
+          name,
+          slug,
+          description,
+          features: config.featureTemplates,
+          specifications: {
+            'FDA Product Code': device.product_code ?? 'N/A',
+            'Device Class': `Class ${device.device_class ?? 'II'}`,
+            'Regulatory Status': 'FDA Cleared',
+            'Condition': 'New',
+            'Availability': 'In Stock',
+          },
+          price,
+          imageUrl: `/images/products/${slug}.jpg`,
+          categoryId: category.id,
+          sortOrder: sortOrder++,
+        },
+      });
+    }
+
+    console.log(`  Inserted ${sortOrder - 1} products`);
+    totalProducts += sortOrder - 1;
   }
 
-  const products = [
-    // ── Mobility ──
-    { name: 'Standard Wheelchair', slug: 'standard-wheelchair', description: 'Durable steel-frame wheelchair with padded armrests and swing-away footrests. Suitable for everyday indoor and outdoor use.', features: ['Steel frame construction', 'Padded armrests', 'Swing-away footrests', 'Foldable for transport', '300 lb weight capacity'], specifications: { 'Weight Capacity': '300 lbs', 'Seat Width': '18 inches', 'Frame Material': 'Steel', 'Weight': '36 lbs' }, price: 349.99, imageUrl: '/images/products/standard-wheelchair.jpg', categoryId: createdCategories['mobility'], sortOrder: 1 },
-    { name: 'Four-Wheel Rollator', slug: 'four-wheel-rollator', description: 'Lightweight aluminum rollator with built-in seat, storage pouch, and hand brakes for safe indoor and outdoor mobility.', features: ['Aluminum frame', 'Built-in padded seat', 'Under-seat storage', 'Loop-lock hand brakes', '6-inch wheels'], specifications: { 'Weight Capacity': '300 lbs', 'Seat Height': '23 inches', 'Frame Material': 'Aluminum', 'Weight': '15 lbs' }, price: 189.99, imageUrl: '/images/products/four-wheel-rollator.jpg', categoryId: createdCategories['mobility'], sortOrder: 2 },
-    { name: 'Adjustable Aluminum Crutches', slug: 'adjustable-aluminum-crutches', description: 'Height-adjustable underarm crutches with cushioned grips and non-slip rubber tips for stable support during recovery.', features: ['Height adjustable', 'Cushioned underarm pads', 'Non-slip rubber tips', 'Push-button adjustment', 'Lightweight aluminum'], specifications: { 'Height Range': "4'6\" - 6'6\"", 'Weight Capacity': '300 lbs', 'Material': 'Aluminum', 'Weight': '2 lbs each' }, price: 49.99, imageUrl: '/images/products/adjustable-aluminum-crutches.jpg', categoryId: createdCategories['mobility'], sortOrder: 3 },
-    { name: 'Folding Walking Cane', slug: 'folding-walking-cane', description: 'Compact folding cane with ergonomic handle and wrist strap. Easily folds for storage and travel.', features: ['Folds into 4 sections', 'Ergonomic handle', 'Wrist strap included', 'Adjustable height', 'Non-slip rubber tip'], specifications: { 'Height Range': '33-37 inches', 'Weight Capacity': '250 lbs', 'Material': 'Aluminum', 'Weight': '0.75 lbs' }, price: 29.99, imageUrl: '/images/products/folding-walking-cane.jpg', categoryId: createdCategories['mobility'], sortOrder: 4 },
-
-    // ── Patient Support ──
-    { name: 'Semi-Electric Hospital Bed', slug: 'semi-electric-hospital-bed', description: 'Full-size semi-electric hospital bed with adjustable head and foot sections, side rails, and locking casters.', features: ['Electric head/foot adjustment', 'Manual bed height', 'Full-length side rails', 'Locking casters', 'Includes mattress'], specifications: { 'Weight Capacity': '450 lbs', 'Mattress Size': '36" x 80"', 'Height Range': '15-23 inches', 'Power': '120V AC' }, price: 1299.99, imageUrl: '/images/products/semi-electric-hospital-bed.jpg', categoryId: createdCategories['patient-support'], sortOrder: 1 },
-    { name: 'Overbed Table', slug: 'overbed-table', description: 'Height-adjustable overbed table with tilt-top surface. Ideal for eating, reading, or using a laptop in bed.', features: ['Height adjustable', 'Tilt-top surface', 'H-base fits under bed', 'Locking casters', 'Easy-clean laminate top'], specifications: { 'Table Size': '30" x 15"', 'Height Range': '28-45 inches', 'Material': 'Steel/Laminate', 'Weight': '24 lbs' }, price: 129.99, imageUrl: '/images/products/overbed-table.jpg', categoryId: createdCategories['patient-support'], sortOrder: 2 },
-    { name: 'Hydraulic Patient Lift', slug: 'hydraulic-patient-lift', description: 'Manual hydraulic patient lift for safe transfers between bed, wheelchair, and bath. Includes sling and spreader bar.', features: ['Hydraulic lifting mechanism', 'Six-point spreader bar', 'Adjustable base width', 'Rear locking casters', 'Sling included'], specifications: { 'Weight Capacity': '400 lbs', 'Lift Range': '25-70 inches', 'Base Width': '24-43 inches', 'Weight': '58 lbs' }, price: 749.99, imageUrl: '/images/products/hydraulic-patient-lift.jpg', categoryId: createdCategories['patient-support'], sortOrder: 3 },
-    { name: 'Bedside Commode', slug: 'bedside-commode', description: 'Three-in-one bedside commode that functions as a raised toilet seat, toilet safety frame, or standalone commode.', features: ['3-in-1 functionality', 'Adjustable height legs', 'Splash guard', 'Removable bucket with lid', 'Padded armrests'], specifications: { 'Weight Capacity': '350 lbs', 'Seat Height': '16-22 inches', 'Material': 'Steel', 'Weight': '14 lbs' }, price: 89.99, imageUrl: '/images/products/bedside-commode.jpg', categoryId: createdCategories['patient-support'], sortOrder: 4 },
-
-    // ── Bath & Safety ──
-    { name: 'Adjustable Shower Chair', slug: 'adjustable-shower-chair', description: 'Lightweight shower chair with adjustable legs, non-slip feet, and drainage holes for safe bathing.', features: ['Height adjustable', 'Non-slip rubber feet', 'Drainage holes in seat', 'Rust-proof aluminum', 'Tool-free assembly'], specifications: { 'Weight Capacity': '300 lbs', 'Seat Height': '16-21 inches', 'Seat Width': '20 inches', 'Weight': '5 lbs' }, price: 59.99, imageUrl: '/images/products/adjustable-shower-chair.jpg', categoryId: createdCategories['bath-safety'], sortOrder: 1 },
-    { name: 'Stainless Steel Grab Bar', slug: 'stainless-steel-grab-bar', description: 'Wall-mounted stainless steel grab bar with textured grip surface. ADA-compliant for bathroom safety.', features: ['Stainless steel construction', 'Textured grip surface', 'ADA compliant', 'Concealed mounting hardware', 'Corrosion resistant'], specifications: { 'Length': '24 inches', 'Diameter': '1.25 inches', 'Weight Capacity': '500 lbs', 'Material': 'Stainless Steel' }, price: 44.99, imageUrl: '/images/products/stainless-steel-grab-bar.jpg', categoryId: createdCategories['bath-safety'], sortOrder: 2 },
-    { name: 'Padded Transfer Bench', slug: 'padded-transfer-bench', description: 'Bath transfer bench with padded backrest and seat. Extends over tub edge for safe entry and exit.', features: ['Padded seat and backrest', 'Adjustable height', 'Non-slip legs', 'Drainage holes', 'Reversible design'], specifications: { 'Weight Capacity': '400 lbs', 'Seat Height': '17-21 inches', 'Seat Width': '19 inches', 'Weight': '10 lbs' }, price: 79.99, imageUrl: '/images/products/padded-transfer-bench.jpg', categoryId: createdCategories['bath-safety'], sortOrder: 3 },
-    { name: 'Non-Slip Bath Mat', slug: 'non-slip-bath-mat', description: 'Extra-long non-slip bath mat with suction cups for secure placement in tubs and showers. Machine washable.', features: ['Strong suction cups', 'Anti-microbial surface', 'Machine washable', 'Extra-long coverage', 'Latex-free'], specifications: { 'Size': '16" x 40"', 'Material': 'PVC/Rubber', 'Suction Cups': '200+', 'Color': 'White' }, price: 19.99, imageUrl: '/images/products/non-slip-bath-mat.jpg', categoryId: createdCategories['bath-safety'], sortOrder: 4 },
-
-    // ── Respiratory ──
-    { name: 'Compressor Nebulizer System', slug: 'compressor-nebulizer-system', description: 'Tabletop compressor nebulizer for delivering aerosolized medication. Includes tubing, mouthpiece, and mask.', features: ['Powerful piston compressor', 'Reusable nebulizer cup', 'Includes adult and pediatric masks', '5-year warranty', 'Quiet operation'], specifications: { 'Particle Size': '0.5-5 microns', 'Flow Rate': '8 L/min', 'Noise Level': '<55 dB', 'Power': '120V AC' }, price: 89.99, imageUrl: '/images/products/compressor-nebulizer-system.jpg', categoryId: createdCategories['respiratory'], sortOrder: 1 },
-    { name: 'Auto-Adjusting CPAP Machine', slug: 'auto-adjusting-cpap-machine', description: 'Auto-titrating CPAP device with heated humidifier, data tracking, and whisper-quiet motor for sleep apnea therapy.', features: ['Auto-adjusting pressure', 'Integrated heated humidifier', 'SD card data logging', 'Ramp-up comfort feature', 'Leak compensation'], specifications: { 'Pressure Range': '4-20 cmH2O', 'Noise Level': '<30 dB', 'Weight': '2.75 lbs', 'Compliance Tracking': 'Yes' }, price: 899.99, imageUrl: '/images/products/auto-adjusting-cpap-machine.jpg', categoryId: createdCategories['respiratory'], sortOrder: 2 },
-    { name: 'Portable Oxygen Concentrator', slug: 'portable-oxygen-concentrator', description: 'Lightweight portable oxygen concentrator with pulse dose delivery. FAA-approved for air travel.', features: ['Pulse dose delivery', 'FAA approved', 'Rechargeable battery', 'LCD display', 'Carry bag included'], specifications: { 'Flow Settings': '1-5 pulse dose', 'Battery Life': 'Up to 5 hours', 'Weight': '4.7 lbs', 'Noise Level': '<40 dB' }, price: 1799.99, imageUrl: '/images/products/portable-oxygen-concentrator.jpg', categoryId: createdCategories['respiratory'], sortOrder: 3 },
-    { name: 'Fingertip Pulse Oximeter', slug: 'fingertip-pulse-oximeter', description: 'Compact fingertip pulse oximeter with OLED display showing SpO2 and heart rate. One-button operation.', features: ['OLED display', 'SpO2 and pulse rate', 'One-button operation', 'Auto power off', 'Includes lanyard'], specifications: { 'SpO2 Range': '70-100%', 'Pulse Range': '30-250 BPM', 'Battery': '2x AAA', 'Weight': '1.7 oz' }, price: 24.99, imageUrl: '/images/products/fingertip-pulse-oximeter.jpg', categoryId: createdCategories['respiratory'], sortOrder: 4 },
-
-    // ── Wound Care ──
-    { name: 'Sterile Wound Dressings', slug: 'sterile-wound-dressings', description: 'Individually wrapped sterile adhesive dressings for wound protection. Absorbent pad with breathable backing.', features: ['Individually sterile wrapped', 'Absorbent non-stick pad', 'Breathable backing', 'Hypoallergenic adhesive', 'Box of 100'], specifications: { 'Size': '4" x 4"', 'Pad Size': '2.5" x 2.5"', 'Quantity': '100/box', 'Sterility': 'Gamma irradiated' }, price: 34.99, imageUrl: '/images/products/sterile-wound-dressings.jpg', categoryId: createdCategories['wound-care'], sortOrder: 1 },
-    { name: 'Elastic Compression Bandages', slug: 'elastic-compression-bandages', description: 'Reusable elastic compression bandages with clips for secure wrapping. Ideal for sprains, strains, and edema management.', features: ['High elasticity', 'Reusable and washable', 'Metal clips included', 'Consistent compression', 'Latex-free option'], specifications: { 'Width': '4 inches', 'Stretched Length': '10 feet', 'Quantity': '12/box', 'Material': 'Cotton/Elastic' }, price: 24.99, imageUrl: '/images/products/elastic-compression-bandages.jpg', categoryId: createdCategories['wound-care'], sortOrder: 2 },
-    { name: 'Skin Protectant Barrier Cream', slug: 'skin-protectant-barrier-cream', description: 'Moisture barrier cream for protecting skin from irritation caused by incontinence, wound drainage, and adhesives.', features: ['Long-lasting barrier', 'Fragrance-free', 'Dimethicone-based', 'Easy application', 'CHG compatible'], specifications: { 'Volume': '4 oz tube', 'Active Ingredient': 'Dimethicone 5%', 'Application': 'Topical', 'Latex-Free': 'Yes' }, price: 12.99, imageUrl: '/images/products/skin-protectant-barrier-cream.jpg', categoryId: createdCategories['wound-care'], sortOrder: 3 },
-    { name: 'Wound Irrigation Syringe', slug: 'wound-irrigation-syringe', description: 'Disposable wound irrigation syringe with piston-style plunger for controlled wound cleansing.', features: ['Piston-style plunger', 'Curved tip option', 'Clear barrel markings', 'Single-use sterile', 'Smooth operation'], specifications: { 'Capacity': '60 mL', 'Tip Type': 'Catheter tip', 'Quantity': '50/case', 'Sterility': 'EO sterilized' }, price: 39.99, imageUrl: '/images/products/wound-irrigation-syringe.jpg', categoryId: createdCategories['wound-care'], sortOrder: 4 },
-
-    // ── PPE ──
-    { name: 'ASTM Level 3 Surgical Masks', slug: 'astm-level-3-surgical-masks', description: 'High-barrier surgical face masks with ear loops. ASTM Level 3 rated for fluid resistance and bacterial filtration.', features: ['ASTM Level 3 rated', '3-ply construction', 'Adjustable nose wire', 'Fluid resistant', 'Latex-free'], specifications: { 'BFE': '≥98%', 'PFE': '≥98%', 'Quantity': '50/box', 'Color': 'Blue' }, price: 18.99, imageUrl: '/images/products/astm-level-3-surgical-masks.jpg', categoryId: createdCategories['ppe'], sortOrder: 1 },
-    { name: 'Powder-Free Nitrile Gloves', slug: 'powder-free-nitrile-gloves', description: 'Medical-grade nitrile examination gloves. Powder-free, latex-free, and textured fingertips for grip.', features: ['Medical-grade nitrile', 'Powder-free', 'Textured fingertips', 'Ambidextrous', 'Latex-free'], specifications: { 'Thickness': '4 mil', 'Sizes': 'S/M/L/XL', 'Quantity': '100/box', 'Color': 'Blue' }, price: 14.99, imageUrl: '/images/products/powder-free-nitrile-gloves.jpg', categoryId: createdCategories['ppe'], sortOrder: 2 },
-    { name: 'Anti-Fog Face Shield', slug: 'anti-fog-face-shield', description: 'Full-face protective shield with anti-fog coating, adjustable headband, and full peripheral coverage.', features: ['Anti-fog coating', 'Adjustable headband', 'Full face coverage', 'Lightweight PET', 'Reusable'], specifications: { 'Material': 'PET Plastic', 'Thickness': '0.3mm', 'Quantity': '10/pack', 'Optical Clarity': 'Grade 1' }, price: 29.99, imageUrl: '/images/products/anti-fog-face-shield.jpg', categoryId: createdCategories['ppe'], sortOrder: 3 },
-    { name: 'Disposable Isolation Gowns', slug: 'disposable-isolation-gowns', description: 'AAMI Level 2 disposable isolation gowns with knit cuffs and waist ties. Full back coverage.', features: ['AAMI Level 2', 'Knit cuffs', 'Full back coverage', 'Waist and neck ties', 'Fluid resistant'], specifications: { 'Material': 'SMS Polypropylene', 'Size': 'Universal', 'Quantity': '10/pack', 'Color': 'Yellow' }, price: 22.99, imageUrl: '/images/products/disposable-isolation-gowns.jpg', categoryId: createdCategories['ppe'], sortOrder: 4 },
-
-    // ── Diagnostic Equipment ──
-    { name: 'Digital Blood Pressure Monitor', slug: 'digital-blood-pressure-monitor', description: 'Automatic upper-arm blood pressure monitor with large LCD display, irregular heartbeat detection, and memory storage.', features: ['One-touch operation', 'Irregular heartbeat detection', '120-reading memory', 'Wide-range cuff', 'WHO classification indicator'], specifications: { 'Cuff Size': '8.7-16.5 inches', 'Accuracy': '±3 mmHg', 'Memory': '120 readings', 'Power': '4x AA batteries' }, price: 69.99, imageUrl: '/images/products/digital-blood-pressure-monitor.jpg', categoryId: createdCategories['diagnostic-equipment'], sortOrder: 1 },
-    { name: 'Dual-Head Stethoscope', slug: 'dual-head-stethoscope', description: 'Professional dual-head stethoscope with stainless steel chestpiece, tunable diaphragm, and comfortable ear tips.', features: ['Dual-head chestpiece', 'Tunable diaphragm', 'Stainless steel construction', 'Soft ear tips', 'Latex-free'], specifications: { 'Tube Length': '27 inches', 'Chestpiece': 'Stainless steel', 'Frequency Range': '20-1000 Hz', 'Weight': '5.3 oz' }, price: 54.99, imageUrl: '/images/products/dual-head-stethoscope.jpg', categoryId: createdCategories['diagnostic-equipment'], sortOrder: 2 },
-    { name: 'Non-Contact Infrared Thermometer', slug: 'non-contact-infrared-thermometer', description: 'Instant-read non-contact infrared thermometer with fever alarm, memory recall, and switchable °F/°C.', features: ['Non-contact measurement', '1-second reading', 'Fever alarm', '32-reading memory', 'Backlit LCD display'], specifications: { 'Range': '89.6-109.2°F', 'Distance': '1-6 inches', 'Accuracy': '±0.4°F', 'Battery': '2x AAA' }, price: 39.99, imageUrl: '/images/products/non-contact-infrared-thermometer.jpg', categoryId: createdCategories['diagnostic-equipment'], sortOrder: 3 },
-    { name: 'Diagnostic Otoscope', slug: 'diagnostic-otoscope', description: 'Fiber-optic otoscope with halogen illumination, 3x magnification, and set of reusable specula.', features: ['Fiber-optic illumination', '3x magnification', 'Reusable specula set', 'Rotating lens', 'Pocket clip'], specifications: { 'Light Source': 'Halogen', 'Magnification': '3x', 'Specula Sizes': '2.5mm, 3.5mm, 4.5mm', 'Battery': '2x AA' }, price: 89.99, imageUrl: '/images/products/diagnostic-otoscope.jpg', categoryId: createdCategories['diagnostic-equipment'], sortOrder: 4 },
-
-    // ── Aids & Daily Living ──
-    { name: 'Folding Reacher Grabber', slug: 'folding-reacher-grabber', description: 'Lightweight folding reacher with magnetic tip, rotating jaw, and ergonomic trigger grip for picking up items.', features: ['Foldable design', 'Magnetic tip', 'Rotating jaw', 'Ergonomic trigger', 'Non-slip grip pads'], specifications: { 'Length': '32 inches', 'Reach Capacity': '5 lbs', 'Weight': '8 oz', 'Material': 'Aluminum' }, price: 19.99, imageUrl: '/images/products/folding-reacher-grabber.jpg', categoryId: createdCategories['aids-daily-living'], sortOrder: 1 },
-    { name: 'Weekly Pill Organizer', slug: 'weekly-pill-organizer', description: 'Seven-day pill organizer with 4 daily compartments (morning, noon, evening, bedtime). Large, easy-open lids.', features: ['7-day organization', '4 daily compartments', 'Large easy-open lids', 'Color-coded days', 'BPA-free plastic'], specifications: { 'Compartments': '28 (7x4)', 'Size': '8.5" x 5.5" x 1.5"', 'Material': 'BPA-free plastic', 'Dishwasher Safe': 'Yes' }, price: 14.99, imageUrl: '/images/products/weekly-pill-organizer.jpg', categoryId: createdCategories['aids-daily-living'], sortOrder: 2 },
-    { name: 'Adaptive Utensil Set', slug: 'adaptive-utensil-set', description: 'Ergonomic weighted utensil set with built-up handles for individuals with limited hand strength or tremors.', features: ['Built-up soft handles', 'Weighted for stability', 'Dishwasher safe', 'Stainless steel', 'Non-slip grip'], specifications: { 'Set Includes': 'Fork, Knife, Spoon, Teaspoon', 'Handle Diameter': '1.5 inches', 'Weight': '7 oz each', 'Material': 'Stainless Steel/Rubber' }, price: 34.99, imageUrl: '/images/products/adaptive-utensil-set.jpg', categoryId: createdCategories['aids-daily-living'], sortOrder: 3 },
-    { name: 'Raised Toilet Seat', slug: 'raised-toilet-seat', description: 'Elevated toilet seat riser with padded armrests and secure locking mechanism. Adds 5 inches of height.', features: ['Adds 5" height', 'Padded armrests', 'Front locking mechanism', 'Tool-free installation', 'Easy-clean surface'], specifications: { 'Height Added': '5 inches', 'Weight Capacity': '300 lbs', 'Fits Bowl Width': '14-14.5 inches', 'Weight': '6 lbs' }, price: 49.99, imageUrl: '/images/products/raised-toilet-seat.jpg', categoryId: createdCategories['aids-daily-living'], sortOrder: 4 },
-
-    // ── Anesthesia Equipment ──
-    { name: 'Anesthesia Workstation Pro', slug: 'anesthesia-workstation-pro', description: 'Full-featured anesthesia workstation with integrated ventilator, multi-gas monitoring, and electronic fresh gas control for OR use.', features: ['Integrated ventilator', 'Multi-gas analyzer', 'Electronic fresh gas flow', 'Color touchscreen display', 'Low-flow anesthesia capability'], specifications: { 'Ventilator Modes': 'VCV, PCV, SIMV', 'Gas Monitoring': 'O2, N2O, CO2, 4 agents', 'Fresh Gas Flow': '0.2-15 L/min', 'Power': '120V/60Hz' }, price: 28500.00, imageUrl: '/images/products/anesthesia-workstation-pro.jpg', categoryId: createdCategories['anesthesia-equipment'], sortOrder: 1 },
-    { name: 'Portable Vaporizer Unit', slug: 'portable-vaporizer-unit', description: 'Precision temperature-compensated vaporizer compatible with sevoflurane and desflurane for accurate agent delivery.', features: ['Temperature compensated', 'Concentration dial 0-8%', 'Anti-spill mechanism', 'Agent-specific color coding', 'Easy cassette filling'], specifications: { 'Agent': 'Sevoflurane', 'Concentration Range': '0-8 vol%', 'Flow Range': '0.2-15 L/min', 'Weight': '4.4 lbs' }, price: 3200.00, imageUrl: '/images/products/portable-vaporizer-unit.jpg', categoryId: createdCategories['anesthesia-equipment'], sortOrder: 2 },
-    { name: 'Disposable Breathing Circuit Set', slug: 'disposable-breathing-circuit-set', description: 'Single-use adult co-axial breathing circuit with 22mm connectors, Y-piece, and corrugated tubing. Pack of 10.', features: ['Single-patient use', '22mm standard connectors', 'Lightweight corrugated tubing', 'Integrated Y-piece', 'Pack of 10'], specifications: { 'Size': 'Adult', 'Length': '1.5 meters', 'Connector': '22mm', 'Quantity': '10/pack' }, price: 89.99, imageUrl: '/images/products/disposable-breathing-circuit-set.jpg', categoryId: createdCategories['anesthesia-equipment'], sortOrder: 3 },
-    { name: 'Multi-Gas Anesthesia Monitor', slug: 'multi-gas-anesthesia-monitor', description: 'Standalone multi-gas analyzer measuring O2, CO2, N2O, and four anesthetic agents with waveform display.', features: ['Measures 4 anesthetic agents', 'Sidestream sampling', 'CO2 waveform display', 'Agent auto-identification', 'Compact bedside design'], specifications: { 'Gases Measured': 'O2, CO2, N2O, 4 agents', 'Response Time': '<20 seconds', 'Display': '8" color LCD', 'Power': '100-240V AC' }, price: 8950.00, imageUrl: '/images/products/multi-gas-anesthesia-monitor.jpg', categoryId: createdCategories['anesthesia-equipment'], sortOrder: 4 },
-    { name: 'Anesthesia Ventilator Bellows Assembly', slug: 'anesthesia-ventilator-bellows-assembly', description: 'OEM-compatible bellows assembly with housing for standard anesthesia machine ventilators. Clear visibility for easy inspection.', features: ['Clear polysulfone housing', 'Standard OEM compatibility', 'Autoclavable', 'Easy-access latching', 'Complete seal kit included'], specifications: { 'Compatibility': 'Universal', 'Volume': '1600 mL max', 'Material': 'Polysulfone', 'Sterilization': 'Autoclave 134°C' }, price: 425.00, imageUrl: '/images/products/anesthesia-ventilator-bellows-assembly.jpg', categoryId: createdCategories['anesthesia-equipment'], sortOrder: 5 },
-
-    // ── Infusion Pumps ──
-    { name: 'Large Volume IV Infusion Pump', slug: 'large-volume-iv-infusion-pump', description: 'Volumetric infusion pump with drug library, dose error reduction software, and wireless connectivity for hospital use.', features: ['Integrated drug library', 'DERS dose error reduction', 'Wireless network connectivity', 'Bar-code scanning', 'Pole-mount compatible'], specifications: { 'Flow Rate Range': '0.1-999.9 mL/hr', 'Accuracy': '±5%', 'Volume Limit': '0.1-9999.9 mL', 'Power': '100-240V AC / Battery' }, price: 3800.00, imageUrl: '/images/products/large-volume-iv-infusion-pump.jpg', categoryId: createdCategories['infusion-pumps'], sortOrder: 1 },
-    { name: 'Syringe Infusion Pump', slug: 'syringe-infusion-pump', description: 'Compact syringe pump supporting 10-60 mL syringes with bolus delivery, occlusion detection, and KVO mode.', features: ['Supports 10-60 mL syringes', 'Auto syringe recognition', 'KVO mode', 'Occlusion alarm', 'Compact stackable design'], specifications: { 'Flow Rate': '0.01-300 mL/hr', 'Syringe Sizes': '10-60 mL', 'Bolus Rate': 'Up to 600 mL/hr', 'Battery Life': '8 hours' }, price: 2200.00, imageUrl: '/images/products/syringe-infusion-pump.jpg', categoryId: createdCategories['infusion-pumps'], sortOrder: 2 },
-    { name: 'PCA Pump System', slug: 'pca-pump-system', description: 'Patient-controlled analgesia pump with lockout interval, clinician-set dose limits, and tamper-resistant drug module.', features: ['Patient-controlled bolus', 'Clinician lockout interval', 'Tamper-resistant drug cassette', 'Cumulative dose tracking', 'Demand log history'], specifications: { 'Demand Dose': '0.1-10 mL', 'Lockout Interval': '5-99 min', 'Max 4-Hour Limit': '0.1-99.9 mL', 'Display': 'Backlit LCD' }, price: 4100.00, imageUrl: '/images/products/pca-pump-system.jpg', categoryId: createdCategories['infusion-pumps'], sortOrder: 3 },
-    { name: 'Enteral Feeding Pump', slug: 'enteral-feeding-pump', description: 'Portable enteral nutrition pump with auto-flush, drip detection, and backpack compatibility for ambulatory patients.', features: ['Auto-flush mode', 'Drip sensor detection', 'Backpack/pole mount', 'Customizable feeding schedules', '24-hr continuous or cyclic'], specifications: { 'Flow Rate': '1-300 mL/hr', 'Bolus Rate': 'Up to 600 mL/hr', 'Battery Life': '12 hours', 'Weight': '1.1 lbs' }, price: 1650.00, imageUrl: '/images/products/enteral-feeding-pump.jpg', categoryId: createdCategories['infusion-pumps'], sortOrder: 4 },
-    { name: 'Ambulatory Infusion Pump', slug: 'ambulatory-infusion-pump', description: 'Lightweight wearable infusion pump for chemotherapy and antibiotic therapy. Disposable reservoir, simple programming.', features: ['Wearable lightweight design', 'Disposable drug reservoir', 'Accurate micro-dose delivery', 'Programmable schedules', 'Low-profile clip'], specifications: { 'Flow Rate': '0.5-25 mL/hr', 'Reservoir Size': '50-100 mL', 'Accuracy': '±6%', 'Weight': '5 oz' }, price: 980.00, imageUrl: '/images/products/ambulatory-infusion-pump.jpg', categoryId: createdCategories['infusion-pumps'], sortOrder: 5 },
-
-    // ── Defibrillators ──
-    { name: 'Automated External Defibrillator', slug: 'automated-external-defibrillator', description: 'Public-access AED with voice/visual prompts, CPR coaching, and real-time feedback. IP55 water-resistant housing.', features: ['Step-by-step voice guidance', 'CPR rate feedback', 'IP55 water resistant', 'Pediatric mode', 'Self-test diagnostics'], specifications: { 'Energy': '150J biphasic', 'ECG Analysis': 'Automatic', 'Battery Life': '4 years standby / 200 shocks', 'Weight': '3.3 lbs' }, price: 1499.00, imageUrl: '/images/products/automated-external-defibrillator.jpg', categoryId: createdCategories['defibrillators'], sortOrder: 1 },
-    { name: 'Manual External Defibrillator Monitor', slug: 'manual-external-defibrillator-monitor', description: 'Professional manual defibrillator with 12-lead ECG, SpO2, NIBP, and synchronized cardioversion for clinical settings.', features: ['12-lead ECG monitoring', 'Manual and AED modes', 'Sync cardioversion', 'SpO2 and NIBP built-in', 'Pacing capability'], specifications: { 'Energy Output': '2-360J biphasic', 'Display': '8.4" color', 'Charge Time': '<7 sec at 200J', 'Battery': 'Li-ion, 3 hrs continuous' }, price: 12500.00, imageUrl: '/images/products/manual-external-defibrillator-monitor.jpg', categoryId: createdCategories['defibrillators'], sortOrder: 2 },
-    { name: 'AED Electrode Pads Kit', slug: 'aed-electrode-pads-kit', description: 'Genuine replacement electrode pads compatible with major AED brands. Adult/pediatric pads, pre-connected, single-use.', features: ['Single-patient use', 'Pre-gelled electrodes', 'Adult and pediatric options', 'Long shelf life (2 years)', 'CPSC certified connector'], specifications: { 'Compatibility': 'Multi-brand', 'Expiry': '2 years', 'Packaging': 'Sterile sealed', 'Type': 'Adult biphasic' }, price: 89.99, imageUrl: '/images/products/aed-electrode-pads-kit.jpg', categoryId: createdCategories['defibrillators'], sortOrder: 3 },
-    { name: 'AED Training Unit', slug: 'aed-training-unit', description: 'Non-shocking AED trainer that simulates real device operation for CPR and AED training programs.', features: ['Non-shocking simulation', 'Full voice prompt sequence', 'Multiple scenario modes', 'Remote-control operation', 'Training electrode pads included'], specifications: { 'Scenarios': '3 programmable', 'Remote': 'Wireless instructor remote', 'Languages': 'English/Spanish', 'Battery': '4x AA' }, price: 349.00, imageUrl: '/images/products/aed-training-unit.jpg', categoryId: createdCategories['defibrillators'], sortOrder: 4 },
-    { name: 'Defibrillator Wall Cabinet', slug: 'defibrillator-wall-cabinet', description: 'Alarmed wall-mount AED cabinet with break-glass door, location sign, and optional strobe alarm for public spaces.', features: ['Break-glass alarmed door', 'Audible and visual alarm', 'Universal AED fit', 'Outdoor rated IP54', 'Includes location signage'], specifications: { 'Alarm': '95 dB siren', 'Dimensions': '14" x 11" x 4"', 'Material': 'ABS plastic', 'Rating': 'IP54 outdoor' }, price: 129.99, imageUrl: '/images/products/defibrillator-wall-cabinet.jpg', categoryId: createdCategories['defibrillators'], sortOrder: 5 },
-
-    // ── Patient Monitoring ──
-    { name: 'Multi-Parameter Bedside Monitor', slug: 'multi-parameter-bedside-monitor', description: 'Hospital-grade bedside monitor displaying ECG, SpO2, NIBP, temperature, and respiration on a 15" touchscreen.', features: ['15" color touchscreen', 'ECG, SpO2, NIBP, Temp, RR', 'Network connectivity (HL7)', 'Configurable alarms', '72-hour waveform storage'], specifications: { 'Display': '15" TFT touchscreen', 'Parameters': 'ECG, SpO2, NIBP, Temp, RR', 'Battery': '4-hour backup', 'Connectivity': 'Ethernet/Wi-Fi' }, price: 4800.00, imageUrl: '/images/products/multi-parameter-bedside-monitor.jpg', categoryId: createdCategories['patient-monitoring'], sortOrder: 1 },
-    { name: 'Wireless Telemetry System', slug: 'wireless-telemetry-system', description: 'Wearable 5-lead ECG telemetry transmitter with central station receiver for continuous ambulatory monitoring.', features: ['5-lead ECG telemetry', '1400 ft wireless range', 'Arrhythmia detection', 'Central station display', 'Patient-wearable transmitter'], specifications: { 'Frequency': 'WMTS 608-614 MHz', 'Range': '1400 ft', 'Battery Life': '48 hours', 'Channels': 'Up to 48 patients' }, price: 6200.00, imageUrl: '/images/products/wireless-telemetry-system.jpg', categoryId: createdCategories['patient-monitoring'], sortOrder: 2 },
-    { name: 'Capnography Monitor', slug: 'capnography-monitor', description: 'Mainstream and sidestream capnography module displaying EtCO2 waveform and numeric values for ventilated and spontaneously breathing patients.', features: ['Mainstream and sidestream modes', 'EtCO2 and FiCO2 display', 'Apnea alarm', 'Waveform trending', 'Adult and pediatric airway adapters'], specifications: { 'EtCO2 Range': '0-150 mmHg', 'Accuracy': '±2 mmHg', 'Response Time': '<3 seconds (sidestream)', 'Display': '5" color LCD' }, price: 2950.00, imageUrl: '/images/products/capnography-monitor.jpg', categoryId: createdCategories['patient-monitoring'], sortOrder: 3 },
-    { name: 'Fetal Heart Rate Monitor', slug: 'fetal-heart-rate-monitor', description: 'Compact fetal doppler for clinic and home use, detecting fetal heart rate from 12 weeks gestation with LCD display.', features: ['Detects FHR from 12 weeks', 'LCD FHR display', 'Built-in speaker', 'Headphone jack', 'Waterproof transducer'], specifications: { 'Frequency': '2 MHz Doppler', 'Detection': 'From 12 weeks', 'FHR Range': '50-240 BPM', 'Battery': '1x 9V' }, price: 199.99, imageUrl: '/images/products/fetal-heart-rate-monitor.jpg', categoryId: createdCategories['patient-monitoring'], sortOrder: 4 },
-    { name: 'Transport Patient Monitor', slug: 'transport-patient-monitor', description: 'Rugged portable monitor for patient transport with 8" display, long battery life, and MRI-conditional version available.', features: ['8" sunlight-readable display', 'ECG, SpO2, NIBP, Temp', '6-hour battery life', 'Drop-tested construction', 'MRI-conditional version'], specifications: { 'Display': '8" color', 'Parameters': 'ECG, SpO2, NIBP, Temp', 'Battery': '6 hours', 'Weight': '4.2 lbs' }, price: 5600.00, imageUrl: '/images/products/transport-patient-monitor.jpg', categoryId: createdCategories['patient-monitoring'], sortOrder: 5 },
-
-    // ── Sterilization ──
-    { name: 'Tabletop Steam Autoclave', slug: 'tabletop-steam-autoclave', description: 'Class B tabletop autoclave with vacuum cycle, printer, and USB data logging for sterilizing wrapped and hollow instruments.', features: ['Class B vacuum cycle', 'Built-in thermal printer', 'USB data logging', 'Pre-vacuum and post-vacuum', 'Safety door lock'], specifications: { 'Chamber Volume': '22 liters', 'Temperature': '121°C / 134°C', 'Cycle Time': '20-45 min', 'Power': '2200W / 120V' }, price: 5800.00, imageUrl: '/images/products/tabletop-steam-autoclave.jpg', categoryId: createdCategories['sterilization'], sortOrder: 1 },
-    { name: 'Ultrasonic Cleaner', slug: 'ultrasonic-cleaner', description: 'Professional ultrasonic cleaner for pre-cleaning surgical instruments before sterilization. Heated tank with timer and degas mode.', features: ['Ultrasonic cleaning 40kHz', 'Heated tank 30-80°C', 'Degas mode', 'Digital timer 1-30 min', 'Stainless steel tank'], specifications: { 'Tank Volume': '6 liters', 'Frequency': '40 kHz', 'Temperature': '20-80°C', 'Timer': '1-30 minutes' }, price: 890.00, imageUrl: '/images/products/ultrasonic-cleaner.jpg', categoryId: createdCategories['sterilization'], sortOrder: 2 },
-    { name: 'Low-Temperature Plasma Sterilizer', slug: 'low-temperature-plasma-sterilizer', description: 'Hydrogen peroxide plasma sterilizer for heat-sensitive instruments including endoscopes, cameras, and power tools.', features: ['Low-temp H2O2 plasma', 'Safe for heat-sensitive devices', '28-75 min cycle time', 'Dry sterilization process', 'Cassette-based H2O2 system'], specifications: { 'Chamber Size': '100 liters', 'Temperature': '40-55°C', 'Cycle Time': '28-75 min', 'Compatible Lumens': 'Single channel ≥1mm' }, price: 42000.00, imageUrl: '/images/products/low-temperature-plasma-sterilizer.jpg', categoryId: createdCategories['sterilization'], sortOrder: 3 },
-    { name: 'Endoscope Reprocessor', slug: 'endoscope-reprocessor', description: 'Automated endoscope reprocessor (AER) with leak test, enzymatic wash, high-level disinfection, and alcohol purge cycles.', features: ['Automated 5-stage process', 'Leak test included', 'High-level disinfection', 'Alcohol purge and drying', 'Cycle documentation printout'], specifications: { 'Compatible Scopes': 'Flexible endoscopes', 'Cycle Time': '26 minutes', 'Disinfectant': 'OPA or glutaraldehyde', 'Capacity': 'Up to 4 channels' }, price: 18500.00, imageUrl: '/images/products/endoscope-reprocessor.jpg', categoryId: createdCategories['sterilization'], sortOrder: 4 },
-    { name: 'Sterilization Indicator Test Strips', slug: 'sterilization-indicator-test-strips', description: 'Class 5 integrating chemical indicators for steam and EO sterilization validation. Box of 100 strips.', features: ['Class 5 integrating indicator', 'Steam and EO compatible', 'Pass/Fail color change', '100 strips per box', 'Lot-traceability markings'], specifications: { 'Class': 'ISO 11140 Class 5', 'Type': 'Integrating indicator', 'Quantity': '100/box', 'Compatibility': 'Steam 121°C/134°C' }, price: 34.99, imageUrl: '/images/products/sterilization-indicator-test-strips.jpg', categoryId: createdCategories['sterilization'], sortOrder: 5 },
-
-    // ── Endoscopy ──
-    { name: 'Video Endoscopy Tower', slug: 'video-endoscopy-tower', description: 'Complete HD video endoscopy tower with processor, light source, 27" monitor, and recording capability for GI and pulmonary procedures.', features: ['Full HD 1080p processor', '300W xenon light source', '27" clinical-grade display', 'USB video recording', 'Compatible with flexible scopes'], specifications: { 'Resolution': '1920x1080p', 'Light Source': '300W Xenon', 'Monitor': '27" HD LCD', 'Recording': 'USB/SD card' }, price: 32000.00, imageUrl: '/images/products/video-endoscopy-tower.jpg', categoryId: createdCategories['endoscopy'], sortOrder: 1 },
-    { name: 'Flexible Bronchoscope', slug: 'flexible-bronchoscope', description: 'Reusable flexible video bronchoscope with 5.0mm insertion tube, 2.0mm working channel, and 180° tip deflection.', features: ['5.0mm insertion tube diameter', '2.0mm working channel', '180° tip deflection up/down', 'HD CMOS image sensor', 'Autoclave-compatible handle'], specifications: { 'Insertion Tube OD': '5.0 mm', 'Working Channel': '2.0 mm', 'Tip Deflection': '180° up / 130° down', 'Length': '600 mm' }, price: 14500.00, imageUrl: '/images/products/flexible-bronchoscope.jpg', categoryId: createdCategories['endoscopy'], sortOrder: 2 },
-    { name: 'Endoscopic Light Source', slug: 'endoscopic-light-source', description: '300W xenon endoscopic light source with automatic brightness control and fiber optic cable output for clear visualization.', features: ['300W xenon lamp', 'Automatic brightness adjustment', 'Fiber optic output 4.8mm', 'Lamp hours counter', 'Universal scope compatibility'], specifications: { 'Lamp Power': '300W xenon', 'Lamp Life': '500 hours', 'Output': 'Fiber optic 4.8mm', 'Color Temp': '5600K' }, price: 4200.00, imageUrl: '/images/products/endoscopic-light-source.jpg', categoryId: createdCategories['endoscopy'], sortOrder: 3 },
-    { name: 'Endoscopic Insufflator', slug: 'endoscopic-insufflator', description: 'CO2 insufflator with high-flow capability for laparoscopic and endoscopic procedures. Touchscreen control and pressure limiting.', features: ['High-flow up to 30 L/min', 'Pressure limiting alarm', 'Touchscreen interface', 'CO2 consumption display', 'Compact portable design'], specifications: { 'Max Flow': '30 L/min', 'Max Pressure': '30 mmHg', 'Gas': 'CO2', 'Display': '5" touchscreen' }, price: 5900.00, imageUrl: '/images/products/endoscopic-insufflator.jpg', categoryId: createdCategories['endoscopy'], sortOrder: 4 },
-    { name: 'Endoscope Irrigation Pump', slug: 'endoscope-irrigation-pump', description: 'Peristaltic irrigation pump for continuous or pulsed saline irrigation during endoscopic procedures with foot pedal control.', features: ['Continuous and pulsed modes', 'Foot pedal control', 'Adjustable flow rate', 'Autoclavable pump head', 'Universal tube set compatibility'], specifications: { 'Flow Rate': '0-800 mL/min', 'Modes': 'Continuous / Pulsed', 'Control': 'Foot pedal + panel', 'Tubing': 'Universal fit' }, price: 2100.00, imageUrl: '/images/products/endoscope-irrigation-pump.jpg', categoryId: createdCategories['endoscopy'], sortOrder: 5 },
-
-    // ── Surgical Equipment ──
-    { name: 'Electrosurgical Generator', slug: 'electrosurgical-generator', description: 'Advanced ESU with monopolar and bipolar modes, argon beam capability, and tissue-sensing technology for precise cutting and coagulation.', features: ['Monopolar and bipolar modes', 'Argon beam coagulation', 'Tissue-sensing auto-adjust', 'Footswitch and hand control', 'Digital power display'], specifications: { 'Output Power': 'Up to 400W monopolar', 'Modes': 'Cut, Coag, Blend', 'Frequency': '350-500 kHz', 'Display': 'Digital LED' }, price: 8500.00, imageUrl: '/images/products/electrosurgical-generator.jpg', categoryId: createdCategories['surgical-equipment'], sortOrder: 1 },
-    { name: 'Surgical LED Ceiling Light', slug: 'surgical-led-ceiling-light', description: 'Ceiling-mounted surgical LED light with 160,000 lux intensity, shadowless optics, and color temperature adjustment.', features: ['160,000 lux intensity', 'Shadowless LED optics', 'Color temp 3500-5000K', 'Sterile handle included', 'Camera-ready mount'], specifications: { 'Illuminance': '160,000 lux', 'Color Temp': '3500-5000K', 'LED Life': '50,000 hours', 'Arm Reach': '900mm' }, price: 14200.00, imageUrl: '/images/products/surgical-led-ceiling-light.jpg', categoryId: createdCategories['surgical-equipment'], sortOrder: 2 },
-    { name: 'Pneumatic Tourniquet System', slug: 'pneumatic-tourniquet-system', description: 'Dual-port pneumatic tourniquet with automatic pressure regulation, elapsed time display, and audible alarms.', features: ['Dual port simultaneous use', 'Auto pressure regulation', 'Elapsed time display', 'Audible and visual alarms', 'Includes 3 cuff sizes'], specifications: { 'Pressure Range': '0-500 mmHg', 'Accuracy': '±5 mmHg', 'Ports': '2 independent', 'Display': 'Digital LED' }, price: 4600.00, imageUrl: '/images/products/pneumatic-tourniquet-system.jpg', categoryId: createdCategories['surgical-equipment'], sortOrder: 3 },
-    { name: 'Forced-Air Patient Warming System', slug: 'forced-air-patient-warming-system', description: 'Forced-air warming unit with disposable blankets for preventing perioperative hypothermia. Three temperature settings.', features: ['3 temperature settings', 'Compatible with disposable blankets', 'Quiet blower motor', 'Filter change indicator', 'Pole or IV stand mount'], specifications: { 'Temperature Settings': 'Low 38°C / Med 43°C / High 46°C', 'Airflow': 'Adjustable', 'Filter': 'HEPA replaceable', 'Power': '120V / 60Hz' }, price: 1850.00, imageUrl: '/images/products/forced-air-patient-warming-system.jpg', categoryId: createdCategories['surgical-equipment'], sortOrder: 4 },
-    { name: 'Surgical Smoke Evacuator', slug: 'surgical-smoke-evacuator', description: 'High-filtration smoke evacuator removing 99.9999% of surgical plume at source with activated carbon and ULPA filter.', features: ['99.9999% ULPA filtration', 'Activated carbon odor control', 'Ultra-quiet operation', 'Inline tubing pencil-style', 'Filter saturation alarm'], specifications: { 'Filtration': 'ULPA + Carbon', 'Efficiency': '99.9999% at 0.1 micron', 'Noise Level': '<50 dB', 'Tubing Length': '10 feet' }, price: 2400.00, imageUrl: '/images/products/surgical-smoke-evacuator.jpg', categoryId: createdCategories['surgical-equipment'], sortOrder: 5 },
-
-    // ── Beds & Furniture ──
-    { name: 'Full-Electric Hospital Bed', slug: 'full-electric-hospital-bed', description: 'Full-electric med/surg bed with Trendelenburg, reverse Trendelenburg, and all-electric height adjustment. 500 lb capacity.', features: ['All-electric controls', 'Trendelenburg / Reverse positions', '4-section spring deck', 'Auto-contour positioning', 'Built-in scale option'], specifications: { 'Weight Capacity': '500 lbs', 'Height Range': '13-30 inches', 'Mattress Size': '36" x 80"', 'Power': '120V/60Hz' }, price: 4200.00, imageUrl: '/images/products/full-electric-hospital-bed.jpg', categoryId: createdCategories['beds-furniture'], sortOrder: 1 },
-    { name: 'Power-Adjustable Exam Table', slug: 'power-adjustable-exam-table', description: 'Electric height-adjustable exam table with backrest tilt, drawer storage, and seamless upholstery for clinical exams.', features: ['Electric height adjustment', 'Backrest tilt 0-80°', 'Two pull-out drawers', 'Seamless easy-clean upholstery', 'Footrest extension'], specifications: { 'Height Range': '18-37 inches', 'Weight Capacity': '400 lbs', 'Table Length': '72 inches', 'Power': '120V AC' }, price: 2800.00, imageUrl: '/images/products/power-adjustable-exam-table.jpg', categoryId: createdCategories['beds-furniture'], sortOrder: 2 },
-    { name: 'Emergency Transport Stretcher', slug: 'emergency-transport-stretcher', description: 'Aluminum-frame emergency stretcher with X-frame folding, adjustable backrest, and EMS-standard locking system.', features: ['X-frame aluminum construction', 'Backrest 0-75° adjustment', 'IV pole mount slot', 'Side rails with quick-release', 'EMS standard connector'], specifications: { 'Weight Capacity': '700 lbs', 'Length': '76 inches', 'Height': '25-34 inches', 'Weight': '62 lbs' }, price: 1950.00, imageUrl: '/images/products/emergency-transport-stretcher.jpg', categoryId: createdCategories['beds-furniture'], sortOrder: 3 },
-    { name: 'Medical Supply Cart', slug: 'medical-supply-cart', description: 'Stainless steel medical supply cart with 5 locking drawers, push handle, and 4-inch swivel casters for OR and procedure rooms.', features: ['5 locking drawers', 'Stainless steel construction', 'Push handle', '4" swivel/brake casters', 'Break-away lock bar'], specifications: { 'Dimensions': '23" W x 17" D x 37" H', 'Material': 'Stainless steel', 'Drawers': '5 lockable', 'Weight Capacity': '200 lbs' }, price: 1100.00, imageUrl: '/images/products/medical-supply-cart.jpg', categoryId: createdCategories['beds-furniture'], sortOrder: 4 },
-    { name: 'Power Recliner Patient Chair', slug: 'power-recliner-patient-chair', description: 'Clinical-grade power recliner with Trendelenburg tilt, removable armrests, and IV pole socket for infusion and dialysis.', features: ['Power Trendelenburg tilt', 'Removable padded armrests', 'IV pole socket', 'Waterproof upholstery', 'Locking swivel casters'], specifications: { 'Weight Capacity': '400 lbs', 'Recline': '10° Trendelenburg', 'Upholstery': 'Vinyl antimicrobial', 'Power': '120V AC' }, price: 2600.00, imageUrl: '/images/products/power-recliner-patient-chair.jpg', categoryId: createdCategories['beds-furniture'], sortOrder: 5 },
-
-    // ── Dental Equipment ──
-    { name: 'Dental Operatory Chair', slug: 'dental-operatory-chair', description: 'Electric dental patient chair with programmable positions, articulating headrest, and integrated delivery system connections.', features: ['Programmable memory positions', 'Articulating headrest', 'Easy-access base', 'Integrated utility connections', 'Seamless cleanable upholstery'], specifications: { 'Weight Capacity': '350 lbs', 'Chair Height': '16-30 inches', 'Backrest': 'Fully reclining', 'Power': '120V/60Hz' }, price: 6800.00, imageUrl: '/images/products/dental-operatory-chair.jpg', categoryId: createdCategories['dental-equipment'], sortOrder: 1 },
-    { name: 'Dental Air Compressor', slug: 'dental-air-compressor', description: 'Oil-free dental air compressor with dual-head pump, integrated dryer, and filtration for clean dry air delivery.', features: ['Oil-free dual-head pump', 'Integrated air dryer', 'Coalescing filtration', 'Auto start/stop', 'NEMA 5-20P plug'], specifications: { 'Output': '2.5 CFM at 80 PSI', 'Tank': '10 gallons', 'Noise Level': '58 dB', 'Power': '120V / 15A' }, price: 2400.00, imageUrl: '/images/products/dental-air-compressor.jpg', categoryId: createdCategories['dental-equipment'], sortOrder: 2 },
-    { name: 'Intraoral X-Ray Sensor', slug: 'intraoral-x-ray-sensor', description: 'Digital intraoral X-ray sensor with USB connection, instant image display, and low-dose high-resolution imaging.', features: ['USB direct connection', 'Instant 0.1 sec imaging', 'Low radiation dose', '20 lp/mm resolution', 'Compatible with major software'], specifications: { 'Sensor Size': 'Size 1 and 2', 'Resolution': '20 lp/mm', 'Interface': 'USB 2.0', 'Active Area': '24 x 36 mm (size 2)' }, price: 3500.00, imageUrl: '/images/products/intraoral-x-ray-sensor.jpg', categoryId: createdCategories['dental-equipment'], sortOrder: 3 },
-    { name: 'Dental Autoclave Sterilizer', slug: 'dental-autoclave-sterilizer', description: 'Class B dental autoclave with vacuum cycle, drying phase, printer, and USB data logging for wrapped instrument sterilization.', features: ['Class B vacuum sterilization', 'Built-in drying cycle', 'Integrated thermal printer', 'USB data logger', 'Small footprint 23L'], specifications: { 'Chamber': '23 liters', 'Cycle Temp': '121°C or 134°C', 'Cycle Time': '25-45 min', 'Power': '2000W / 120V' }, price: 4100.00, imageUrl: '/images/products/dental-autoclave-sterilizer.jpg', categoryId: createdCategories['dental-equipment'], sortOrder: 4 },
-    { name: 'LED Dental Curing Light', slug: 'led-dental-curing-light', description: 'Cordless LED curing light with 1500 mW/cm² output, multiple curing modes, and rechargeable lithium battery.', features: ['1500 mW/cm² intensity', 'Ramp / Pulse / Standard modes', 'Rechargeable Li-ion battery', 'Built-in radiometer', '10-second fast cure'], specifications: { 'Intensity': '1500 mW/cm²', 'Wavelength': '380-500 nm', 'Battery Life': '200+ cures per charge', 'Weight': '4.5 oz' }, price: 380.00, imageUrl: '/images/products/led-dental-curing-light.jpg', categoryId: createdCategories['dental-equipment'], sortOrder: 5 },
-
-    // ── Nurse Call Systems ──
-    { name: 'Master Nurse Call Console', slug: 'master-nurse-call-console', description: 'Central nurse call console with color-coded patient room annunciation, priority queuing, and intercom for up to 64 stations.', features: ['Up to 64 patient stations', 'Color priority display', 'Two-way intercom', 'Call history logging', 'Expandable modular design'], specifications: { 'Stations': 'Up to 64', 'Intercom': 'Full-duplex', 'Display': '10" color LCD', 'Connectivity': 'Cat5e network' }, price: 3800.00, imageUrl: '/images/products/master-nurse-call-console.jpg', categoryId: createdCategories['nurse-call-systems'], sortOrder: 1 },
-    { name: 'Pillow Speaker Patient Control', slug: 'pillow-speaker-patient-control', description: 'Bedside pillow speaker with call button, nurse audio intercom, TV volume control, and bed adjustment integration.', features: ['Nurse call button', 'Two-way intercom', 'TV channel/volume control', 'Bed control integration', '8-pin standard connector'], specifications: { 'Connector': '8-pin standard', 'Controls': 'Call, TV, Bed, Nurse', 'Cable Length': '8 feet', 'Compatibility': 'Universal systems' }, price: 89.99, imageUrl: '/images/products/pillow-speaker-patient-control.jpg', categoryId: createdCategories['nurse-call-systems'], sortOrder: 2 },
-    { name: 'Wireless Call Pendant', slug: 'wireless-call-pendant', description: 'Waterproof wireless pendant for bathroom and shower call, paired with corridor dome light and staff assignment panel.', features: ['Waterproof IP67 rated', 'Single-button activation', 'Pairs with dome light', '900 ft wireless range', 'Low-battery indicator'], specifications: { 'Rating': 'IP67 waterproof', 'Range': '900 ft', 'Battery': '1 year CR2032', 'Activation': 'Single large button' }, price: 149.99, imageUrl: '/images/products/wireless-call-pendant.jpg', categoryId: createdCategories['nurse-call-systems'], sortOrder: 3 },
-    { name: 'Patient Station Panel', slug: 'patient-station-panel', description: 'In-room patient station panel with call cord jack, staff presence button, and code blue activation for hospital rooms.', features: ['Call cord jack (1/4" plug)', 'Staff presence indicator', 'Code blue button', 'LED status lights', 'Flush wall-mount design'], specifications: { 'Jack Type': '1/4" mono call cord', 'Buttons': 'Call, Staff, Code Blue', 'Voltage': '24V DC', 'Mounting': 'Flush wall plate' }, price: 229.99, imageUrl: '/images/products/patient-station-panel.jpg', categoryId: createdCategories['nurse-call-systems'], sortOrder: 4 },
-    { name: 'Nurse Call Dome Light', slug: 'nurse-call-dome-light', description: 'Corridor dome light with multi-color LED zones for patient, staff, and emergency call indication above patient room doors.', features: ['3-zone color LED', 'Normal, Staff, Emergency display', 'Audible buzzer option', 'Surface or recessed mount', 'Long LED life 50,000 hrs'], specifications: { 'Colors': 'White, Green, Red zones', 'Mounting': 'Surface or recessed', 'LED Life': '50,000 hours', 'Voltage': '24V DC' }, price: 119.99, imageUrl: '/images/products/nurse-call-dome-light.jpg', categoryId: createdCategories['nurse-call-systems'], sortOrder: 5 },
-
-    // ── Consumables & Disposables ──
-    { name: 'Pre-Gelled ECG Electrode Pack', slug: 'pre-gelled-ecg-electrode-pack', description: 'Foam pre-gelled snap-type ECG electrodes for adult monitoring. Excellent adhesion and low noise. Box of 100.', features: ['Foam backing', 'Pre-applied hydrogel', 'Snap connector', 'Radiolucent', 'Box of 100'], specifications: { 'Type': 'Snap electrode', 'Size': '45mm diameter', 'Quantity': '100/box', 'Shelf Life': '2 years' }, price: 18.99, imageUrl: '/images/products/pre-gelled-ecg-electrode-pack.jpg', categoryId: createdCategories['consumables-disposables'], sortOrder: 1 },
-    { name: 'Sterile Catheterization Kit', slug: 'sterile-catheterization-kit', description: 'Complete sterile urinary catheterization kit with 14Fr Foley catheter, collection bag, drape, syringe, and supplies.', features: ['Complete sterile kit', '14Fr 2-way Foley catheter', '2000 mL drainage bag', 'Sterile drape included', 'Single-patient use'], specifications: { 'Catheter Size': '14Fr', 'Bag Capacity': '2000 mL', 'Sterility': 'EO sterilized', 'Balloon': '10 mL' }, price: 12.99, imageUrl: '/images/products/sterile-catheterization-kit.jpg', categoryId: createdCategories['consumables-disposables'], sortOrder: 2 },
-    { name: 'Disposable Syringe Set', slug: 'disposable-syringe-set', description: 'Luer-lock sterile disposable syringes, 5 mL with 21G x 1.5" needles. Box of 100, individually wrapped.', features: ['Luer-lock tip', 'Latex-free plunger', 'Clear barrel markings', '21G x 1.5" needle', 'Box of 100'], specifications: { 'Volume': '5 mL', 'Needle': '21G x 1.5"', 'Quantity': '100/box', 'Sterility': 'EO sterilized' }, price: 24.99, imageUrl: '/images/products/disposable-syringe-set.jpg', categoryId: createdCategories['consumables-disposables'], sortOrder: 3 },
-    { name: 'Thermal Printer Paper Roll', slug: 'thermal-printer-paper-roll', description: 'Medical-grade thermal recording paper for patient monitors, ECG machines, and defibrillators. Pack of 10 rolls.', features: ['Medical-grade thermal coating', 'High-resolution printing', 'Grid or blank options', 'Compatible with major monitors', 'Pack of 10 rolls'], specifications: { 'Width': '50mm', 'Length': '30m per roll', 'Quantity': '10 rolls/pack', 'Sensitivity': 'High resolution' }, price: 29.99, imageUrl: '/images/products/thermal-printer-paper-roll.jpg', categoryId: createdCategories['consumables-disposables'], sortOrder: 4 },
-    { name: 'Isolation Gown Bundle', slug: 'isolation-gown-bundle', description: 'AAMI Level 3 disposable isolation gowns with knit cuffs and full-back coverage for procedural protection. Case of 50.', features: ['AAMI Level 3 fluid barrier', 'Knit cuff wrists', 'Full back coverage', 'Ties at neck and waist', 'Case of 50'], specifications: { 'Protection Level': 'AAMI Level 3', 'Material': 'SMS 35gsm', 'Quantity': '50/case', 'Size': 'Universal XL' }, price: 64.99, imageUrl: '/images/products/isolation-gown-bundle.jpg', categoryId: createdCategories['consumables-disposables'], sortOrder: 5 },
-
-    // ── Cables & Sensors ──
-    { name: 'Reusable Adult SpO2 Finger Sensor', slug: 'reusable-adult-spo2-finger-sensor', description: 'Reusable clip-style adult SpO2 sensor compatible with Nellcor OxiMax and Masimo monitors via adapter cable.', features: ['Clip-style fingertip sensor', 'Nellcor/Masimo compatible', 'Durable reusable cable', '9-pin connector', 'Adult size'], specifications: { 'Compatibility': 'Nellcor OxiMax', 'Connector': '9-pin', 'Cable Length': '3 feet', 'Patient Type': 'Adult' }, price: 49.99, imageUrl: '/images/products/reusable-adult-spo2-finger-sensor.jpg', categoryId: createdCategories['cables-sensors'], sortOrder: 1 },
-    { name: '5-Lead ECG Cable Set', slug: '5-lead-ecg-cable-set', description: 'Hospital-grade 5-lead ECG trunk cable with snap leadwires compatible with GE, Philips, and Mindray patient monitors.', features: ['5-lead trunk + 5 leadwires', 'Snap electrode connectors', 'Shielded low-noise cable', 'Labeled RA/LA/RL/LL/V', 'Multi-brand compatible'], specifications: { 'Leads': '5-lead set', 'Connector': 'Multi-pin', 'Length': '3.6m trunk', 'Compatibility': 'GE, Philips, Mindray' }, price: 79.99, imageUrl: '/images/products/5-lead-ecg-cable-set.jpg', categoryId: createdCategories['cables-sensors'], sortOrder: 2 },
-    { name: 'Reusable Oral Temperature Probe', slug: 'reusable-oral-temperature-probe', description: 'Reusable oral temperature probe for Welch Allyn and compatible electronic thermometers with probe cover port.', features: ['Welch Allyn compatible', 'Stainless steel probe tip', 'Probe cover port', '4ft coiled cable', 'Autoclavable'], specifications: { 'Compatibility': 'Welch Allyn', 'Type': 'Oral/axillary', 'Cable': '4 ft coiled', 'Sterilization': 'Autoclavable' }, price: 94.99, imageUrl: '/images/products/reusable-oral-temperature-probe.jpg', categoryId: createdCategories['cables-sensors'], sortOrder: 3 },
-    { name: 'Reusable NIBP Cuff Set', slug: 'reusable-nibp-cuff-set', description: 'Complete set of 5 reusable NIBP cuffs (child through large adult) with latex-free bladder and standard two-tube connector.', features: ['Set of 5 sizes', 'Latex-free bladder', 'Two-tube connector', 'Hook-and-loop closure', 'Washable fabric'], specifications: { 'Sizes': 'Child, Small/Std/Large Adult, Thigh', 'Connector': 'Two-tube standard', 'Material': 'Nylon/latex-free', 'Quantity': '5 cuffs/set' }, price: 109.99, imageUrl: '/images/products/reusable-nibp-cuff-set.jpg', categoryId: createdCategories['cables-sensors'], sortOrder: 4 },
-    { name: 'IBP Transducer Cable', slug: 'ibp-transducer-cable', description: 'Invasive blood pressure transducer interface cable connecting disposable transducer to patient monitor IBP port.', features: ['Disposable transducer compatible', 'Standard IBP port connector', 'Shielded cable construction', '8-pin monitor connector', '12-foot length'], specifications: { 'Length': '12 feet', 'Connector A': '8-pin monitor plug', 'Connector B': 'Transducer port', 'Compatibility': 'Multi-brand' }, price: 64.99, imageUrl: '/images/products/ibp-transducer-cable.jpg', categoryId: createdCategories['cables-sensors'], sortOrder: 5 },
-  ];
-
-  for (const product of products) {
-    await prisma.product.create({ data: product });
-  }
-
-  console.log(`Seeded ${categories.length} categories and ${products.length} products.`);
+  console.log(`\nDone! Seeded 20 categories and ${totalProducts} products from FDA device database.`);
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
+  .catch(e => { console.error(e); process.exit(1); })
   .finally(() => prisma.$disconnect());
