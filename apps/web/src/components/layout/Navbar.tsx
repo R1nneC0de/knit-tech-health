@@ -42,18 +42,18 @@ export default function Navbar() {
             </Link>
           ))}
 
+          {/* Cart icon — always visible */}
+          <Link href={user ? '/cart' : '/login'} className="relative">
+            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-pink-500" />
+            {user && itemCount > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-pink-500 text-xs font-bold text-white">
+                {itemCount > 9 ? '9+' : itemCount}
+              </span>
+            )}
+          </Link>
+
           {user ? (
             <>
-              {/* Cart icon */}
-              <Link href="/cart" className="relative">
-                <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-pink-500" />
-                {itemCount > 0 && (
-                  <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-pink-500 text-xs font-bold text-white">
-                    {itemCount > 9 ? '9+' : itemCount}
-                  </span>
-                )}
-              </Link>
-
               {/* User menu */}
               <div className="relative">
                 <button
