@@ -94,6 +94,7 @@ export default function ProductDetailPage() {
         {/* Image */}
         <div className="overflow-hidden rounded-xl border border-gray-100">
           <ProductImage
+            src={product.imageUrl}
             slug={product.slug}
             name={product.name}
             className="aspect-square h-full w-full object-cover"

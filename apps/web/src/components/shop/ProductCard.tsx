@@ -10,6 +10,7 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
         <ProductImage
+          src={product.imageUrl}
           slug={product.slug}
           name={product.name}
           className="h-full w-full object-cover transition group-hover:scale-105"

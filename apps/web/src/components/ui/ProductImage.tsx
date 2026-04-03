@@ -4,15 +4,19 @@ import { useState } from 'react';
 import { Package } from 'lucide-react';
 
 export default function ProductImage({
+  src,
   slug,
   name,
   className = '',
 }: {
+  src?: string;
   slug: string;
   name: string;
   className?: string;
 }) {
   const [error, setError] = useState(false);
+
+  const imgSrc = src || `/images/products/${slug}.jpg`;
 
   if (error) {
     return (
@@ -29,7 +33,7 @@ export default function ProductImage({
 
   return (
     <img
-      src={`/images/products/${slug}.jpg`}
+      src={imgSrc}
       alt={name}
       className={className}
       onError={() => setError(true)}

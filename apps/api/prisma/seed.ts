@@ -10,6 +10,12 @@ interface FDADevice {
   product_code?: string;
 }
 
+// loremflickr.com returns real CC-licensed photos by keyword.
+// The "lock" param makes the URL deterministic (same lock = same photo).
+function flickrImg(keyword: string, lock: number, w = 600, h = 400): string {
+  return `https://loremflickr.com/${w}/${h}/${keyword}/all?lock=${lock}`;
+}
+
 interface CategoryConfig {
   name: string;
   slug: string;
@@ -19,6 +25,7 @@ interface CategoryConfig {
   fdaSearches: string[];
   priceRange: [number, number];
   featureTemplates: string[];
+  imgKeyword: string;
 }
 
 const CATEGORIES: CategoryConfig[] = [
@@ -30,6 +37,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 1,
     fdaSearches: ['wheelchair', 'walker', 'crutch'],
     priceRange: [50, 6000],
+    imgKeyword: 'wheelchair',
     featureTemplates: [
       'Lightweight and durable construction',
       'Adjustable to fit various patient sizes',
@@ -46,6 +54,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 2,
     fdaSearches: ['hospital bed', 'patient lift', 'stretcher'],
     priceRange: [200, 20000],
+    imgKeyword: 'hospital,bed',
     featureTemplates: [
       'Heavy-duty frame supports high weight capacity',
       'Height adjustable for caregiver ergonomics',
@@ -62,6 +71,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 3,
     fdaSearches: ['bath seat', 'shower chair', 'grab bar'],
     priceRange: [25, 600],
+    imgKeyword: 'bathroom,safety',
     featureTemplates: [
       'Slip-resistant surfaces for fall prevention',
       'Corrosion-resistant materials for wet environments',
@@ -78,6 +88,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 4,
     fdaSearches: ['nebulizer', 'ventilator', 'oxygen concentrator'],
     priceRange: [100, 10000],
+    imgKeyword: 'oxygen,medical',
     featureTemplates: [
       'Precise flow control for accurate therapy delivery',
       'Quiet operation minimizes patient disruption',
@@ -94,6 +105,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 5,
     fdaSearches: ['wound dressing', 'bandage', 'wound care'],
     priceRange: [15, 500],
+    imgKeyword: 'bandage,medical',
     featureTemplates: [
       'Sterile packaging for infection prevention',
       'Breathable materials promote healing',
@@ -110,6 +122,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 6,
     fdaSearches: ['surgical glove', 'face mask', 'protective gown'],
     priceRange: [10, 300],
+    imgKeyword: 'gloves,medical',
     featureTemplates: [
       'Fluid-resistant barrier protection',
       'Comfortable extended-wear design',
@@ -126,6 +139,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 7,
     fdaSearches: ['blood pressure monitor', 'stethoscope', 'thermometer'],
     priceRange: [30, 5000],
+    imgKeyword: 'stethoscope',
     featureTemplates: [
       'High accuracy for reliable clinical decisions',
       'Easy-to-read display for quick assessment',
@@ -142,6 +156,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 8,
     fdaSearches: ['orthotic', 'adaptive utensil', 'daily living aid'],
     priceRange: [10, 400],
+    imgKeyword: 'medical,elderly',
     featureTemplates: [
       'Ergonomic design reduces patient strain',
       'Lightweight for easy handling',
@@ -158,6 +173,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 9,
     fdaSearches: ['anesthesia', 'vaporizer anesthesia', 'breathing circuit'],
     priceRange: [500, 60000],
+    imgKeyword: 'anesthesia',
     featureTemplates: [
       'Precision engineering for safe gas delivery',
       'Integrated monitoring and alarm systems',
@@ -174,6 +190,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 10,
     fdaSearches: ['infusion pump', 'syringe pump', 'feeding pump'],
     priceRange: [400, 18000],
+    imgKeyword: 'infusion,pump',
     featureTemplates: [
       'Accurate flow rate control ±2% accuracy',
       'Integrated air-in-line and occlusion detection',
@@ -190,6 +207,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 11,
     fdaSearches: ['defibrillator'],
     priceRange: [1000, 30000],
+    imgKeyword: 'defibrillator',
     featureTemplates: [
       'Biphasic waveform technology for effective therapy',
       'AED mode for untrained rescuer use',
@@ -206,6 +224,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 12,
     fdaSearches: ['patient monitor', 'pulse oximeter', 'cardiac monitor'],
     priceRange: [500, 35000],
+    imgKeyword: 'hospital,monitor',
     featureTemplates: [
       'Multi-parameter simultaneous monitoring',
       'Wireless data transmission to central station',
@@ -222,6 +241,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 13,
     fdaSearches: ['sterilizer', 'autoclave', 'ultrasonic cleaner'],
     priceRange: [300, 25000],
+    imgKeyword: 'autoclave,sterilization',
     featureTemplates: [
       'Validated sterilization cycles per ISO standards',
       'Self-diagnostic system with error reporting',
@@ -238,6 +258,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 14,
     fdaSearches: ['endoscope', 'bronchoscope', 'colonoscope'],
     priceRange: [1000, 60000],
+    imgKeyword: 'endoscopy',
     featureTemplates: [
       'High-definition imaging for precise visualization',
       'Single-use options available for infection control',
@@ -254,6 +275,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 15,
     fdaSearches: ['electrosurgical', 'surgical instrument', 'retractor'],
     priceRange: [100, 40000],
+    imgKeyword: 'surgery,equipment',
     featureTemplates: [
       'Precision design for minimally invasive procedures',
       'Autoclavable components for full sterility',
@@ -270,6 +292,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 16,
     fdaSearches: ['examination table', 'medical cart', 'procedure chair'],
     priceRange: [300, 20000],
+    imgKeyword: 'hospital,furniture',
     featureTemplates: [
       'Full-electric adjustment for patient and caregiver comfort',
       'Side rails with integrated controls',
@@ -286,6 +309,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 17,
     fdaSearches: ['dental chair', 'dental drill', 'dental x-ray'],
     priceRange: [200, 20000],
+    imgKeyword: 'dental',
     featureTemplates: [
       'Smooth, quiet operation minimizes patient anxiety',
       'Ergonomic design for practitioner comfort',
@@ -302,6 +326,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 18,
     fdaSearches: ['nurse call', 'patient call system', 'call light'],
     priceRange: [100, 8000],
+    imgKeyword: 'nurse,hospital',
     featureTemplates: [
       'Two-way communication between patient and staff',
       'Centralized monitoring at nurse station',
@@ -318,6 +343,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 19,
     fdaSearches: ['electrode ecg', 'catheter urinary', 'syringe disposable'],
     priceRange: [10, 400],
+    imgKeyword: 'medical,supplies',
     featureTemplates: [
       'Sterile individually wrapped for clinical safety',
       'Single-use design prevents cross-contamination',
@@ -334,6 +360,7 @@ const CATEGORIES: CategoryConfig[] = [
     sortOrder: 20,
     fdaSearches: ['ecg electrode', 'pulse oximeter sensor', 'temperature probe'],
     priceRange: [20, 1500],
+    imgKeyword: 'medical,sensor',
     featureTemplates: [
       'High-signal fidelity for accurate monitoring',
       'Reinforced connector points for clinical durability',
@@ -470,7 +497,7 @@ async function main() {
             'Availability': 'In Stock',
           },
           price,
-          imageUrl: `/images/products/${slug}.jpg`,
+          imageUrl: flickrImg(config.imgKeyword, sortOrder),
           categoryId: category.id,
           sortOrder: sortOrder++,
         },
