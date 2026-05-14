@@ -3,7 +3,7 @@ packages:
   - 'packages/*'
 
 approvedBuilds:
-  - "@prisma/client"
-  - "@prisma/engines"
-  - esbuild
-  - prisma
+  - "@prisma/client@5.22.0"
+  - "@prisma/engines@5.22.0"
+  - "esbuild@0.27.4"
+  - "prisma@5.22.0"
