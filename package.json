@@ -1,6 +1,7 @@
 {
   "name": "knit-tech-health",
   "private": true,
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "dev:api": "pnpm --filter @kth/api dev",
     "dev:web": "pnpm --filter @kth/web dev",
