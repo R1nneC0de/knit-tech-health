@@ -21,13 +21,14 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
-            <div className="mb-4">
+            <div className="mb-4 inline-block rounded-xl bg-white px-3 py-2">
               <Image
                 src="/logo.jpeg"
                 alt="KTI Health"
-                width={110}
-                height={44}
-                className="object-contain brightness-0 invert"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="h-9 w-auto object-contain"
               />
             </div>
             <p className="text-sm leading-relaxed">

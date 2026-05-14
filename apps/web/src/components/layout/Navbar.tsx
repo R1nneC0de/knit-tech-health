@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/logo.jpeg" alt="KTI Health" width={120} height={48} className="object-contain" />
+          <Image src="/logo.jpeg" alt="KTI Health" width={0} height={0} sizes="100vw" className="h-10 w-auto" />
         </Link>
 
         {/* Desktop nav */}
