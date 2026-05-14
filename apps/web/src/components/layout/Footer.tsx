@@ -1,18 +1,17 @@
 import Link from 'next/link';
-import { Heart, Phone, Mail, MapPin } from 'lucide-react';
+import Image from 'next/image';
+import { Phone, Mail, MapPin } from 'lucide-react';
 
-const quickLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/shop-medical', label: 'Shop Equipment' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact' },
+const divisions = [
+  { href: '/shop-medical', label: 'Medical Equipment' },
+  { href: '/staffing', label: 'Healthcare Staffing' },
+  { href: '/it-solutions', label: 'IT Solutions' },
 ];
 
-const categories = [
-  { href: '/shop-medical?category=mobility', label: 'Mobility' },
-  { href: '/shop-medical?category=respiratory', label: 'Respiratory' },
-  { href: '/shop-medical?category=ppe', label: 'PPE' },
-  { href: '/shop-medical?category=diagnostic-equipment', label: 'Diagnostics' },
+const company = [
+  { href: '/about', label: 'About Us' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/shop-medical', label: 'Shop' },
 ];
 
 export default function Footer() {
@@ -20,27 +19,30 @@ export default function Footer() {
     <footer className="bg-brand-blue-900 text-gray-300">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Company */}
+          {/* Brand */}
           <div>
-            <div className="mb-4 flex items-center gap-2">
-              <Heart className="h-6 w-6 text-brand-pink-400" />
-              <span className="font-heading text-lg font-bold text-white">
-                Knit Tech Health
-              </span>
+            <div className="mb-4">
+              <Image
+                src="/logo.jpeg"
+                alt="KTI Health"
+                width={110}
+                height={44}
+                className="object-contain brightness-0 invert"
+              />
             </div>
             <p className="text-sm leading-relaxed">
-              Trusted medical equipment solutions for healthcare providers.
-              Quality products, expert support, competitive pricing.
+              Premium healthcare and technology solutions — medical equipment,
+              staffing, and IT services under one unified brand.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Divisions */}
           <div>
             <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-white">
-              Quick Links
+              Divisions
             </h3>
             <ul className="space-y-2">
-              {quickLinks.map((link) => (
+              {divisions.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -53,13 +55,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
+          {/* Company */}
           <div>
             <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-white">
-              Categories
+              Company
             </h3>
             <ul className="space-y-2">
-              {categories.map((link) => (
+              {company.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -84,7 +86,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-pink-400" />
-                info@knittechhealth.com
+                info@knittechinc.com
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-pink-400" />
@@ -101,8 +103,7 @@ export default function Footer() {
       <div className="border-t border-brand-blue-800">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} Knit Tech Health. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} KTI Health / KnitTechInc. All rights reserved.
           </p>
         </div>
       </div>

@@ -1,14 +1,14 @@
-import HeroSection from '@/components/home/HeroSection';
-import ValuePropositions from '@/components/home/ValuePropositions';
-import CategoryGrid from '@/components/home/CategoryGrid';
+import MultiDivisionHero from '@/components/home/MultiDivisionHero';
+import DivisionsSection from '@/components/home/DivisionsSection';
+import TrustBar from '@/components/home/TrustBar';
 import AboutPreview from '@/components/home/AboutPreview';
 
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
-      <ValuePropositions />
-      <CategoryGrid />
+      <MultiDivisionHero />
+      <DivisionsSection />
+      <TrustBar />
       <AboutPreview />
     </>
   );

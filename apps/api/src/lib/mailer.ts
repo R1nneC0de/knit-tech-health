@@ -20,7 +20,7 @@ export async function sendMail(options: {
   }
 
   return transporter.sendMail({
-    from: `"Knit Tech Health" <${process.env.SMTP_USER}>`,
+    from: `"KTI Health" <${process.env.SMTP_USER}>`,
     ...options,
   });
 }

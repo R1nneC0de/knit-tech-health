@@ -2,8 +2,8 @@ import { ShieldCheck, Headset, Heart } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us — Knit Tech Health',
-  description: 'Learn about our mission to provide trusted medical equipment solutions.',
+  title: 'About Us — KTI Health',
+  description: 'Learn about KTI Health\'s mission to deliver premium medical equipment, staffing, and IT solutions.',
 };
 
 const values = [
@@ -34,11 +34,11 @@ export default function AboutPage() {
       <section className="bg-gradient-to-br from-brand-blue-50 to-brand-pink-50 py-20">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <h1 className="font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl">
-            About Knit Tech Health
+            About KTI Health
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-brand-blue-600">
-            Connecting healthcare providers with the medical equipment they need
-            to deliver exceptional patient care.
+            A premier multi-division company delivering medical equipment,
+            healthcare staffing, and IT solutions under one trusted brand.
           </p>
         </div>
       </section>
@@ -50,16 +50,17 @@ export default function AboutPage() {
             Our Mission
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-gray-600">
-            At Knit Tech Health, we believe every healthcare provider deserves
-            easy access to high-quality medical equipment. We simplify the
-            procurement process — browse our catalog, submit a request, and our
-            team handles sourcing, pricing, and delivery so you can focus on what
-            matters most: patient care.
+            At KTI Health, we believe every healthcare organization deserves a
+            reliable partner across every dimension of their operations. Our
+            medical equipment division simplifies procurement — browse our
+            catalog, submit a request, and our team handles sourcing, pricing,
+            and delivery so you can focus on patient care.
           </p>
           <p className="mt-4 text-lg leading-relaxed text-gray-600">
-            We work with trusted manufacturers and distributors to offer a wide
-            range of medical supplies — from mobility aids and respiratory
-            equipment to diagnostics and personal protective equipment.
+            Beyond equipment, we place qualified healthcare professionals where
+            they&apos;re needed most through our staffing division, and we keep
+            healthcare organizations connected and secure through our IT
+            solutions division.
           </p>
         </div>
       </section>
@@ -98,12 +99,12 @@ export default function AboutPage() {
             Our Team
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-            Our dedicated team of healthcare equipment specialists brings years
-            of industry experience to help you find the right products for your
-            facility.
+            Our dedicated team brings deep experience across medical equipment,
+            healthcare staffing, and enterprise IT — delivering integrated
+            solutions for modern healthcare organizations.
           </p>
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            {['Operations', 'Sales & Support', 'Logistics'].map((dept) => (
+            {['Operations', 'Sales & Support', 'Technology'].map((dept) => (
               <div
                 key={dept}
                 className="rounded-xl border border-gray-100 p-6"

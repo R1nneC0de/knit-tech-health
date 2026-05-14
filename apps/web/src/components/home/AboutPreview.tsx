@@ -9,10 +9,10 @@ export default function AboutPreview() {
             Our Mission
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-gray-600">
-            At Knit Tech Health, we&apos;re committed to connecting healthcare
-            providers with the high-quality medical equipment they need.
-            From mobility aids to diagnostic tools, we source trusted products
-            and deliver them with the service and support you deserve.
+            At KTI Health, we&apos;re committed to delivering excellence across
+            healthcare and technology. From medical equipment and staffing solutions
+            to enterprise IT infrastructure — we partner with providers, facilities,
+            and organizations to keep healthcare running at its best.
           </p>
           <Link
             href="/about"

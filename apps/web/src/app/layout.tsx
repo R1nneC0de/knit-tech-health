@@ -13,9 +13,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Knit Tech Health — Trusted Medical Equipment Solutions',
+  title: 'KTI Health — Premium Healthcare & Technology Solutions',
   description:
-    'Browse and request medical equipment from Knit Tech Health. Quality products for healthcare providers.',
+    'KTI Health delivers medical equipment, healthcare staffing, and IT solutions for hospitals, clinics, and care facilities.',
 };
 
 export default function RootLayout({

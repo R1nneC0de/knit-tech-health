@@ -125,5 +125,5 @@ export const ORDER_STATUSES: OrderStatus[] = [
   'CANCELLED',
 ];
 
-export const VENDOR_COMPANY = 'Knit Tech Health';
+export const VENDOR_COMPANY = 'KTI Health';
 export const VENDOR_EMAIL = 'info@knittechhealth.com';

@@ -48,7 +48,7 @@ export async function sendCustomerConfirmation(order: {
         <p>Your reference ID is: <strong>${order.id}</strong></p>
         <p>Our team will review your inquiry and reach out to you within <strong>24 hours</strong> to discuss pricing, availability, and next steps.</p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;">
-        <p style="color: #718096; font-size: 14px;">Knit Tech Health — Trusted Medical Equipment Solutions</p>
+        <p style="color: #718096; font-size: 14px;">KTI Health — Premium Healthcare &amp; Technology Solutions</p>
       </div>
     `,
   });

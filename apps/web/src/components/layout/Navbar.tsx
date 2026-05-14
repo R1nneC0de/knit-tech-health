@@ -1,14 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Menu, X, Heart, ShoppingCart, User, LogOut } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/shop-medical', label: 'Shop' },
+  { href: '/shop-medical', label: 'Medical' },
+  { href: '/staffing', label: 'Staffing' },
+  { href: '/it-solutions', label: 'IT Solutions' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -23,11 +26,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Heart className="h-7 w-7 text-brand-pink-500" />
-          <span className="font-heading text-xl font-bold text-brand-blue-700">
-            Knit Tech Health
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image src="/logo.jpeg" alt="KTI Health" width={120} height={48} className="object-contain" />
         </Link>
 
         {/* Desktop nav */}
