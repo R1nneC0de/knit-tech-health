@@ -28,7 +28,7 @@ export default function Footer() {
                 width={0}
                 height={0}
                 sizes="100vw"
-                className="h-9 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </div>
             <p className="text-sm leading-relaxed">
@@ -83,17 +83,15 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal-400" />
-                (555) 123-4567
+                832-251-5160
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal-400" />
-                info@knittechinc.com
+                hr@ktihealth.com
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal-400" />
-                123 Medical Drive, Suite 100
-                <br />
-                Atlanta, GA 30301
+                <span>KNITTECH INC<br />2901 Wilcrest Dr<br />Houston, TX 77042</span>
               </li>
             </ul>
           </div>
