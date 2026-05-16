@@ -1,68 +1,146 @@
 import Link from 'next/link';
-import { Network, Cloud, ShieldCheck, Monitor, CheckCircle } from 'lucide-react';
+import {
+  Network,
+  Cloud,
+  ShieldCheck,
+  Monitor,
+  CheckCircle,
+  Code2,
+  Smartphone,
+  Zap,
+  Users,
+  Megaphone,
+  Cpu,
+  ClipboardList,
+  Settings,
+  GraduationCap,
+  Building2,
+  Mail,
+  Phone,
+} from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'IT Solutions — KTI Health',
   description:
-    'Enterprise IT solutions for healthcare organizations. HIPAA-compliant infrastructure, cloud services, cybersecurity, and EHR integration from KTI Health.',
+    'Government IT & healthcare technology solutions from KTI Health (Nepstaff). SDVOSB-certified. Application development, infrastructure, managed services, and more.',
 };
 
 const services = [
   {
+    icon: Code2,
+    title: 'Application Development & Maintenance',
+    description:
+      'End-to-end application development and ongoing maintenance — from requirements through deployment and support.',
+  },
+  {
     icon: Network,
-    title: 'Network Infrastructure',
+    title: 'Infrastructure Services',
     description:
-      'Reliable, high-performance network design and deployment built for the demands of modern healthcare environments — clinical floors, admin offices, and everything in between.',
+      '24×7 infrastructure support strategy. High-availability design, monitoring, and management for mission-critical environments.',
   },
   {
-    icon: Cloud,
-    title: 'Cloud Solutions',
+    icon: Zap,
+    title: 'QA Automation & Testing',
     description:
-      'Migrate workloads, data, and applications to secure, scalable cloud platforms. We design, migrate, and manage cloud environments tailored for healthcare compliance.',
+      'Automated quality assurance and testing services to accelerate release cycles and ensure software reliability.',
   },
   {
-    icon: ShieldCheck,
-    title: 'Cybersecurity',
+    icon: Users,
+    title: 'Recruitment Process Outsourcing',
     description:
-      'HIPAA-compliant security frameworks, vulnerability assessments, endpoint protection, and incident response — protecting patient data and operational continuity.',
+      'Strategic recruitment solutions — we source, screen, and deliver qualified technology and healthcare talent.',
+  },
+  {
+    icon: Smartphone,
+    title: 'Website & Mobile Development',
+    description:
+      'Professional website design and native iOS + Android app development for healthcare and government clients.',
+  },
+  {
+    icon: Megaphone,
+    title: 'Digital Marketing & Strategy',
+    description:
+      'Data-driven digital marketing strategy to grow your online presence and reach the right audiences.',
+  },
+  {
+    icon: Cpu,
+    title: 'Internet of Things (IoT)',
+    description:
+      'IoT consulting and implementation — connecting devices, sensors, and systems to unlock operational intelligence.',
+  },
+  {
+    icon: ClipboardList,
+    title: 'Project Management',
+    description:
+      'Agile project management methodology ensuring on-time, on-budget delivery for technology initiatives of any scale.',
+  },
+  {
+    icon: Settings,
+    title: 'Managed Services',
+    description:
+      'Fully managed IT services with proactive monitoring, maintenance, and 24×5 operational support.',
   },
   {
     icon: Monitor,
-    title: 'Healthcare IT & EHR',
+    title: 'Express Vendor Management System',
     description:
-      'EHR/EMR integration, clinical system support, and healthcare IT consulting. We speak both technology and clinical workflows.',
+      'Our proprietary vendor management platform for streamlined procurement, compliance tracking, and supplier oversight.',
+  },
+  {
+    icon: Cloud,
+    title: 'Healthcare IT & EHR Integration',
+    description:
+      'EHR/EMR integration, clinical system support, and HIPAA-compliant cloud solutions tailored for healthcare organizations.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'On-Demand Training',
+    description:
+      'IT and project management training via our Upskillhire.com partnership — online, on-demand, and role-ready.',
   },
 ];
 
-const highlights = [
-  'HIPAA-compliant architecture and documentation',
-  '24/7 monitoring and infrastructure support',
-  'Custom integration with existing clinical systems',
-  'Staff training and change management support',
-  'Disaster recovery and business continuity planning',
-  'Scalable solutions for single-site and multi-facility organizations',
+const govHighlights = [
+  'Top-ranked U.S. government contract holder',
+  'DIR contract holder — Texas Dept. of Information Resources',
+  'Service Disabled Veterans Owned Small Business (SDVOSB)',
+  'State of Texas approved vendor',
+  'Serving public sector entities across all 50 states',
+  '24×5 operations team with rapid response SLAs',
 ];
 
 export default function ITSolutionsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-pink-50 py-20">
+      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-teal-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-block rounded-full bg-brand-blue-100 px-4 py-1 text-sm font-semibold text-brand-blue-700">
-              IT Solutions Division
+              IT Solutions Division — Powered by Nepstaff
             </span>
             <h1 className="mt-4 font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl">
-              Enterprise IT Solutions{' '}
-              <span className="text-brand-pink-500">for Healthcare</span>
+              Trusted Government IT &{' '}
+              <span className="text-brand-teal-500">Healthcare Technology</span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-brand-blue-600">
-              From network infrastructure to cybersecurity and EHR integration —
-              KTI Health delivers modern, HIPAA-compliant technology that keeps
-              healthcare organizations connected, secure, and efficient.
+              KNITTECH INC (DBA Nepstaff) delivers healthcare and IT services and
+              products to government agencies, hospitals, and enterprises across the
+              USA. Veteran-owned. Government-certified. Available Monday–Friday,
+              8 am–10 pm CST.
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                🎖️ SDVOSB Certified
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                🏛️ Government Contract Holder
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                ✓ DIR — Texas Approved
+              </span>
+            </div>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/contact"
@@ -74,33 +152,33 @@ export default function ITSolutionsPage() {
                 href="/contact"
                 className="rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
               >
-                Learn More
+                Request a Quote
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services */}
+      {/* Services grid */}
       <section className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="font-heading text-3xl font-bold text-brand-blue-900">
-              Our IT Services
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-teal-500">What We Do</p>
+            <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
+              Full-Spectrum IT & Technology Services
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
-              Comprehensive technology services designed for the unique demands of
-              healthcare organizations.
+              From application development to managed services — one partner, every technology need.
             </p>
           </div>
-          <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <div
                 key={service.title}
                 className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-100 transition hover:shadow-md"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-blue-50">
-                  <service.icon className="h-6 w-6 text-brand-blue-600" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-teal-50">
+                  <service.icon className="h-6 w-6 text-brand-teal-500" />
                 </div>
                 <h3 className="mt-4 font-heading text-lg font-semibold text-brand-blue-900">
                   {service.title}
@@ -114,30 +192,48 @@ export default function ITSolutionsPage() {
         </div>
       </section>
 
-      {/* Feature Highlights */}
+      {/* Government contracting section */}
       <section className="bg-brand-blue-50/50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
-              <h2 className="font-heading text-3xl font-bold text-brand-blue-900">
-                Built for Healthcare. Designed for Compliance.
+              <p className="text-sm font-semibold uppercase tracking-wider text-brand-teal-500">Government Contracting</p>
+              <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
+                A Top-Ranked Public Sector Partner
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-gray-600">
-                We understand that healthcare IT isn't just about technology — it's
-                about protecting patients, supporting clinicians, and meeting
-                regulatory requirements without slowing anyone down.
+                As a Service Disabled Veterans Owned Small Business (SDVOSB) and
+                top-ranked government contract holder, we serve public sector
+                entities across all 50 states — from state agencies to federal
+                healthcare facilities.
               </p>
               <ul className="mt-8 space-y-4">
-                {highlights.map((item) => (
+                {govHighlights.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-brand-pink-500" />
+                    <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal-500" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="flex items-center justify-center">
-              <div className="h-80 w-full rounded-2xl bg-gradient-to-br from-brand-blue-100 to-brand-pink-100" />
+            <div className="rounded-2xl bg-brand-blue-700 p-10 text-white">
+              <Building2 className="h-12 w-12 text-brand-teal-300" />
+              <h3 className="mt-4 font-heading text-2xl font-bold">State Clients on Record</h3>
+              <p className="mt-2 text-brand-blue-200">
+                Texas · Georgia · Mississippi · Florida · Connecticut · Ohio · Indiana
+              </p>
+              <div className="mt-6 border-t border-brand-blue-600 pt-6">
+                <p className="text-sm text-brand-blue-200">Named partners include:</p>
+                <p className="mt-1 font-semibold">Grady Hospitals · Experis · DIR (Texas) · Madrin · Bastil</p>
+              </div>
+              <div className="mt-6 space-y-2 text-sm">
+                <a href="mailto:nepstaffhr@nepstaff.com" className="flex items-center gap-2 text-brand-teal-300 hover:text-white">
+                  <Mail className="h-4 w-4 shrink-0" /> nepstaffhr@nepstaff.com
+                </a>
+                <a href="tel:8322058542" className="flex items-center gap-2 text-brand-teal-300 hover:text-white">
+                  <Phone className="h-4 w-4 shrink-0" /> (832) 205-8542
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -147,16 +243,16 @@ export default function ITSolutionsPage() {
       <section className="bg-brand-blue-700 py-16">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl font-bold text-white">
-            Ready to Modernize Your Healthcare IT?
+            Ready to Modernize Your Technology?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-brand-blue-200">
-            Our technology consultants are ready to assess your infrastructure and
-            design a roadmap that fits your organization&apos;s goals and compliance
-            requirements.
+            Our technology consultants are ready to assess your needs and design
+            solutions that fit your organization&apos;s goals and compliance
+            requirements. Available Mon–Fri, 8 am–10 pm CST.
           </p>
           <Link
             href="/contact"
-            className="mt-8 inline-block rounded-lg bg-brand-pink-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-pink-600"
+            className="mt-8 inline-block rounded-lg bg-brand-teal-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
           >
             Schedule a Consultation
           </Link>

@@ -23,14 +23,16 @@ const initial: FormData = {
 };
 
 const contactInfo = [
-  { icon: Phone, label: 'Phone', value: '(555) 123-4567' },
-  { icon: Mail, label: 'Email', value: 'info@knittechhealth.com' },
+  { icon: Phone, label: 'Phone', value: '832-251-5160' },
+  { icon: Mail, label: 'General / Staffing', value: 'hr@ktihealth.com' },
+  { icon: Mail, label: 'Medical Equipment', value: 'suresh@ktihealth.com' },
+  { icon: Mail, label: 'IT Solutions', value: 'nepstaffhr@nepstaff.com' },
   {
     icon: MapPin,
     label: 'Address',
-    value: '123 Medical Drive, Suite 100\nAtlanta, GA 30301',
+    value: 'KNITTECH INC\n2901 Wilcrest Dr\nHouston, TX 77042',
   },
-  { icon: Clock, label: 'Hours', value: 'Mon-Fri: 8am - 6pm EST' },
+  { icon: Clock, label: 'Hours', value: 'Mon–Fri: 8 am – 10 pm CST\nSat–Sun: Closed' },
 ];
 
 export default function ContactPage() {
@@ -87,7 +89,7 @@ export default function ContactPage() {
       <div>
         <label className="block text-sm font-medium text-brand-blue-700">
           {label}
-          {required && <span className="text-brand-pink-500"> *</span>}
+          {required && <span className="text-brand-teal-500"> *</span>}
         </label>
         <input
           type={type}
@@ -117,15 +119,26 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="font-heading text-3xl font-bold text-brand-blue-900">
-        Contact Us
-      </h1>
-      <p className="mt-2 text-gray-600">
-        Have a question? We&apos;d love to hear from you.
-      </p>
+    <div>
+      {/* Header banner */}
+      <div className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-teal-50 border-b border-gray-100 py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h1 className="font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">
+            Contact Us
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Reach our team for staffing, equipment procurement, or IT solutions. We&apos;re available Monday–Friday, 8 am–10 pm CST.
+          </p>
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-teal-50 border border-brand-teal-200 px-4 py-2 text-sm font-medium text-brand-teal-700">
+            <Clock className="h-4 w-4 shrink-0" />
+            Equipment quotes delivered within 1 hour
+          </div>
+        </div>
+      </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-5">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+      <div className="mt-0 grid gap-8 lg:grid-cols-5">
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 lg:col-span-3">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -137,7 +150,7 @@ export default function ContactPage() {
           {input('subject', 'Subject', true)}
           <div>
             <label className="block text-sm font-medium text-brand-blue-700">
-              Message <span className="text-brand-pink-500">*</span>
+              Message <span className="text-brand-teal-500">*</span>
             </label>
             <textarea
               rows={5}
@@ -169,8 +182,8 @@ export default function ContactPage() {
               className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-pink-50">
-                  <item.icon className="h-5 w-5 text-brand-pink-500" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-teal-50">
+                  <item.icon className="h-5 w-5 text-brand-teal-500" />
                 </div>
                 <div>
                   <h3 className="font-heading text-sm font-semibold text-brand-blue-800">
@@ -188,11 +201,12 @@ export default function ContactPage() {
           <div className="flex h-48 items-center justify-center rounded-xl border border-gray-100 bg-gray-50">
             <div className="text-center">
               <MapPin className="mx-auto h-8 w-8 text-gray-300" />
-              <p className="mt-2 text-sm text-gray-400">Map placeholder</p>
+              <p className="mt-2 text-sm text-gray-400">2901 Wilcrest Dr, Houston, TX 77042</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

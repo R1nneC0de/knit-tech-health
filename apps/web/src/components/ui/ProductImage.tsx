@@ -21,7 +21,7 @@ export default function ProductImage({
   if (error) {
     return (
       <div
-        className={`flex items-center justify-center bg-gradient-to-br from-brand-blue-50 to-brand-pink-50 ${className}`}
+        className={`flex items-center justify-center bg-gradient-to-br from-brand-blue-50 to-brand-teal-50 ${className}`}
       >
         <div className="text-center">
           <Package className="mx-auto h-12 w-12 text-brand-blue-300" />

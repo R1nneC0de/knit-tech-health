@@ -2,7 +2,7 @@
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search, X, Building2, Clock, ShieldCheck, Phone, Mail } from 'lucide-react';
 import { useProducts, useCategories } from '@/hooks/useProducts';
 import ProductCard from '@/components/shop/ProductCard';
 
@@ -32,11 +32,92 @@ function ShopContent() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="font-heading text-3xl font-bold text-brand-blue-900">
-        Medical Equipment
-      </h1>
-      <p className="mt-2 text-gray-600">
+    <div>
+      {/* Hero / intro banner */}
+      <div className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-teal-50 border-b border-gray-100 py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <span className="inline-block rounded-full bg-brand-teal-100 px-4 py-1 text-sm font-semibold text-brand-teal-600">
+                Medical Equipment Division
+              </span>
+              <h1 className="mt-3 font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">
+                Medical, Dental & Hospital Equipment
+              </h1>
+              <p className="mt-3 max-w-xl text-gray-600">
+                Trusted distributor of medical, dental, and hospital equipment for government agencies, hospitals,
+                and healthcare facilities across the United States. SDVOSB-certified. State of Texas approved vendor.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                  🎖️ SDVOSB Certified
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                  ✓ TX State Approved Vendor
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                  🏛️ Government Contract Eligible
+                </span>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-brand-teal-100 bg-white p-6 shadow-sm lg:min-w-[300px]">
+              <p className="text-sm font-semibold uppercase tracking-wider text-brand-teal-500">Get a Quote</p>
+              <p className="mt-2 font-heading text-2xl font-bold text-brand-blue-900">Within 1 Hour</p>
+              <p className="mt-1 text-sm text-gray-500">Our dedicated procurement team responds fast.</p>
+              <div className="mt-4 space-y-2 text-sm">
+                <a href="mailto:suresh@ktihealth.com" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-teal-500">
+                  <Mail className="h-4 w-4 shrink-0" /> suresh@ktihealth.com
+                </a>
+                <a href="tel:8322515160" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-teal-500">
+                  <Phone className="h-4 w-4 shrink-0" /> 832-251-5160
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Facilities served */}
+          <div className="mt-8">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Facilities We Serve</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {[
+                'Hospitals',
+                'Surgery Centers',
+                'Specialty Clinics',
+                'Primary Care Practices',
+                'Urgent Care Centers',
+                'Dental Offices',
+                'Long-Term Care Facilities',
+                'Diagnostic Imaging Centers',
+              ].map((f) => (
+                <span key={f} className="flex items-center gap-1 rounded-lg bg-brand-blue-50 px-3 py-1.5 text-sm text-brand-blue-700">
+                  <Building2 className="h-3.5 w-3.5 shrink-0 text-brand-teal-500" /> {f}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Value props */}
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {[
+              { icon: Clock, title: 'Quote in Under 1 Hour', desc: 'Dedicated procurement experts on standby M–F, 8 am–10 pm CST.' },
+              { icon: ShieldCheck, title: 'SDVOSB & Gov Contract Ready', desc: 'Veteran-owned. Approved for state and federal procurement.' },
+              { icon: Building2, title: 'All Healthcare Settings', desc: 'Hospitals, clinics, dental, long-term care, imaging, and more.' },
+            ].map((vp) => (
+              <div key={vp.title} className="flex gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                <vp.icon className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal-500" />
+                <div>
+                  <p className="text-sm font-semibold text-brand-blue-900">{vp.title}</p>
+                  <p className="mt-0.5 text-xs text-gray-500">{vp.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <h2 className="font-heading text-2xl font-bold text-brand-blue-900">Browse Catalog</h2>
+      <p className="mt-1 text-gray-600">
         Browse our full catalog and request the equipment you need.
       </p>
 
@@ -111,6 +192,7 @@ function ShopContent() {
           </p>
         </div>
       )}
+    </div>
     </div>
   );
 }

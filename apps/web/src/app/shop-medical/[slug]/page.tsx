@@ -104,7 +104,7 @@ export default function ProductDetailPage() {
         {/* Details */}
         <div>
           {product.category && (
-            <span className="mb-3 inline-block rounded-full bg-brand-pink-50 px-3 py-1 text-xs font-medium text-brand-pink-600">
+            <span className="mb-3 inline-block rounded-full bg-brand-teal-50 px-3 py-1 text-xs font-medium text-brand-teal-600">
               {product.category.name}
             </span>
           )}
@@ -112,7 +112,7 @@ export default function ProductDetailPage() {
             {product.name}
           </h1>
           {product.price > 0 && (
-            <p className="mt-3 text-2xl font-bold text-brand-pink-600">
+            <p className="mt-3 text-2xl font-bold text-brand-teal-600">
               ${Number(product.price).toFixed(2)}
             </p>
           )}
@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
             {user ? (
               <button
                 onClick={handleAddToCart}
-                className="flex items-center gap-2 rounded-lg bg-brand-pink-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-pink-600"
+                className="flex items-center gap-2 rounded-lg bg-brand-teal-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
               >
                 <ShoppingCart className="h-5 w-5" />
                 {addedToCart ? 'Added!' : 'Add to Cart'}
@@ -132,7 +132,7 @@ export default function ProductDetailPage() {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 rounded-lg bg-brand-pink-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-pink-600"
+                className="flex items-center gap-2 rounded-lg bg-brand-teal-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
               >
                 <ShoppingCart className="h-5 w-5" />
                 Sign in to Add to Cart
@@ -155,7 +155,7 @@ export default function ProductDetailPage() {
               <ul className="mt-4 space-y-2">
                 {product.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-pink-400" />
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-teal-400" />
                     {f}
                   </li>
                 ))}

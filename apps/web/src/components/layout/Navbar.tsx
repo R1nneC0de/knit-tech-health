@@ -36,7 +36,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-pink-500"
+              className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-teal-500"
             >
               {link.label}
             </Link>
@@ -44,9 +44,9 @@ export default function Navbar() {
 
           {/* Cart icon — always visible */}
           <Link href={user ? '/cart' : '/login'} className="relative">
-            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-pink-500" />
+            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-teal-500" />
             {user && itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-pink-500 text-xs font-bold text-white">
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-teal-500 text-xs font-bold text-white">
                 {itemCount > 9 ? '9+' : itemCount}
               </span>
             )}
@@ -87,7 +87,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-pink-500"
+                className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-teal-500"
               >
                 Sign In
               </Link>

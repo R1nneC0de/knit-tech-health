@@ -18,15 +18,15 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex flex-1 flex-col p-4">
         {product.category && (
-          <span className="mb-2 w-fit rounded-full bg-brand-pink-50 px-3 py-0.5 text-xs font-medium text-brand-pink-600">
+          <span className="mb-2 w-fit rounded-full bg-brand-teal-50 px-3 py-0.5 text-xs font-medium text-brand-teal-600">
             {product.category.name}
           </span>
         )}
-        <h3 className="font-heading text-lg font-semibold text-brand-blue-800 group-hover:text-brand-pink-500">
+        <h3 className="font-heading text-lg font-semibold text-brand-blue-800 group-hover:text-brand-teal-500">
           {product.name}
         </h3>
         {product.price > 0 && (
-          <p className="mt-1 text-base font-bold text-brand-pink-600">
+          <p className="mt-1 text-base font-bold text-brand-teal-600">
             ${Number(product.price).toFixed(2)}
           </p>
         )}
