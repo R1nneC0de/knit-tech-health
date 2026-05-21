@@ -37,8 +37,8 @@ export default function LoginPage() {
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-orange-50 via-white to-brand-blue-50 px-4">
       <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 shadow-md">
         <div className="mb-8 flex flex-col items-center">
-          <Image src="/logo.jpeg" alt="KnitTech Inc" width={100} height={40} className="object-contain" />
-          <h1 className="mt-4 font-heading text-2xl font-bold text-brand-blue-900">Welcome back</h1>
+          <Image src="/logo.png" alt="KnitTech Inc" width={200} height={64} className="h-16 w-auto object-contain" />
+          <h1 className="mt-5 font-heading text-2xl font-bold text-brand-blue-900">Welcome back</h1>
           <p className="mt-1 text-sm text-gray-500">Sign in to your KnitTech Inc account</p>
         </div>
 

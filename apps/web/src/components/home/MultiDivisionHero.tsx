@@ -13,14 +13,14 @@ export default function MultiDivisionHero() {
             KnitTech Inc — Technology + Healthcare
           </span>
           <h1 className="mt-5 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            A Premium{' '}
-            <span className="text-brand-orange-400">Multi-Division</span>{' '}
-            Platform
+            Empowering the Future of{' '}
+            <span className="text-brand-orange-400">Technology &amp; Healthcare</span>
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-brand-blue-200">
-            IT Solutions · Healthcare Staffing · Medical Equipment Supplies —
-            all under one unified, enterprise-grade brand. Veteran-owned and
-            purpose-built for modern healthcare organizations and government agencies.
+            KnitTech Inc delivers integrated technology solutions, clinical staffing,
+            and medical equipment solutions that help organizations operate smarter,
+            faster, and with greater confidence.{' '}
+            <span className="font-semibold text-white">One partner. Complete solutions.</span>
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <a

@@ -21,13 +21,13 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
-            <div className="mb-4 inline-block rounded-xl bg-white px-3 py-2">
+            <div className="mb-4 inline-block rounded-xl bg-white px-4 py-3">
               <Image
                 src="/logo.png"
                 alt="KnitTech Inc"
-                width={160}
-                height={48}
-                className="h-10 w-auto object-contain"
+                width={200}
+                height={64}
+                className="h-14 w-auto object-contain"
               />
             </div>
             <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-brand-orange-400">

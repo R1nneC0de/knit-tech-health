@@ -9,14 +9,18 @@ export default function AboutPreview() {
             Who We Are
           </span>
           <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
-            Our Mission
+            About KnitTech Inc
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-gray-600">
-            KnitTech Inc is a Service Disabled Veteran Owned Small Business (SDVOSB)
-            delivering premium healthcare and technology solutions. From medical
-            equipment procurement and staffing services to enterprise IT infrastructure —
-            we partner with providers, government agencies, and healthcare organizations
-            to keep healthcare running at its best.
+            KnitTech Inc is a multidisciplinary solutions provider combining IT
+            innovation, workforce expertise for healthcare &amp; IT, and medical
+            equipment distribution under one unified brand. We help enterprise
+            clients, hospitals, and government agencies accelerate transformation
+            through scalable, compliant, and cost-effective services.
+          </p>
+          <p className="mt-4 text-lg font-medium leading-relaxed text-brand-blue-800">
+            Our mission is simple: Advance technology &amp; healthcare through
+            intelligent solutions that improve outcomes for people and organizations.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link

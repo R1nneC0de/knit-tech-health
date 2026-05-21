@@ -3,12 +3,12 @@ import { Stethoscope, Users, Cpu, ArrowRight } from 'lucide-react';
 
 const divisions = [
   {
-    icon: Stethoscope,
-    title: 'Medical Equipment Supplies',
+    icon: Cpu,
+    title: 'Digital Solutions',
     description:
-      'B2B medical supply store for hospitals, clinics, and labs. Browse 90+ products across 8 categories — request a quote or purchase directly online without login.',
-    href: '/shop-medical',
-    cta: 'Browse Equipment',
+      'Transform your operations with secure, scalable, and future-ready IT services — from cloud migration and EHR integration to HIPAA-compliant infrastructure and government contracting support.',
+    href: '/it-solutions',
+    cta: 'Explore IT Services',
     accent: 'text-brand-orange-500',
     border: 'border-brand-orange-200',
     bg: 'bg-brand-orange-50',
@@ -25,12 +25,12 @@ const divisions = [
     bg: 'bg-brand-blue-50',
   },
   {
-    icon: Cpu,
-    title: 'IT Solutions',
+    icon: Stethoscope,
+    title: 'Medical Equipment Supplies',
     description:
-      'Enterprise-grade technology for healthcare organizations — HIPAA-compliant infrastructure, cloud migration, EHR integration, and government contracting support.',
-    href: '/it-solutions',
-    cta: 'Explore IT Services',
+      'B2B medical supply store for hospitals, clinics, and labs. Browse 90+ products across 8 categories — request a quote or purchase directly online without login.',
+    href: '/shop-medical',
+    cta: 'Browse Equipment',
     accent: 'text-brand-orange-500',
     border: 'border-brand-orange-200',
     bg: 'bg-brand-orange-50',
@@ -46,7 +46,7 @@ export default function DivisionsSection() {
             What We Do
           </span>
           <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">
-            Our Divisions
+            Multiple Divisions. One Integrated Ecosystem.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
             Three specialized divisions, one integrated partner for healthcare excellence.
