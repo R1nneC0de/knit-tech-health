@@ -104,14 +104,14 @@ export default function ProductDetailPage() {
         {/* Details */}
         <div>
           {product.category && (
-            <span className="mb-3 inline-block rounded-full bg-brand-yellow-50 px-3 py-1 text-xs font-medium text-brand-yellow-600">
+            <span className="mb-3 inline-block rounded-full bg-brand-orange-50 px-3 py-1 text-xs font-medium text-brand-orange-600">
               {product.category.name}
             </span>
           )}
           <h1 className="font-heading text-3xl font-bold text-brand-blue-900">
             {product.name}
           </h1>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-brand-yellow-600">
+          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-brand-orange-600">
             Contact us for pricing
           </p>
           <p className="mt-4 leading-relaxed text-gray-600">
@@ -121,7 +121,7 @@ export default function ProductDetailPage() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href={`/request/${product.slug}`}
-              className="rounded-lg bg-brand-yellow-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-yellow-600"
+              className="rounded-lg bg-brand-orange-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-orange-600"
             >
               Request a Quote
             </Link>
@@ -153,7 +153,7 @@ export default function ProductDetailPage() {
               <ul className="mt-4 space-y-2">
                 {product.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-yellow-400" />
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-orange-400" />
                     {f}
                   </li>
                 ))}

@@ -6,7 +6,7 @@ import { useAdminApplications, useUpdateApplicationStatus } from '@/hooks/useAdm
 const STATUSES = ['PENDING', 'REVIEWING', 'INTERVIEWED', 'HIRED', 'REJECTED'];
 
 const statusColors: Record<string, string> = {
-  PENDING: 'bg-brand-yellow-100 text-brand-yellow-700',
+  PENDING: 'bg-brand-orange-100 text-brand-orange-700',
   REVIEWING: 'bg-blue-100 text-blue-700',
   INTERVIEWED: 'bg-purple-100 text-purple-700',
   HIRED: 'bg-green-100 text-green-700',

@@ -42,7 +42,7 @@ export default function EmployeeDashboardPage() {
           value={isLoading ? undefined : stats?.pendingInquiries}
           href="/dashboard/employee/inquiries"
           icon={FileText}
-          color="bg-brand-yellow-500"
+          color="bg-brand-orange-500"
         />
         <StatCard
           label="Open Orders"
@@ -63,14 +63,14 @@ export default function EmployeeDashboardPage() {
           value={isLoading ? undefined : stats?.newApplications}
           href="/dashboard/employee/applications"
           icon={Users}
-          color="bg-brand-yellow-600"
+          color="bg-brand-orange-600"
         />
       </div>
 
       <div className="mt-10 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="font-heading text-lg font-semibold text-brand-blue-800">Quick Actions</h2>
         <div className="mt-4 flex flex-wrap gap-3">
-          <Link href="/dashboard/employee/inquiries?status=PENDING" className="rounded-lg bg-brand-yellow-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-yellow-600">
+          <Link href="/dashboard/employee/inquiries?status=PENDING" className="rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-orange-600">
             Review Pending Quotes
           </Link>
           <Link href="/dashboard/employee/applications?status=PENDING" className="rounded-lg bg-brand-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-blue-800">

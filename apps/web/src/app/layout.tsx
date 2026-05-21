@@ -13,9 +13,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'KTI Health — Premium Healthcare & Technology Solutions',
+  title: 'KnitTech Inc — Technology + Healthcare',
   description:
-    'KTI Health delivers medical equipment, healthcare staffing, and IT solutions for hospitals, clinics, and care facilities.',
+    'KnitTech Inc — a veteran-owned company delivering medical equipment, healthcare staffing, and IT solutions for hospitals, clinics, and government agencies nationwide.',
 };
 
 export default function RootLayout({

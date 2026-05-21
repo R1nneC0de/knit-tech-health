@@ -69,9 +69,9 @@ function ApplyForm() {
           <CheckCircle className="mx-auto h-14 w-14 text-green-500" />
           <h1 className="mt-4 font-heading text-2xl font-bold text-brand-blue-900">Application Received!</h1>
           <p className="mt-2 text-gray-500">
-            Thank you for applying to KTI Health. Our staffing team will review your application and reach out within 2–3 business days.
+            Thank you for applying to KnitTech Inc. Our staffing team will review your application and reach out within 2–3 business days.
           </p>
-          <Link href="/staffing" className="mt-6 inline-block rounded-lg bg-brand-yellow-500 px-6 py-3 font-semibold text-white hover:bg-brand-yellow-600">
+          <Link href="/staffing" className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-6 py-3 font-semibold text-white hover:bg-brand-orange-600">
             Back to Staffing
           </Link>
         </div>
@@ -82,9 +82,9 @@ function ApplyForm() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center gap-4">
-        <Image src="/logo.jpeg" alt="KTI Health" width={60} height={24} className="object-contain" />
+        <Image src="/logo.jpeg" alt="KnitTech Inc" width={60} height={24} className="object-contain" />
         <div>
-          <h1 className="font-heading text-2xl font-bold text-brand-blue-900">Apply to Join KTI Health</h1>
+          <h1 className="font-heading text-2xl font-bold text-brand-blue-900">Apply to Join KnitTech Inc</h1>
           <p className="text-sm text-gray-500">Healthcare staffing opportunities across the country</p>
         </div>
       </div>
@@ -93,27 +93,27 @@ function ApplyForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-brand-blue-700">First Name <span className="text-brand-yellow-500">*</span></label>
+              <label className="block text-sm font-medium text-brand-blue-700">First Name <span className="text-brand-orange-500">*</span></label>
               <input type="text" required value={form.firstName} onChange={(e) => update('firstName', e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-brand-blue-700">Last Name <span className="text-brand-yellow-500">*</span></label>
+              <label className="block text-sm font-medium text-brand-blue-700">Last Name <span className="text-brand-orange-500">*</span></label>
               <input type="text" required value={form.lastName} onChange={(e) => update('lastName', e.target.value)} className={inputClass} />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-blue-700">Email <span className="text-brand-yellow-500">*</span></label>
+            <label className="block text-sm font-medium text-brand-blue-700">Email <span className="text-brand-orange-500">*</span></label>
             <input type="email" required value={form.email} onChange={(e) => update('email', e.target.value)} className={inputClass} />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-blue-700">Phone <span className="text-brand-yellow-500">*</span></label>
+            <label className="block text-sm font-medium text-brand-blue-700">Phone <span className="text-brand-orange-500">*</span></label>
             <input type="tel" required value={form.phone} onChange={(e) => update('phone', e.target.value)} className={inputClass} placeholder="(555) 000-0000" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-blue-700">Position Applying For <span className="text-brand-yellow-500">*</span></label>
+            <label className="block text-sm font-medium text-brand-blue-700">Position Applying For <span className="text-brand-orange-500">*</span></label>
             <select required value={form.position} onChange={(e) => update('position', e.target.value)} className={inputClass}>
               <option value="">Select a position…</option>
               {POSITIONS.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -127,7 +127,7 @@ function ApplyForm() {
               value={form.message}
               onChange={(e) => update('message', e.target.value)}
               className={inputClass}
-              placeholder="Tell us about your experience and why you'd like to join KTI Health…"
+              placeholder="Tell us about your experience and why you'd like to join KnitTech Inc…"
             />
           </div>
 
@@ -136,7 +136,7 @@ function ApplyForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-brand-yellow-500 px-6 py-3 font-semibold text-white transition hover:bg-brand-yellow-600 disabled:opacity-50"
+            className="w-full rounded-lg bg-brand-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-brand-orange-600 disabled:opacity-50"
           >
             {loading ? 'Submitting…' : 'Submit Application'}
           </button>

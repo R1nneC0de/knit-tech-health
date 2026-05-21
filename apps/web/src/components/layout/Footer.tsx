@@ -23,17 +23,19 @@ export default function Footer() {
           <div>
             <div className="mb-4 inline-block rounded-xl bg-white px-3 py-2">
               <Image
-                src="/logo.jpeg"
-                alt="KTI Health"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-12 w-auto object-contain"
+                src="/logo.png"
+                alt="KnitTech Inc"
+                width={160}
+                height={48}
+                className="h-10 w-auto object-contain"
               />
             </div>
-            <p className="text-sm leading-relaxed">
-              Premium healthcare and technology solutions — medical equipment,
-              staffing, and IT services under one unified brand.
+            <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-brand-orange-400">
+              Technology + Healthcare
+            </p>
+            <p className="mt-3 text-sm leading-relaxed">
+              Veteran-owned company delivering medical equipment, healthcare
+              staffing, and enterprise IT solutions nationwide.
             </p>
           </div>
 
@@ -47,7 +49,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition hover:text-brand-yellow-300"
+                    className="text-sm transition hover:text-brand-orange-300"
                   >
                     {link.label}
                   </Link>
@@ -66,7 +68,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition hover:text-brand-yellow-300"
+                    className="text-sm transition hover:text-brand-orange-300"
                   >
                     {link.label}
                   </Link>
@@ -82,15 +84,15 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
-                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-yellow-400" />
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange-400" />
                 832-251-5160
               </li>
               <li className="flex items-start gap-2">
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-yellow-400" />
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange-400" />
                 hr@ktihealth.com
               </li>
               <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-yellow-400" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange-400" />
                 <span>KNITTECH INC<br />2901 Wilcrest Dr<br />Houston, TX 77042</span>
               </li>
             </ul>
@@ -100,9 +102,12 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-brand-blue-800">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} KTI Health / KnitTechInc. All rights reserved.
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 flex flex-col items-center gap-1 sm:flex-row sm:justify-between">
+          <p className="text-xs text-gray-400">
+            &copy; {new Date().getFullYear()} KnitTech Inc. All rights reserved.
+          </p>
+          <p className="text-xs font-medium text-brand-orange-400">
+            🎖️ Service Disabled Veteran Owned Small Business (SDVOSB) · CAGE: 8UU52
           </p>
         </div>
       </div>

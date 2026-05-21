@@ -18,14 +18,14 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex flex-1 flex-col p-4">
         {product.category && (
-          <span className="mb-2 w-fit rounded-full bg-brand-yellow-50 px-3 py-0.5 text-xs font-medium text-brand-yellow-600">
+          <span className="mb-2 w-fit rounded-full bg-brand-orange-50 px-3 py-0.5 text-xs font-medium text-brand-orange-600">
             {product.category.name}
           </span>
         )}
-        <h3 className="font-heading text-lg font-semibold text-brand-blue-800 group-hover:text-brand-yellow-500">
+        <h3 className="font-heading text-lg font-semibold text-brand-blue-800 group-hover:text-brand-orange-500">
           {product.name}
         </h3>
-        <p className="mt-1 text-xs font-medium text-brand-yellow-600 uppercase tracking-wide">
+        <p className="mt-1 text-xs font-medium text-brand-orange-600 uppercase tracking-wide">
           Request a Quote
         </p>
         <p className="mt-2 line-clamp-2 flex-1 text-sm text-gray-600">

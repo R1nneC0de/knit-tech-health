@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/logo.jpeg" alt="KTI Health" width={0} height={0} sizes="100vw" className="h-16 w-auto" />
+          <Image src="/logo.png" alt="KnitTech Inc" width={180} height={56} className="h-12 w-auto object-contain" />
         </Link>
 
         {/* Desktop nav */}
@@ -36,7 +36,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-yellow-500"
+              className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-orange-500"
             >
               {link.label}
             </Link>
@@ -44,9 +44,9 @@ export default function Navbar() {
 
           {/* Cart icon — always visible */}
           <Link href={user ? '/cart' : '/login'} className="relative">
-            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-yellow-500" />
+            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-orange-500" />
             {user && itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-yellow-500 text-xs font-bold text-white">
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-orange-500 text-xs font-bold text-white">
                 {itemCount > 9 ? '9+' : itemCount}
               </span>
             )}
@@ -58,7 +58,7 @@ export default function Navbar() {
               {(user.role === 'KTI_EMPLOYEE' || user.role === 'ADMIN') && (
                 <Link
                   href="/dashboard/employee"
-                  className="flex items-center gap-1.5 rounded-lg bg-brand-yellow-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-yellow-600"
+                  className="flex items-center gap-1.5 rounded-lg bg-brand-orange-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-orange-600"
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
@@ -109,7 +109,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-yellow-500"
+                className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-orange-500"
               >
                 Sign In
               </Link>
@@ -164,7 +164,7 @@ export default function Navbar() {
                 <Link
                   href="/dashboard/employee"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 py-3 text-sm font-semibold text-brand-yellow-600"
+                  className="flex items-center gap-2 py-3 text-sm font-semibold text-brand-orange-600"
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   Employee Dashboard

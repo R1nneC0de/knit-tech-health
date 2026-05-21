@@ -40,8 +40,8 @@ export default function ValuePropositions() {
               key={v.title}
               className="rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm transition hover:shadow-md"
             >
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-yellow-50">
-                <v.icon className="h-7 w-7 text-brand-yellow-500" />
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-orange-50">
+                <v.icon className="h-7 w-7 text-brand-orange-500" />
               </div>
               <h3 className="mt-4 font-heading text-lg font-semibold text-brand-blue-800">
                 {v.title}

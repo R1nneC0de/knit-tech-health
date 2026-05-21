@@ -22,9 +22,9 @@ import {
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Healthcare Staffing — KTI Health',
+  title: 'Healthcare Staffing — KnitTech Inc',
   description:
-    'KTI Health connects qualified healthcare professionals with top facilities nationwide. Browse open travel nursing, allied health, and locum tenens positions.',
+    'KnitTech Inc connects qualified healthcare professionals with top facilities nationwide. Browse open travel nursing, allied health, and locum tenens positions.',
 };
 
 const jobs = [
@@ -191,7 +191,7 @@ const jobs = [
 ];
 
 const typeColors: Record<string, string> = {
-  'Travel Nursing': 'bg-brand-yellow-50 text-brand-yellow-600',
+  'Travel Nursing': 'bg-brand-orange-50 text-brand-orange-600',
   'Allied Health': 'bg-blue-50 text-blue-600',
   'Locum Tenens': 'bg-amber-50 text-amber-700',
   'Permanent Placement': 'bg-green-50 text-green-700',
@@ -231,18 +231,18 @@ export default function StaffingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-yellow-50 py-24">
+      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-orange-50 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="inline-block rounded-full bg-brand-yellow-100 px-4 py-1 text-sm font-semibold text-brand-yellow-600">
+            <span className="inline-block rounded-full bg-brand-orange-100 px-4 py-1 text-sm font-semibold text-brand-orange-600">
               Healthcare Staffing Division
             </span>
             <h1 className="mt-4 font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl lg:text-6xl">
               Your Partner in the{' '}
-              <span className="text-brand-yellow-500">Mission of Care</span>
+              <span className="text-brand-orange-500">Mission of Care</span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-brand-blue-600">
-              KTI Health (KNITTECH INC) connects qualified healthcare professionals
+              KnitTech Inc (KNITTECH INC) connects qualified healthcare professionals
               with leading facilities from coast to coast — placing travel nurses,
               allied health, advanced practice providers, and physicians under one
               trusted, veteran-owned partner.
@@ -288,7 +288,7 @@ export default function StaffingPage() {
       <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-brand-yellow-500">Disciplines & Specialties</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-orange-500">Disciplines & Specialties</p>
             <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">Healthcare Professionals We Place</h2>
             <p className="mx-auto mt-3 max-w-2xl text-gray-600">
               From bedside nurses to C-suite leaders, we staff every tier of the clinical workforce — neighborhood, travel, and per diem.
@@ -306,15 +306,15 @@ export default function StaffingPage() {
               { label: 'Interim Leadership', icon: Briefcase },
             ].map((s) => (
               <div key={s.label} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-brand-blue-50/50 p-4 text-sm font-semibold text-brand-blue-800">
-                <s.icon className="h-5 w-5 shrink-0 text-brand-yellow-500" />
+                <s.icon className="h-5 w-5 shrink-0 text-brand-orange-500" />
                 {s.label}
               </div>
             ))}
           </div>
-          <div className="mt-8 rounded-2xl bg-brand-yellow-50 p-6 text-center">
+          <div className="mt-8 rounded-2xl bg-brand-orange-50 p-6 text-center">
             <p className="text-sm font-medium text-brand-blue-700">
               We accept applications Mon–Fri, 8 am – 10 pm CST. &nbsp;•&nbsp; Direct pay available via pay card. &nbsp;•&nbsp; Contact:{' '}
-              <a href="mailto:hr@ktihealth.com" className="font-semibold text-brand-yellow-600 underline underline-offset-2">hr@ktihealth.com</a>
+              <a href="mailto:hr@ktihealth.com" className="font-semibold text-brand-orange-600 underline underline-offset-2">hr@ktihealth.com</a>
             </p>
           </div>
         </div>
@@ -325,11 +325,11 @@ export default function StaffingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-brand-yellow-500">Now Hiring</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-brand-orange-500">Now Hiring</p>
               <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">Open Positions</h2>
               <p className="mt-2 text-gray-600">Current openings across travel nursing, allied health, locum tenens, and permanent roles.</p>
             </div>
-            <Link href="/contact" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold text-brand-blue-700 transition hover:text-brand-yellow-500">
+            <Link href="/contact" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold text-brand-blue-700 transition hover:text-brand-orange-500">
               Submit Your Resume <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -338,7 +338,7 @@ export default function StaffingPage() {
             {jobs.map((job) => (
               <div
                 key={`${job.title}-${job.location}`}
-                className="group relative rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand-yellow-200 hover:shadow-md"
+                className="group relative rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand-orange-200 hover:shadow-md"
               >
                 {job.urgent && (
                   <span className="absolute right-4 top-4 rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-600">
@@ -359,23 +359,23 @@ export default function StaffingPage() {
 
                 <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-gray-600 sm:grid-cols-4">
                   <div className="flex items-center gap-1.5">
-                    <MapPin className="h-4 w-4 shrink-0 text-brand-yellow-400" />
+                    <MapPin className="h-4 w-4 shrink-0 text-brand-orange-400" />
                     <span>{job.location}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <DollarSign className="h-4 w-4 shrink-0 text-brand-yellow-400" />
+                    <DollarSign className="h-4 w-4 shrink-0 text-brand-orange-400" />
                     <span className="font-semibold text-brand-blue-700">{job.pay}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     {job.shift.toLowerCase().includes('night') ? (
-                      <Moon className="h-4 w-4 shrink-0 text-brand-yellow-400" />
+                      <Moon className="h-4 w-4 shrink-0 text-brand-orange-400" />
                     ) : (
-                      <Sun className="h-4 w-4 shrink-0 text-brand-yellow-400" />
+                      <Sun className="h-4 w-4 shrink-0 text-brand-orange-400" />
                     )}
                     <span>{job.shift}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <CalendarDays className="h-4 w-4 shrink-0 text-brand-yellow-400" />
+                    <CalendarDays className="h-4 w-4 shrink-0 text-brand-orange-400" />
                     <span>{job.weeks}</span>
                   </div>
                 </div>
@@ -407,15 +407,15 @@ export default function StaffingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-brand-yellow-500">For Healthcare Professionals</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-brand-orange-500">For Healthcare Professionals</p>
               <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">Advance Your Career With Us</h2>
             </div>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {forProfessionals.map((item) => (
               <div key={item.title} className="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm transition hover:shadow-md">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-yellow-50">
-                  <item.icon className="h-6 w-6 text-brand-yellow-500" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-orange-50">
+                  <item.icon className="h-6 w-6 text-brand-orange-500" />
                 </div>
                 <h3 className="mt-4 font-heading text-lg font-semibold text-brand-blue-900">{item.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.description}</p>
@@ -429,7 +429,7 @@ export default function StaffingPage() {
       <section className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <p className="text-sm font-semibold uppercase tracking-wider text-brand-yellow-500">For Healthcare Employers</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-orange-500">For Healthcare Employers</p>
             <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">Workforce Solutions for Your Facility</h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-2">
@@ -451,12 +451,12 @@ export default function StaffingPage() {
       {/* Why KTI */}
       <section className="bg-brand-blue-50/50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center font-heading text-3xl font-bold text-brand-blue-900">Why Healthcare Leaders Choose KTI Health</h2>
+          <h2 className="text-center font-heading text-3xl font-bold text-brand-blue-900">Why Healthcare Leaders Choose KnitTech Inc</h2>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {whyUs.map((item) => (
               <div key={item.title} className="rounded-xl bg-white p-7 text-center shadow-sm">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-yellow-50">
-                  <item.icon className="h-7 w-7 text-brand-yellow-500" />
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-orange-50">
+                  <item.icon className="h-7 w-7 text-brand-orange-500" />
                 </div>
                 <h3 className="mt-5 font-heading text-lg font-semibold text-brand-blue-800">{item.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.description}</p>
@@ -473,14 +473,14 @@ export default function StaffingPage() {
             <div className="rounded-2xl bg-brand-blue-700 p-10">
               <h3 className="font-heading text-2xl font-bold text-white">I&apos;m a Healthcare Professional</h3>
               <p className="mt-3 text-brand-blue-200">Explore travel assignments, per diem shifts, and permanent roles across the country.</p>
-              <Link href="/contact" className="mt-6 inline-block rounded-lg bg-brand-yellow-500 px-7 py-3 font-semibold text-white transition hover:bg-brand-yellow-600">
+              <Link href="/contact" className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-7 py-3 font-semibold text-white transition hover:bg-brand-orange-600">
                 Find My Next Assignment
               </Link>
             </div>
-            <div className="rounded-2xl bg-brand-yellow-500 p-10">
+            <div className="rounded-2xl bg-brand-orange-500 p-10">
               <h3 className="font-heading text-2xl font-bold text-white">I&apos;m a Healthcare Employer</h3>
               <p className="mt-3 text-teal-100">Fill critical staffing gaps fast with pre-credentialed professionals.</p>
-              <Link href="/contact" className="mt-6 inline-block rounded-lg bg-white px-7 py-3 font-semibold text-brand-yellow-600 transition hover:bg-teal-50">
+              <Link href="/contact" className="mt-6 inline-block rounded-lg bg-white px-7 py-3 font-semibold text-brand-orange-600 transition hover:bg-teal-50">
                 Talk to a Specialist
               </Link>
             </div>
@@ -495,7 +495,7 @@ export default function StaffingPage() {
           <p className="mx-auto mt-4 max-w-xl text-lg text-brand-blue-200">
             Our staffing specialists are standing by — whether you need one nurse tomorrow or a full managed workforce program.
           </p>
-          <Link href="/contact" className="mt-8 inline-block rounded-lg bg-brand-yellow-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-yellow-600">
+          <Link href="/contact" className="mt-8 inline-block rounded-lg bg-brand-orange-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-orange-600">
             Contact Us Today
           </Link>
         </div>

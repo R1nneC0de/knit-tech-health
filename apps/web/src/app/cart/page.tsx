@@ -64,7 +64,7 @@ function CartContent() {
                 <div className="flex items-start justify-between">
                   <div>
                     {item.product?.category && (
-                      <span className="text-xs text-brand-yellow-500">{item.product.category.name}</span>
+                      <span className="text-xs text-brand-orange-500">{item.product.category.name}</span>
                     )}
                     <h3 className="font-heading text-base font-semibold text-brand-blue-800">
                       {item.product?.name}
@@ -122,14 +122,14 @@ function CartContent() {
           </div>
           <Link
             href="/checkout"
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-yellow-500 px-6 py-3 font-semibold text-white transition hover:bg-brand-yellow-600"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-brand-orange-600"
           >
             Proceed to Checkout
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             href="/shop-medical"
-            className="mt-3 block text-center text-sm text-brand-blue-700 hover:text-brand-yellow-500"
+            className="mt-3 block text-center text-sm text-brand-blue-700 hover:text-brand-orange-500"
           >
             Continue Shopping
           </Link>

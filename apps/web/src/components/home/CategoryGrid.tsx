@@ -84,10 +84,10 @@ export default function CategoryGrid() {
               <Link
                 key={cat.id}
                 href={`/shop-medical?category=${cat.slug}`}
-                className="group rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand-yellow-200 hover:shadow-md"
+                className="group rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand-orange-200 hover:shadow-md"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-blue-50 transition group-hover:bg-brand-yellow-50">
-                  <Icon className="h-6 w-6 text-brand-blue-600 transition group-hover:text-brand-yellow-500" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-blue-50 transition group-hover:bg-brand-orange-50">
+                  <Icon className="h-6 w-6 text-brand-blue-600 transition group-hover:text-brand-orange-500" />
                 </div>
                 <h3 className="mt-4 font-heading text-lg font-semibold text-brand-blue-800">
                   {cat.name}

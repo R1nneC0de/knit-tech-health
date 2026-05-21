@@ -60,7 +60,7 @@ function OrdersContent() {
             <Link
               key={order.id}
               href={`/order-confirmation/${order.id}`}
-              className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-brand-yellow-200 hover:shadow-md"
+              className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-brand-orange-200 hover:shadow-md"
             >
               <div>
                 <p className="text-xs text-gray-400">

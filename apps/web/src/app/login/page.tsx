@@ -34,12 +34,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-yellow-50 via-white to-brand-blue-50 px-4">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-orange-50 via-white to-brand-blue-50 px-4">
       <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 shadow-md">
         <div className="mb-8 flex flex-col items-center">
-          <Image src="/logo.jpeg" alt="KTI Health" width={100} height={40} className="object-contain" />
+          <Image src="/logo.jpeg" alt="KnitTech Inc" width={100} height={40} className="object-contain" />
           <h1 className="mt-4 font-heading text-2xl font-bold text-brand-blue-900">Welcome back</h1>
-          <p className="mt-1 text-sm text-gray-500">Sign in to your KTI Health account</p>
+          <p className="mt-1 text-sm text-gray-500">Sign in to your KnitTech Inc account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -79,7 +79,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Don&apos;t have an account?{' '}
-          <Link href="/register" className="font-semibold text-brand-yellow-500 hover:text-brand-yellow-600">
+          <Link href="/register" className="font-semibold text-brand-orange-500 hover:text-brand-orange-600">
             Create one
           </Link>
         </p>

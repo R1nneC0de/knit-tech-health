@@ -5,15 +5,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brand-yellow': {
-          50:  '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A',
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#F59E0B',
-          600: '#D97706',
-          700: '#B45309',
+        'brand-orange': {
+          50:  '#FFF7ED',
+          100: '#FFEDD5',
+          200: '#FED7AA',
+          300: '#FDBA74',
+          400: '#FB923C',
+          500: '#F97316',
+          600: '#EA580C',
+          700: '#C2410C',
         },
         'brand-blue': {
           50: '#E7EFF6',
@@ -23,9 +23,9 @@ const config: Config = {
           400: '#1F5A8B',
           500: '#003D6F',
           600: '#003362',
-          700: '#024A58',
-          800: '#012F47',
-          900: '#011A28',
+          700: '#1E3A5F',
+          800: '#152B47',
+          900: '#0D1B2E',
         },
       },
       fontFamily: {

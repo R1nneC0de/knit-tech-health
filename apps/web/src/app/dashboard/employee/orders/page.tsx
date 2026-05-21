@@ -6,7 +6,7 @@ import { useAdminOrders, useUpdateOrderStatus } from '@/hooks/useAdmin';
 const STATUSES = ['PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
 
 const statusColors: Record<string, string> = {
-  PENDING: 'bg-brand-yellow-100 text-brand-yellow-700',
+  PENDING: 'bg-brand-orange-100 text-brand-orange-700',
   PAID: 'bg-blue-100 text-blue-700',
   SHIPPED: 'bg-purple-100 text-purple-700',
   DELIVERED: 'bg-green-100 text-green-700',

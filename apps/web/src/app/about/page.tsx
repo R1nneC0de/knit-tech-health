@@ -3,9 +3,9 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us — KTI Health',
+  title: 'About Us — KnitTech Inc',
   description:
-    'KTI Health (KNITTECH INC) — Service Disabled Veterans Owned Small Business delivering healthcare staffing, medical equipment, and IT solutions nationwide.',
+    'KnitTech Inc — Service Disabled Veteran Owned Small Business (SDVOSB) delivering healthcare staffing, medical equipment, and IT solutions nationwide.',
 };
 
 const values = [
@@ -43,26 +43,32 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 to-brand-yellow-50 py-20">
+      <section className="bg-gradient-to-br from-brand-blue-900 to-brand-blue-800 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <h1 className="font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl">
-              About KTI Health
+            <span className="inline-block rounded-full bg-brand-orange-500/15 px-4 py-1.5 text-sm font-semibold text-brand-orange-400 ring-1 ring-brand-orange-500/30">
+              KnitTech Inc — Technology + Healthcare
+            </span>
+            <h1 className="mt-4 font-heading text-4xl font-bold text-white sm:text-5xl">
+              About KnitTech Inc
             </h1>
-            <p className="mt-4 text-lg text-brand-blue-600">
-              KNITTECH INC — a veteran-owned company delivering healthcare staffing,
-              medical equipment, and IT solutions to government agencies, hospitals,
-              and healthcare organizations across the United States.
+            <p className="mt-4 text-lg text-brand-blue-200">
+              A Service Disabled Veteran Owned Small Business (SDVOSB) delivering
+              healthcare staffing, medical equipment, and IT solutions to government
+              agencies, hospitals, and healthcare organizations across the United States.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-orange-500/20 px-4 py-1.5 text-sm font-semibold text-brand-orange-300 ring-1 ring-brand-orange-500/40">
                 🎖️ SDVOSB Certified
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-white ring-1 ring-white/20">
+                🤝 VetHUB Certified Partner
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-white ring-1 ring-white/20">
                 ✓ Texas Approved Vendor
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
-                🏛️ Top-Ranked Government Contractor
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-white ring-1 ring-white/20">
+                🏛️ SBA Certified · CAGE: 8UU52
               </span>
             </div>
           </div>
@@ -98,7 +104,7 @@ export default function AboutPage() {
               { icon: MapPin, label: '7+ States Served', sub: 'TX · GA · MS · FL · CT · OH · IN' },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center">
-                <item.icon className="h-8 w-8 text-brand-yellow-300" />
+                <item.icon className="h-8 w-8 text-brand-orange-300" />
                 <p className="mt-3 font-heading text-lg font-bold text-white">{item.label}</p>
                 <p className="mt-1 text-sm text-brand-blue-200">{item.sub}</p>
               </div>
@@ -116,8 +122,8 @@ export default function AboutPage() {
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {values.map((v) => (
               <div key={v.title} className="rounded-xl bg-white p-8 text-center shadow-sm">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-yellow-50">
-                  <v.icon className="h-8 w-8 text-brand-yellow-500" />
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-orange-50">
+                  <v.icon className="h-8 w-8 text-brand-orange-500" />
                 </div>
                 <h3 className="mt-6 font-heading text-xl font-semibold text-brand-blue-800">{v.title}</h3>
                 <p className="mt-3 leading-relaxed text-gray-600">{v.description}</p>
@@ -158,7 +164,7 @@ export default function AboutPage() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {team.map((member) => (
               <div key={member.name} className="flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue-100 to-brand-yellow-100">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue-100 to-brand-orange-100">
                   <Users className="h-7 w-7 text-brand-blue-600" />
                 </div>
                 <div>
@@ -181,7 +187,7 @@ export default function AboutPage() {
           </p>
           <Link
             href="/contact"
-            className="mt-6 inline-block rounded-lg bg-brand-yellow-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-yellow-600"
+            className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-orange-600"
           >
             Get in Touch
           </Link>

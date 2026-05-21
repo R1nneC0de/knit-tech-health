@@ -52,27 +52,27 @@ export default function RegisterPage() {
   const inputClass = 'mt-1 block w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:border-brand-blue-400 focus:outline-none focus:ring-2 focus:ring-brand-blue-100';
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-yellow-50 via-white to-brand-blue-50 px-4 py-12">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-orange-50 via-white to-brand-blue-50 px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 shadow-md">
         <div className="mb-8 flex flex-col items-center">
-          <Image src="/logo.jpeg" alt="KTI Health" width={100} height={40} className="object-contain" />
+          <Image src="/logo.jpeg" alt="KnitTech Inc" width={100} height={40} className="object-contain" />
           <h1 className="mt-4 font-heading text-2xl font-bold text-brand-blue-900">Create an account</h1>
-          <p className="mt-1 text-sm text-gray-500">Join KTI Health to shop and track orders</p>
+          <p className="mt-1 text-sm text-gray-500">Join KnitTech Inc to shop and track orders</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-brand-blue-700">First Name <span className="text-brand-yellow-500">*</span></label>
+              <label className="block text-sm font-medium text-brand-blue-700">First Name <span className="text-brand-orange-500">*</span></label>
               <input type="text" required value={form.firstName} onChange={(e) => update('firstName', e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-brand-blue-700">Last Name <span className="text-brand-yellow-500">*</span></label>
+              <label className="block text-sm font-medium text-brand-blue-700">Last Name <span className="text-brand-orange-500">*</span></label>
               <input type="text" required value={form.lastName} onChange={(e) => update('lastName', e.target.value)} className={inputClass} />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-brand-blue-700">Email <span className="text-brand-yellow-500">*</span></label>
+            <label className="block text-sm font-medium text-brand-blue-700">Email <span className="text-brand-orange-500">*</span></label>
             <input type="email" required value={form.email} onChange={(e) => update('email', e.target.value)} className={inputClass} placeholder="you@example.com" />
           </div>
           <div>
@@ -80,11 +80,11 @@ export default function RegisterPage() {
             <input type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)} className={inputClass} placeholder="(555) 000-0000" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-brand-blue-700">Password <span className="text-brand-yellow-500">*</span></label>
+            <label className="block text-sm font-medium text-brand-blue-700">Password <span className="text-brand-orange-500">*</span></label>
             <input type="password" required value={form.password} onChange={(e) => update('password', e.target.value)} className={inputClass} placeholder="Min. 8 characters" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-brand-blue-700">Confirm Password <span className="text-brand-yellow-500">*</span></label>
+            <label className="block text-sm font-medium text-brand-blue-700">Confirm Password <span className="text-brand-orange-500">*</span></label>
             <input type="password" required value={form.confirmPassword} onChange={(e) => update('confirmPassword', e.target.value)} className={inputClass} placeholder="••••••••" />
           </div>
 
@@ -101,7 +101,7 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold text-brand-yellow-500 hover:text-brand-yellow-600">
+          <Link href="/login" className="font-semibold text-brand-orange-500 hover:text-brand-orange-600">
             Sign in
           </Link>
         </p>

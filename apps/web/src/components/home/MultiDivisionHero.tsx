@@ -2,31 +2,36 @@ import Link from 'next/link';
 
 export default function MultiDivisionHero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-brand-blue-50 via-white to-brand-yellow-50">
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+    <section className="relative overflow-hidden bg-gradient-to-br from-brand-blue-900 via-brand-blue-800 to-brand-blue-900">
+      {/* Decorative rings */}
+      <div className="pointer-events-none absolute -right-32 -top-32 h-[500px] w-[500px] rounded-full bg-brand-orange-500/5" />
+      <div className="pointer-events-none absolute -bottom-20 -left-20 h-[350px] w-[350px] rounded-full bg-brand-orange-500/5" />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-28 sm:px-6 sm:py-36 lg:px-8">
         <div className="max-w-3xl">
-          <span className="inline-block rounded-full bg-brand-yellow-100 px-4 py-1 text-sm font-semibold text-brand-yellow-600">
-            KnitTechInc — Multi-Division Platform
+          <span className="inline-block rounded-full bg-brand-orange-500/15 px-4 py-1.5 text-sm font-semibold text-brand-orange-400 ring-1 ring-brand-orange-500/30">
+            KnitTech Inc — Technology + Healthcare
           </span>
-          <h1 className="mt-4 font-heading text-4xl font-bold tracking-tight text-brand-blue-900 sm:text-5xl lg:text-6xl">
-            Premium Healthcare &{' '}
-            <span className="text-brand-yellow-500">Technology Solutions</span>
+          <h1 className="mt-5 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            A Premium{' '}
+            <span className="text-brand-orange-400">Multi-Division</span>{' '}
+            Platform
           </h1>
-          <p className="mt-6 text-lg leading-relaxed text-brand-blue-600">
-            KTI Health delivers medical equipment, staffing solutions, and enterprise
-            IT services — all under one unified, trusted brand built for modern
-            healthcare organizations.
+          <p className="mt-6 text-lg leading-relaxed text-brand-blue-200">
+            IT Solutions · Healthcare Staffing · Medical Equipment Supplies —
+            all under one unified, enterprise-grade brand. Veteran-owned and
+            purpose-built for modern healthcare organizations and government agencies.
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-wrap gap-4">
             <a
               href="#divisions"
-              className="rounded-lg bg-brand-blue-700 px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800"
+              className="rounded-lg bg-brand-orange-500 px-8 py-3 font-semibold text-white shadow-lg transition hover:bg-brand-orange-600"
             >
               Explore Divisions
             </a>
             <Link
               href="/contact"
-              className="rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
+              className="rounded-lg border-2 border-white/30 px-8 py-3 font-semibold text-white transition hover:border-white/60 hover:bg-white/10"
             >
               Contact Us
             </Link>
