@@ -86,7 +86,7 @@ export default function RequestPage() {
       <div>
         <label className="block text-sm font-medium text-brand-blue-700">
           {label}
-          {required && <span className="text-brand-teal-500"> *</span>}
+          {required && <span className="text-brand-yellow-500"> *</span>}
         </label>
         <input
           type={type}
@@ -170,7 +170,7 @@ export default function RequestPage() {
             </div>
             <div className="mt-4">
               {product.category && (
-                <span className="rounded-full bg-brand-teal-50 px-3 py-0.5 text-xs font-medium text-brand-teal-600">
+                <span className="rounded-full bg-brand-yellow-50 px-3 py-0.5 text-xs font-medium text-brand-yellow-600">
                   {product.category.name}
                 </span>
               )}
@@ -211,7 +211,7 @@ export default function RequestPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-lg bg-brand-teal-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-teal-600 disabled:opacity-50"
+            className="w-full rounded-lg bg-brand-yellow-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-yellow-600 disabled:opacity-50"
           >
             {submitting ? 'Submitting...' : 'Submit Request'}
           </button>

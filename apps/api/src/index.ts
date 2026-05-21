@@ -7,6 +7,8 @@ import authRoutes from './routes/auth';
 import cartRoutes from './routes/cart';
 import checkoutRoutes from './routes/checkout';
 import webhookRoutes from './routes/webhooks';
+import adminRoutes from './routes/admin';
+import jobApplicationRoutes from './routes/jobApplications';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
@@ -33,6 +35,8 @@ app.use('/api', orderRoutes);
 app.use('/api', contactRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', checkoutRoutes);
+app.use('/api', adminRoutes);
+app.use('/api', jobApplicationRoutes);
 
 // Health check
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));

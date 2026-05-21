@@ -5,14 +5,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brand-teal': {
-          50: '#EDF9FC',
-          100: '#CFF0F7',
-          200: '#9DDFF0',
-          300: '#5CCADF',
-          400: '#1DB5D0',
-          500: '#0193A8',
-          600: '#017B8E',
+        'brand-yellow': {
+          50:  '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
         },
         'brand-blue': {
           50: '#E7EFF6',

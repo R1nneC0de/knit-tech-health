@@ -30,6 +30,7 @@ export interface InquiryOrder {
   id: string;
   productId: string;
   product?: Product;
+  userId: string | null;
   firstName: string;
   lastName: string;
   email: string;
@@ -39,6 +40,13 @@ export interface InquiryOrder {
   status: OrderStatus;
   emailSent: boolean;
   createdAt: string;
+}
+
+export interface AdminStats {
+  pendingInquiries: number;
+  openOrders: number;
+  newContacts: number;
+  newApplications: number;
 }
 
 export interface ContactSubmission {
@@ -53,7 +61,7 @@ export interface ContactSubmission {
   createdAt: string;
 }
 
-export type UserRole = 'CUSTOMER' | 'ADMIN';
+export type UserRole = 'CUSTOMER' | 'KTI_EMPLOYEE' | 'ADMIN';
 
 export interface User {
   id: string;
@@ -62,6 +70,21 @@ export interface User {
   lastName: string;
   phone: string | null;
   role: UserRole;
+}
+
+export type JobApplicationStatus = 'PENDING' | 'REVIEWING' | 'INTERVIEWED' | 'HIRED' | 'REJECTED';
+
+export interface JobApplication {
+  id: string;
+  userId: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  position: string;
+  message: string | null;
+  status: JobApplicationStatus;
+  createdAt: string;
 }
 
 export interface AuthResponse {

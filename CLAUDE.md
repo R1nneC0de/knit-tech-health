@@ -18,21 +18,37 @@ Medical equipment e-commerce + healthcare staffing + IT solutions, under the Kni
 
 ## Color Scheme
 
-- **Light Pink:** `brand-pink-*` tokens (CTAs, highlights, icons)
-- **Dark/Denim Blue:** `brand-blue-*` tokens (headings, navbar, footer, primary buttons)
+- **Blue:** `brand-blue-*` tokens (headings, navbar, footer, primary buttons) — primary: `#003D6F`
+- **Accent:** `brand-yellow-*` tokens (CTAs, highlights, icons) — touch of KTI logo yellow
 - **White:** backgrounds, cards, surfaces
 
 All color tokens in `apps/web/tailwind.config.ts`. Never hardcode hex in components.
+
+## User Roles
+
+Three roles exist in the system:
+
+| Role | Description |
+|------|-------------|
+| `CUSTOMER` | Default public user — can browse, request quotes, apply to jobs |
+| `KTI_EMPLOYEE` | Internal KTI staff — full dashboard: orders, quotes, contact submissions, job apps |
+| `ADMIN` | Reserved for super-admin capabilities (same as KTI_EMPLOYEE for now) |
+
+Role-based redirect after login: `CUSTOMER` → `/dashboard/client`, `KTI_EMPLOYEE`/`ADMIN` → `/dashboard/employee`.
+Employee/admin routes protected by `requireRole('KTI_EMPLOYEE', 'ADMIN')` middleware on the API.
+Frontend uses `<RoleProtectedRoute allowedRoles={[...]}>` wrapper.
 
 ## Site Divisions
 
 | Route | Description |
 |-------|-------------|
 | `/` | Multi-division landing page (KnitTechInc homepage) |
-| `/shop-medical` | Medical equipment B2B store |
+| `/shop-medical` | Medical equipment — quote-only (no prices shown publicly) |
 | `/staffing` | Healthcare staffing division |
 | `/it-solutions` | IT solutions division |
 | `/about`, `/contact` | Company-wide pages |
+| `/dashboard/client` | Client dashboard (orders, quotes, job applications, staffing requests) |
+| `/dashboard/employee` | KTI employee dashboard (all orders, quotes, applications, contacts) |
 
 ## Project Structure
 
@@ -43,13 +59,13 @@ knit-tech-health/
 │   │   ├── prisma/   # Schema + seed script
 │   │   └── src/
 │   │       ├── lib/        # prisma, mailer, stripe, paypal clients
-│   │       ├── routes/     # auth, products, orders, cart, checkout, contact, webhooks
+│   │       ├── routes/     # auth, products, orders, cart, checkout, contact, webhooks, admin
 │   │       ├── services/   # auth, cart, checkout, email, order, product services
-│   │       └── middleware/ # auth (JWT), errorHandler, validate
+│   │       └── middleware/ # auth (JWT + role check), errorHandler, validate
 │   └── web/          # Next.js frontend (port 3000)
 │       └── src/
-│           ├── app/         # Pages: /, /shop-medical, /staffing, /it-solutions, /about, /contact, /cart, /checkout, /login, /register, /orders
-│           ├── components/  # layout/, home/, shop/, product/, checkout/, auth/, forms/, ui/
+│           ├── app/         # Pages (see Route Map below)
+│           ├── components/  # layout/, home/, shop/, product/, checkout/, auth/, dashboard/, forms/, ui/
 │           ├── contexts/    # AuthContext, CartContext
 │           ├── hooks/       # React Query hooks
 │           └── lib/         # API fetch wrapper
@@ -65,6 +81,7 @@ knit-tech-health/
 - `POST /login` — email+password → `{ user, accessToken, refreshToken }`
 - `POST /register` — create account
 - `POST /refresh` — rotate tokens
+- `GET /me` — current user (requires auth)
 
 **Products / Categories**
 - `GET /api/products?category=slug&search=term`
@@ -72,26 +89,31 @@ knit-tech-health/
 - `GET /api/categories`
 
 **Cart** (requires auth)
-- `GET /api/cart` — get cart with items
-- `POST /api/cart` — add item `{ productId, quantity }`
-- `PATCH /api/cart/:itemId` — update quantity
-- `DELETE /api/cart/:itemId` — remove item
+- `GET /api/cart`, `POST /api/cart`, `PATCH /api/cart/:itemId`, `DELETE /api/cart/:itemId`
 
 **Checkout** (requires auth)
-- `POST /api/checkout` — create order, initiate payment
-- `POST /api/webhooks/stripe` — Stripe webhook handler
-- `POST /api/webhooks/paypal` — PayPal webhook handler
+- `POST /api/checkout/create-payment-intent` — Stripe
+- `POST /api/checkout/create-paypal-order` — PayPal
+- `POST /api/checkout/confirm` — finalize order
 
 **Inquiry / Contact**
-- `POST /api/orders` — create equipment inquiry (no login required)
-- `POST /api/contact` — contact form submission
+- `POST /api/orders` — equipment inquiry (no login required)
+- `POST /api/contact` — contact form
+
+**Employee Dashboard** (`/api/admin`, requires `KTI_EMPLOYEE` or `ADMIN` role)
+- `GET /api/admin/inquiries` — all InquiryOrders
+- `GET /api/admin/orders` — all Orders
+- `GET /api/admin/contacts` — all ContactSubmissions
+- `GET /api/admin/job-applications` — all JobApplications
+- `PATCH /api/admin/inquiries/:id` — update inquiry status
+- `PATCH /api/admin/orders/:id` — update order status
 
 ## Database
 
-- PostgreSQL via Docker (`kth:kth@localhost:5433/kth`) — port 5433 to avoid conflict with local PG
-- Models: `Category`, `Product`, `User`, `Cart`, `CartItem`, `Order`, `OrderItem`, `InquiryOrder`, `ContactSubmission`
-- `Order` = completed purchase (Stripe/PayPal); `InquiryOrder` = quote request (no payment)
-- Seed script: 8 categories, ~92 products with prices
+- PostgreSQL via Docker (`kth:kth@localhost:5433/kth`) — port 5433
+- Models: `Category`, `Product`, `User`, `Cart`, `CartItem`, `Order`, `OrderItem`, `InquiryOrder`, `ContactSubmission`, `JobApplication`
+- `Order` = completed purchase (Stripe/PayPal); `InquiryOrder` = equipment quote request
+- Seed script: 8 categories, ~92 products
 
 ## Commands
 
@@ -109,16 +131,21 @@ pnpm lint                 # Lint all packages
 
 ## Key Patterns
 
-### Purchase Flow
-Two paths exist side by side:
-1. **E-commerce (logged-in):** Add to cart → checkout → Stripe/PayPal payment → `Order` record
-2. **Inquiry (no login):** "Request This Equipment" → inquiry form → `InquiryOrder` record + email to vendor
+### Purchase / Inquiry Flow
+Equipment is quote-only — no public prices displayed. Two paths:
+1. **Inquiry (no login):** "Request a Quote" → inquiry form → `InquiryOrder` record + vendor email
+2. **E-commerce (logged-in):** Cart → checkout → Stripe/PayPal → `Order` record (internal/backend use)
+
+### Role-Based Access
+- `requireAuth()` middleware — validates JWT, adds `req.user` (`{ id, email, role }`)
+- `requireRole(...roles)` middleware — checks `req.user.role` against allowed roles, returns 403 if not allowed
+- Frontend `RoleProtectedRoute` — redirects based on role; wraps employee dashboard pages
 
 ### Auth
-JWT stored in memory (access token) + httpOnly cookie (refresh token). `AuthContext` at `apps/web/src/contexts/AuthContext.tsx` exposes `user`, `login`, `logout`. `CartContext` syncs with API on auth state.
+JWT access token in memory + httpOnly refresh token cookie. `AuthContext` exposes `user`, `login`, `logout`. Login redirects to role-appropriate dashboard. `CartContext` syncs with API on auth state change.
 
 ### Shared Constants
-`VENDOR_COMPANY` and `VENDOR_EMAIL` in `packages/shared/src/index.ts` — use these in email templates and UI copy.
+`VENDOR_COMPANY` and `VENDOR_EMAIL` in `packages/shared/src/index.ts` — use in email templates and UI copy.
 
 ## Conventions
 
@@ -127,3 +154,5 @@ JWT stored in memory (access token) + httpOnly cookie (refresh token). `AuthCont
 - Fonts: Inter (body `font-sans`), Poppins (headings `font-heading`) via `next/font/google`
 - Icons: lucide-react only
 - Logo: `apps/web/public/logo.jpeg` — use `<Image>` from next/image in components
+- Color tokens only — never hardcode hex values in components
+- `UserRole` type in `@kth/shared`: `'CUSTOMER' | 'KTI_EMPLOYEE' | 'ADMIN'`

@@ -104,27 +104,31 @@ export default function ProductDetailPage() {
         {/* Details */}
         <div>
           {product.category && (
-            <span className="mb-3 inline-block rounded-full bg-brand-teal-50 px-3 py-1 text-xs font-medium text-brand-teal-600">
+            <span className="mb-3 inline-block rounded-full bg-brand-yellow-50 px-3 py-1 text-xs font-medium text-brand-yellow-600">
               {product.category.name}
             </span>
           )}
           <h1 className="font-heading text-3xl font-bold text-brand-blue-900">
             {product.name}
           </h1>
-          {product.price > 0 && (
-            <p className="mt-3 text-2xl font-bold text-brand-teal-600">
-              ${Number(product.price).toFixed(2)}
-            </p>
-          )}
+          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-brand-yellow-600">
+            Contact us for pricing
+          </p>
           <p className="mt-4 leading-relaxed text-gray-600">
             {product.description}
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href={`/request/${product.slug}`}
+              className="rounded-lg bg-brand-yellow-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-yellow-600"
+            >
+              Request a Quote
+            </Link>
             {user ? (
               <button
                 onClick={handleAddToCart}
-                className="flex items-center gap-2 rounded-lg bg-brand-teal-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
+                className="flex items-center gap-2 rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
               >
                 <ShoppingCart className="h-5 w-5" />
                 {addedToCart ? 'Added!' : 'Add to Cart'}
@@ -132,18 +136,12 @@ export default function ProductDetailPage() {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 rounded-lg bg-brand-teal-500 px-8 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
+                className="flex items-center gap-2 rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
               >
                 <ShoppingCart className="h-5 w-5" />
                 Sign in to Add to Cart
               </Link>
             )}
-            <Link
-              href={`/request/${product.slug}`}
-              className="rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
-            >
-              Request a Quote
-            </Link>
           </div>
 
           {/* Features */}
@@ -155,7 +153,7 @@ export default function ProductDetailPage() {
               <ul className="mt-4 space-y-2">
                 {product.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-teal-400" />
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-yellow-400" />
                     {f}
                   </li>
                 ))}

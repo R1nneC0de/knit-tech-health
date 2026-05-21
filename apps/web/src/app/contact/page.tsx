@@ -89,7 +89,7 @@ export default function ContactPage() {
       <div>
         <label className="block text-sm font-medium text-brand-blue-700">
           {label}
-          {required && <span className="text-brand-teal-500"> *</span>}
+          {required && <span className="text-brand-yellow-500"> *</span>}
         </label>
         <input
           type={type}
@@ -121,7 +121,7 @@ export default function ContactPage() {
   return (
     <div>
       {/* Header banner */}
-      <div className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-teal-50 border-b border-gray-100 py-12">
+      <div className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-yellow-50 border-b border-gray-100 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">
             Contact Us
@@ -129,7 +129,7 @@ export default function ContactPage() {
           <p className="mt-2 text-gray-600">
             Reach our team for staffing, equipment procurement, or IT solutions. We&apos;re available Monday–Friday, 8 am–10 pm CST.
           </p>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-teal-50 border border-brand-teal-200 px-4 py-2 text-sm font-medium text-brand-teal-700">
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-yellow-50 border border-brand-yellow-200 px-4 py-2 text-sm font-medium text-brand-yellow-700">
             <Clock className="h-4 w-4 shrink-0" />
             Equipment quotes delivered within 1 hour
           </div>
@@ -150,7 +150,7 @@ export default function ContactPage() {
           {input('subject', 'Subject', true)}
           <div>
             <label className="block text-sm font-medium text-brand-blue-700">
-              Message <span className="text-brand-teal-500">*</span>
+              Message <span className="text-brand-yellow-500">*</span>
             </label>
             <textarea
               rows={5}
@@ -182,8 +182,8 @@ export default function ContactPage() {
               className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-teal-50">
-                  <item.icon className="h-5 w-5 text-brand-teal-500" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-yellow-50">
+                  <item.icon className="h-5 w-5 text-brand-yellow-500" />
                 </div>
                 <div>
                   <h3 className="font-heading text-sm font-semibold text-brand-blue-800">

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { Menu, X, ShoppingCart, User, LogOut } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 
@@ -36,7 +36,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-teal-500"
+              className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-yellow-500"
             >
               {link.label}
             </Link>
@@ -44,9 +44,9 @@ export default function Navbar() {
 
           {/* Cart icon — always visible */}
           <Link href={user ? '/cart' : '/login'} className="relative">
-            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-teal-500" />
+            <ShoppingCart className="h-6 w-6 text-brand-blue-700 transition hover:text-brand-yellow-500" />
             {user && itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-teal-500 text-xs font-bold text-white">
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-yellow-500 text-xs font-bold text-white">
                 {itemCount > 9 ? '9+' : itemCount}
               </span>
             )}
@@ -54,6 +54,17 @@ export default function Navbar() {
 
           {user ? (
             <>
+              {/* Employee dashboard shortcut */}
+              {(user.role === 'KTI_EMPLOYEE' || user.role === 'ADMIN') && (
+                <Link
+                  href="/dashboard/employee"
+                  className="flex items-center gap-1.5 rounded-lg bg-brand-yellow-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-yellow-600"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
+              )}
+
               {/* User menu */}
               <div className="relative">
                 <button
@@ -65,13 +76,24 @@ export default function Navbar() {
                 </button>
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 rounded-xl border border-gray-100 bg-white py-1 shadow-lg">
-                    <Link
-                      href="/orders"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-brand-blue-700 hover:bg-brand-blue-50"
-                    >
-                      Order History
-                    </Link>
+                    {(user.role === 'KTI_EMPLOYEE' || user.role === 'ADMIN') ? (
+                      <Link
+                        href="/dashboard/employee"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-brand-blue-700 hover:bg-brand-blue-50"
+                      >
+                        <LayoutDashboard className="h-4 w-4" />
+                        Employee Dashboard
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/orders"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-brand-blue-700 hover:bg-brand-blue-50"
+                      >
+                        Order History
+                      </Link>
+                    )}
                     <button
                       onClick={() => { logout(); setUserMenuOpen(false); }}
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50"
@@ -87,7 +109,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-teal-500"
+                className="text-sm font-medium text-brand-blue-700 transition hover:text-brand-yellow-500"
               >
                 Sign In
               </Link>
@@ -138,13 +160,24 @@ export default function Navbar() {
                 <ShoppingCart className="h-4 w-4" />
                 Cart {itemCount > 0 && `(${itemCount})`}
               </Link>
-              <Link
-                href="/orders"
-                onClick={() => setOpen(false)}
-                className="block py-3 text-sm font-medium text-brand-blue-700"
-              >
-                Order History
-              </Link>
+              {(user.role === 'KTI_EMPLOYEE' || user.role === 'ADMIN') ? (
+                <Link
+                  href="/dashboard/employee"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 py-3 text-sm font-semibold text-brand-yellow-600"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Employee Dashboard
+                </Link>
+              ) : (
+                <Link
+                  href="/orders"
+                  onClick={() => setOpen(false)}
+                  className="block py-3 text-sm font-medium text-brand-blue-700"
+                >
+                  Order History
+                </Link>
+              )}
               <button
                 onClick={() => { logout(); setOpen(false); }}
                 className="mt-2 block w-full rounded-lg border border-red-200 py-2 text-center text-sm font-medium text-red-500"

@@ -47,7 +47,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition hover:text-brand-teal-300"
+                    className="text-sm transition hover:text-brand-yellow-300"
                   >
                     {link.label}
                   </Link>
@@ -66,7 +66,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition hover:text-brand-teal-300"
+                    className="text-sm transition hover:text-brand-yellow-300"
                   >
                     {link.label}
                   </Link>
@@ -82,15 +82,15 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
-                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal-400" />
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-yellow-400" />
                 832-251-5160
               </li>
               <li className="flex items-start gap-2">
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal-400" />
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-yellow-400" />
                 hr@ktihealth.com
               </li>
               <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal-400" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-yellow-400" />
                 <span>KNITTECH INC<br />2901 Wilcrest Dr<br />Houston, TX 77042</span>
               </li>
             </ul>

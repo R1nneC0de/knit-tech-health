@@ -9,8 +9,8 @@ const divisions = [
       'B2B medical supply store for hospitals, clinics, and labs. Browse 90+ products across 8 categories — request quotes or purchase directly online.',
     href: '/shop-medical',
     cta: 'Browse Equipment',
-    accent: 'text-brand-teal-500',
-    bg: 'bg-brand-teal-50',
+    accent: 'text-brand-yellow-500',
+    bg: 'bg-brand-yellow-50',
   },
   {
     icon: Users,
@@ -29,8 +29,8 @@ const divisions = [
       'Enterprise-grade technology for healthcare organizations. From HIPAA-compliant infrastructure to cloud migration and EHR integration.',
     href: '/it-solutions',
     cta: 'Explore IT Services',
-    accent: 'text-brand-teal-500',
-    bg: 'bg-brand-teal-50',
+    accent: 'text-brand-yellow-500',
+    bg: 'bg-brand-yellow-50',
   },
 ];
 

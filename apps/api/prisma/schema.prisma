@@ -39,17 +39,19 @@ model Product {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  firstName    String
-  lastName     String
-  phone        String?
-  role         String   @default("CUSTOMER")
-  cart         Cart?
-  orders       Order[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id               String           @id @default(cuid())
+  email            String           @unique
+  passwordHash     String
+  firstName        String
+  lastName         String
+  phone            String?
+  role             String           @default("CUSTOMER")
+  cart             Cart?
+  orders           Order[]
+  inquiryOrders    InquiryOrder[]
+  jobApplications  JobApplication[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 }
 
 model Cart {
@@ -105,6 +107,8 @@ model InquiryOrder {
   id           String   @id @default(cuid())
   productId    String
   product      Product  @relation(fields: [productId], references: [id])
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
   firstName    String
   lastName     String
   email        String
@@ -115,6 +119,21 @@ model InquiryOrder {
   emailSent    Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model JobApplication {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  position  String
+  message   String?
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ContactSubmission {

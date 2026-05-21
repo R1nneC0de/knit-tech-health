@@ -19,8 +19,13 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      await login(email, password);
-      router.replace('/shop-medical');
+      const result = await login(email, password);
+      const role = result?.role;
+      if (role === 'KTI_EMPLOYEE' || role === 'ADMIN') {
+        router.replace('/dashboard/employee');
+      } else {
+        router.replace('/shop-medical');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
@@ -29,7 +34,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-teal-50 via-white to-brand-blue-50 px-4">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-brand-yellow-50 via-white to-brand-blue-50 px-4">
       <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 shadow-md">
         <div className="mb-8 flex flex-col items-center">
           <Image src="/logo.jpeg" alt="KTI Health" width={100} height={40} className="object-contain" />
@@ -74,7 +79,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Don&apos;t have an account?{' '}
-          <Link href="/register" className="font-semibold text-brand-teal-500 hover:text-brand-teal-600">
+          <Link href="/register" className="font-semibold text-brand-yellow-500 hover:text-brand-yellow-600">
             Create one
           </Link>
         </p>

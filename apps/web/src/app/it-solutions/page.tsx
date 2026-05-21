@@ -114,7 +114,7 @@ export default function ITSolutionsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-teal-50 py-20">
+      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-yellow-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-block rounded-full bg-brand-blue-100 px-4 py-1 text-sm font-semibold text-brand-blue-700">
@@ -122,7 +122,7 @@ export default function ITSolutionsPage() {
             </span>
             <h1 className="mt-4 font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl">
               Trusted Government IT &{' '}
-              <span className="text-brand-teal-500">Healthcare Technology</span>
+              <span className="text-brand-yellow-500">Healthcare Technology</span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-brand-blue-600">
               KNITTECH INC (DBA Nepstaff) delivers healthcare and IT services and
@@ -163,7 +163,7 @@ export default function ITSolutionsPage() {
       <section className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-brand-teal-500">What We Do</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-yellow-500">What We Do</p>
             <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
               Full-Spectrum IT & Technology Services
             </h2>
@@ -177,8 +177,8 @@ export default function ITSolutionsPage() {
                 key={service.title}
                 className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-100 transition hover:shadow-md"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-teal-50">
-                  <service.icon className="h-6 w-6 text-brand-teal-500" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-yellow-50">
+                  <service.icon className="h-6 w-6 text-brand-yellow-500" />
                 </div>
                 <h3 className="mt-4 font-heading text-lg font-semibold text-brand-blue-900">
                   {service.title}
@@ -197,7 +197,7 @@ export default function ITSolutionsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-brand-teal-500">Government Contracting</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-brand-yellow-500">Government Contracting</p>
               <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
                 A Top-Ranked Public Sector Partner
               </h2>
@@ -210,14 +210,14 @@ export default function ITSolutionsPage() {
               <ul className="mt-8 space-y-4">
                 {govHighlights.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal-500" />
+                    <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-brand-yellow-500" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
             <div className="rounded-2xl bg-brand-blue-700 p-10 text-white">
-              <Building2 className="h-12 w-12 text-brand-teal-300" />
+              <Building2 className="h-12 w-12 text-brand-yellow-300" />
               <h3 className="mt-4 font-heading text-2xl font-bold">State Clients on Record</h3>
               <p className="mt-2 text-brand-blue-200">
                 Texas · Georgia · Mississippi · Florida · Connecticut · Ohio · Indiana
@@ -227,10 +227,10 @@ export default function ITSolutionsPage() {
                 <p className="mt-1 font-semibold">Grady Hospitals · Experis · DIR (Texas) · Madrin · Bastil</p>
               </div>
               <div className="mt-6 space-y-2 text-sm">
-                <a href="mailto:nepstaffhr@nepstaff.com" className="flex items-center gap-2 text-brand-teal-300 hover:text-white">
+                <a href="mailto:nepstaffhr@nepstaff.com" className="flex items-center gap-2 text-brand-yellow-300 hover:text-white">
                   <Mail className="h-4 w-4 shrink-0" /> nepstaffhr@nepstaff.com
                 </a>
-                <a href="tel:8322058542" className="flex items-center gap-2 text-brand-teal-300 hover:text-white">
+                <a href="tel:8322058542" className="flex items-center gap-2 text-brand-yellow-300 hover:text-white">
                   <Phone className="h-4 w-4 shrink-0" /> (832) 205-8542
                 </a>
               </div>
@@ -252,7 +252,7 @@ export default function ITSolutionsPage() {
           </p>
           <Link
             href="/contact"
-            className="mt-8 inline-block rounded-lg bg-brand-teal-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
+            className="mt-8 inline-block rounded-lg bg-brand-yellow-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-yellow-600"
           >
             Schedule a Consultation
           </Link>

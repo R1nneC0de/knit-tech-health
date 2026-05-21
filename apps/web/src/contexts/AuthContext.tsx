@@ -17,8 +17,8 @@ interface AuthContextType {
   user: User | null;
   accessToken: string | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: RegisterData) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
+  register: (data: RegisterData) => Promise<User>;
   logout: () => void;
 }
 
@@ -26,8 +26,8 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   accessToken: null,
   isLoading: true,
-  login: async () => {},
-  register: async () => {},
+  login: async () => ({ id: '', email: '', firstName: '', lastName: '', phone: null, role: 'CUSTOMER' }),
+  register: async () => ({ id: '', email: '', firstName: '', lastName: '', phone: null, role: 'CUSTOMER' }),
   logout: () => {},
 });
 
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string): Promise<User> => {
     const result = await apiFetch<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
@@ -64,9 +64,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     Cookies.set('refreshToken', result.refreshToken, { expires: 7, sameSite: 'strict' });
     setAccessToken(result.accessToken);
     setUser(result.user);
+    return result.user;
   }, []);
 
-  const register = useCallback(async (data: RegisterData) => {
+  const register = useCallback(async (data: RegisterData): Promise<User> => {
     const result = await apiFetch<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -74,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     Cookies.set('refreshToken', result.refreshToken, { expires: 7, sameSite: 'strict' });
     setAccessToken(result.accessToken);
     setUser(result.user);
+    return result.user;
   }, []);
 
   const logout = useCallback(() => {

@@ -43,7 +43,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 to-brand-teal-50 py-20">
+      <section className="bg-gradient-to-br from-brand-blue-50 to-brand-yellow-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <h1 className="font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl">
@@ -98,7 +98,7 @@ export default function AboutPage() {
               { icon: MapPin, label: '7+ States Served', sub: 'TX · GA · MS · FL · CT · OH · IN' },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center">
-                <item.icon className="h-8 w-8 text-brand-teal-300" />
+                <item.icon className="h-8 w-8 text-brand-yellow-300" />
                 <p className="mt-3 font-heading text-lg font-bold text-white">{item.label}</p>
                 <p className="mt-1 text-sm text-brand-blue-200">{item.sub}</p>
               </div>
@@ -116,8 +116,8 @@ export default function AboutPage() {
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {values.map((v) => (
               <div key={v.title} className="rounded-xl bg-white p-8 text-center shadow-sm">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-teal-50">
-                  <v.icon className="h-8 w-8 text-brand-teal-500" />
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-yellow-50">
+                  <v.icon className="h-8 w-8 text-brand-yellow-500" />
                 </div>
                 <h3 className="mt-6 font-heading text-xl font-semibold text-brand-blue-800">{v.title}</h3>
                 <p className="mt-3 leading-relaxed text-gray-600">{v.description}</p>
@@ -158,7 +158,7 @@ export default function AboutPage() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {team.map((member) => (
               <div key={member.name} className="flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue-100 to-brand-teal-100">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue-100 to-brand-yellow-100">
                   <Users className="h-7 w-7 text-brand-blue-600" />
                 </div>
                 <div>
@@ -181,7 +181,7 @@ export default function AboutPage() {
           </p>
           <Link
             href="/contact"
-            className="mt-6 inline-block rounded-lg bg-brand-teal-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-teal-600"
+            className="mt-6 inline-block rounded-lg bg-brand-yellow-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-yellow-600"
           >
             Get in Touch
           </Link>
