@@ -122,18 +122,21 @@ model InquiryOrder {
 }
 
 model JobApplication {
-  id        String   @id @default(cuid())
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  firstName String
-  lastName  String
-  email     String
-  phone     String
-  position  String
-  message   String?
-  status    String   @default("PENDING")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  firstName  String
+  lastName   String
+  email      String
+  phone      String
+  position   String
+  message    String?
+  status     String   @default("PENDING")
+  resumeData Bytes?
+  resumeName String?
+  resumeType String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model ContactSubmission {

@@ -2,6 +2,8 @@ import { Router, Request, Response } from 'express';
 import type { Router as IRouter } from 'express';
 import { z } from 'zod';
 import { validate } from '../middleware/validate';
+import { requireAuth } from '../middleware/auth';
+import { prisma } from '../lib/prisma';
 import { createOrder } from '../services/order.service';
 
 const router: IRouter = Router();
@@ -26,5 +28,33 @@ router.post(
     res.status(201).json(order);
   },
 );
+
+router.get('/orders/history', requireAuth, async (req, res, next) => {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { userId: req.user!.id },
+      include: {
+        items: { include: { product: { select: { name: true, slug: true } } } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(orders);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/orders/inquiries', requireAuth, async (req, res, next) => {
+  try {
+    const inquiries = await prisma.inquiryOrder.findMany({
+      where: { userId: req.user!.id },
+      include: { product: { select: { name: true, imageUrl: true, slug: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(inquiries);
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default router;

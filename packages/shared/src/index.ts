@@ -84,6 +84,8 @@ export interface JobApplication {
   position: string;
   message: string | null;
   status: JobApplicationStatus;
+  resumeName: string | null;
+  resumeType: string | null;
   createdAt: string;
 }
 

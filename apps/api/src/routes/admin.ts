@@ -93,6 +93,20 @@ router.get('/admin/contacts', ...guard, async (_req, res, next) => {
   }
 });
 
+// Contact submissions
+router.patch('/admin/contacts/:id', ...guard, async (req, res, next) => {
+  try {
+    const { responded } = req.body as { responded: boolean };
+    const contact = await prisma.contactSubmission.update({
+      where: { id: req.params.id },
+      data: { emailSent: responded },
+    });
+    res.json(contact);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Job applications
 router.get('/admin/applications', ...guard, async (req, res, next) => {
   try {

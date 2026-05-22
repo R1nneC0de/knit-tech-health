@@ -85,3 +85,13 @@ export function useUpdateApplicationStatus() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'applications'] }),
   });
 }
+
+export function useMarkContactResponded() {
+  const token = useToken();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, responded }: { id: string; responded: boolean }) =>
+      authApiFetch('/admin/contacts/' + id, token, { method: 'PATCH', body: JSON.stringify({ responded }) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'contacts'] }),
+  });
+}

@@ -4,9 +4,8 @@ import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Paperclip, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { authApiFetch, apiFetch } from '@/lib/api';
 
 const POSITIONS = [
   'Registered Nurse (RN)',
@@ -18,6 +17,8 @@ const POSITIONS = [
   'Healthcare IT Specialist',
   'Other',
 ];
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 function ApplyForm() {
   const { user, accessToken } = useAuth();
@@ -32,6 +33,7 @@ function ApplyForm() {
     position: prefillPosition,
     message: '',
   });
+  const [resume, setResume] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -40,18 +42,40 @@ function ApplyForm() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
+  function handleResumeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null;
+    if (file && file.size > 5 * 1024 * 1024) {
+      setError('Resume must be under 5 MB.');
+      e.target.value = '';
+      return;
+    }
+    setError('');
+    setResume(file);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      const fetchFn = accessToken
-        ? (path: string, init?: RequestInit) => authApiFetch(path, accessToken, init)
-        : apiFetch;
-      await fetchFn('/job-applications', {
+      const formData = new FormData();
+      Object.entries(form).forEach(([k, v]) => { if (v) formData.append(k, v); });
+      if (resume) formData.append('resume', resume);
+
+      const headers: HeadersInit = {};
+      if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+
+      const res = await fetch(`${API_BASE}/job-applications`, {
         method: 'POST',
-        body: JSON.stringify(form),
+        headers,
+        body: formData,
       });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Submission failed (${res.status})`);
+      }
+
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Submission failed. Please try again.');
@@ -129,6 +153,38 @@ function ApplyForm() {
               className={inputClass}
               placeholder="Tell us about your experience and why you'd like to join KnitTech Inc…"
             />
+          </div>
+
+          {/* Resume upload */}
+          <div>
+            <label className="block text-sm font-medium text-brand-blue-700">
+              Resume <span className="text-gray-400 font-normal">(PDF or Word, max 5 MB)</span>
+            </label>
+            {resume ? (
+              <div className="mt-1 flex items-center gap-3 rounded-lg border border-brand-blue-200 bg-brand-blue-50 px-4 py-2.5">
+                <Paperclip className="h-4 w-4 shrink-0 text-brand-blue-600" />
+                <span className="flex-1 truncate text-sm text-brand-blue-700">{resume.name}</span>
+                <button
+                  type="button"
+                  onClick={() => setResume(null)}
+                  className="text-gray-400 hover:text-red-500"
+                  aria-label="Remove resume"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <label className="mt-1 flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-gray-300 px-4 py-3 hover:border-brand-blue-400 hover:bg-brand-blue-50 transition">
+                <Paperclip className="h-4 w-4 text-gray-400" />
+                <span className="text-sm text-gray-500">Click to attach resume</span>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  onChange={handleResumeChange}
+                  className="sr-only"
+                />
+              </label>
+            )}
           </div>
 
           {error && <p className="text-sm text-red-500">{error}</p>}

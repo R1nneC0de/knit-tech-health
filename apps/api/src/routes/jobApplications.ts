@@ -2,7 +2,7 @@ import { Router } from 'express';
 import type { Router as IRouter } from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma';
-import { optionalAuth } from '../middleware/auth';
+import { optionalAuth, requireAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 
 const router: IRouter = Router();
@@ -26,6 +26,18 @@ router.post('/job-applications', optionalAuth, validate(applySchema), async (req
       },
     });
     res.status(201).json(application);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/job-applications/mine', requireAuth, async (req, res, next) => {
+  try {
+    const applications = await prisma.jobApplication.findMany({
+      where: { userId: req.user!.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(applications);
   } catch (err) {
     next(err);
   }

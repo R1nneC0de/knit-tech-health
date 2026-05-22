@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useAdminInquiries, useUpdateInquiryStatus } from '@/hooks/useAdmin';
 
 const STATUSES = ['PENDING', 'CONTACTED', 'COMPLETED', 'CANCELLED'];
@@ -14,6 +15,7 @@ const statusColors: Record<string, string> = {
 
 export default function InquiriesPage() {
   const [filter, setFilter] = useState('');
+  const [expanded, setExpanded] = useState<string | null>(null);
   const { data: inquiries, isLoading } = useAdminInquiries(filter || undefined);
   const { mutate: updateStatus } = useUpdateInquiryStatus();
 
@@ -51,6 +53,7 @@ export default function InquiriesPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
+                <th className="w-8 px-4 py-3" />
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Product</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Requester</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Organization</th>
@@ -59,29 +62,64 @@ export default function InquiriesPage() {
               </tr>
             </thead>
             <tbody>
-              {inquiries.map((inq) => (
-                <tr key={inq.id} className="border-b border-gray-50 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-brand-blue-800">
-                    {(inq.product as { name: string } | undefined)?.name ?? inq.productId}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {inq.firstName} {inq.lastName}
-                    <br />
-                    <span className="text-xs text-gray-400">{inq.email}</span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{inq.organization ?? '—'}</td>
-                  <td className="px-4 py-3 text-gray-500">{new Date(inq.createdAt).toLocaleDateString()}</td>
-                  <td className="px-4 py-3">
-                    <select
-                      value={inq.status}
-                      onChange={(e) => updateStatus({ id: inq.id, status: e.target.value })}
-                      className={`rounded-full px-2 py-0.5 text-xs font-semibold border-0 cursor-pointer ${statusColors[inq.status] ?? 'bg-gray-100 text-gray-600'}`}
+              {inquiries.map((inq) => {
+                const isExpanded = expanded === inq.id;
+                return (
+                  <>
+                    <tr
+                      key={inq.id}
+                      className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer"
+                      onClick={() => setExpanded(isExpanded ? null : inq.id)}
                     >
-                      {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  </td>
-                </tr>
-              ))}
+                      <td className="px-4 py-3 text-gray-400">
+                        {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                      </td>
+                      <td className="px-4 py-3 font-medium text-brand-blue-800">
+                        {(inq.product as { name: string } | undefined)?.name ?? inq.productId}
+                      </td>
+                      <td className="px-4 py-3 text-gray-700">
+                        {inq.firstName} {inq.lastName}
+                        <br />
+                        <span className="text-xs text-gray-400">{inq.email}</span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{inq.organization ?? '—'}</td>
+                      <td className="px-4 py-3 text-gray-500">{new Date(inq.createdAt).toLocaleDateString()}</td>
+                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          value={inq.status}
+                          onChange={(e) => updateStatus({ id: inq.id, status: e.target.value })}
+                          className={`rounded-full px-2 py-0.5 text-xs font-semibold border-0 cursor-pointer ${statusColors[inq.status] ?? 'bg-gray-100 text-gray-600'}`}
+                        >
+                          {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                      </td>
+                    </tr>
+                    {isExpanded && (
+                      <tr key={`${inq.id}-detail`} className="bg-brand-blue-50 border-b border-gray-100">
+                        <td />
+                        <td colSpan={5} className="px-4 py-4">
+                          <div className="grid gap-3 sm:grid-cols-2 text-sm">
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Phone</p>
+                              <p className="mt-0.5 text-gray-700">{inq.phone}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Email</p>
+                              <p className="mt-0.5 text-gray-700">{inq.email}</p>
+                            </div>
+                            {inq.message && (
+                              <div className="sm:col-span-2">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Message</p>
+                                <p className="mt-0.5 whitespace-pre-wrap text-gray-700">{inq.message}</p>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                );
+              })}
             </tbody>
           </table>
         </div>

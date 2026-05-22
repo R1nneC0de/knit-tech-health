@@ -87,11 +87,12 @@ export default function Navbar() {
                       </Link>
                     ) : (
                       <Link
-                        href="/orders"
+                        href="/dashboard/client"
                         onClick={() => setUserMenuOpen(false)}
                         className="flex items-center gap-2 px-4 py-2 text-sm text-brand-blue-700 hover:bg-brand-blue-50"
                       >
-                        Order History
+                        <LayoutDashboard className="h-4 w-4" />
+                        My Dashboard
                       </Link>
                     )}
                     <button
@@ -171,11 +172,12 @@ export default function Navbar() {
                 </Link>
               ) : (
                 <Link
-                  href="/orders"
+                  href="/dashboard/client"
                   onClick={() => setOpen(false)}
-                  className="block py-3 text-sm font-medium text-brand-blue-700"
+                  className="flex items-center gap-2 py-3 text-sm font-semibold text-brand-blue-700"
                 >
-                  Order History
+                  <LayoutDashboard className="h-4 w-4" />
+                  My Dashboard
                 </Link>
               )}
               <button

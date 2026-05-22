@@ -34,7 +34,7 @@ Three roles exist in the system:
 | `KTI_EMPLOYEE` | Internal KTI staff — full dashboard: orders, quotes, contact submissions, job apps |
 | `ADMIN` | Reserved for super-admin capabilities (same as KTI_EMPLOYEE for now) |
 
-Role-based redirect after login: `CUSTOMER` → `/dashboard/client`, `KTI_EMPLOYEE`/`ADMIN` → `/dashboard/employee`.
+Role-based redirect after login: `CUSTOMER` → `/dashboard/client` (quotes, orders, applications), `KTI_EMPLOYEE`/`ADMIN` → `/dashboard/employee`.
 Employee/admin routes protected by `requireRole('KTI_EMPLOYEE', 'ADMIN')` middleware on the API.
 Frontend uses `<RoleProtectedRoute allowedRoles={[...]}>` wrapper.
 
@@ -47,8 +47,8 @@ Frontend uses `<RoleProtectedRoute allowedRoles={[...]}>` wrapper.
 | `/staffing` | Healthcare staffing division |
 | `/it-solutions` | IT solutions division |
 | `/about`, `/contact` | Company-wide pages |
-| `/dashboard/client` | Client dashboard (orders, quotes, job applications, staffing requests) |
-| `/dashboard/employee` | KTI employee dashboard (all orders, quotes, applications, contacts) |
+| `/dashboard/client` | Client dashboard — My Quotes, My Orders, My Applications (any logged-in user) |
+| `/dashboard/employee` | KTI employee dashboard — all RFQs, orders, contacts, job applications |
 
 ## Project Structure
 
@@ -100,6 +100,11 @@ knit-tech-health/
 - `POST /api/orders` — equipment inquiry (no login required)
 - `POST /api/contact` — contact form
 
+**Customer Self-Service** (requires auth)
+- `GET /api/orders/history` — current user's PurchaseOrders (Stripe/PayPal)
+- `GET /api/orders/inquiries` — current user's InquiryOrders (quote requests)
+- `GET /api/job-applications/mine` — current user's job applications
+
 **Employee Dashboard** (`/api/admin`, requires `KTI_EMPLOYEE` or `ADMIN` role)
 - `GET /api/admin/inquiries` — all InquiryOrders
 - `GET /api/admin/orders` — all Orders
@@ -107,6 +112,7 @@ knit-tech-health/
 - `GET /api/admin/job-applications` — all JobApplications
 - `PATCH /api/admin/inquiries/:id` — update inquiry status
 - `PATCH /api/admin/orders/:id` — update order status
+- `PATCH /api/admin/contacts/:id` — mark contact as responded (`{ responded: boolean }`)
 
 ## Database
 

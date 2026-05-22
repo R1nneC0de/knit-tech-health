@@ -24,7 +24,7 @@ export default function LoginPage() {
       if (role === 'KTI_EMPLOYEE' || role === 'ADMIN') {
         router.replace('/dashboard/employee');
       } else {
-        router.replace('/shop-medical');
+        router.replace('/dashboard/client');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
