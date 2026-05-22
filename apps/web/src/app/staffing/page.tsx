@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Heart,
   Stethoscope,
@@ -234,6 +235,15 @@ export default function StaffingPage() {
       <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-orange-50 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
+            <div className="mb-6 inline-block rounded-xl bg-white px-4 py-3 shadow-sm">
+              <Image
+                src="/logo.png"
+                alt="KnitTech Inc"
+                width={180}
+                height={58}
+                className="h-14 w-auto object-contain"
+              />
+            </div>
             <span className="inline-block rounded-full bg-brand-orange-100 px-4 py-1 text-sm font-semibold text-brand-orange-600">
               Healthcare Staffing Division
             </span>
