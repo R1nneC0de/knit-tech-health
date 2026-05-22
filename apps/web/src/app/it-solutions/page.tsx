@@ -124,11 +124,11 @@ export default function ITSolutionsPage() {
               Trusted Government IT &{' '}
               <span className="text-brand-orange-500">Healthcare Technology</span>
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-brand-blue-600">
+            <p className="mt-6 text-base leading-relaxed text-brand-blue-600">
               KNITTECH INC (DBA Nepstaff) delivers healthcare and IT services and
               products to government agencies, hospitals, and enterprises across the
               USA. Veteran-owned. Government-certified. Available Monday–Friday,
-              8 am–10 pm CST.
+              7 am–8 pm CST.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
@@ -167,7 +167,7 @@ export default function ITSolutionsPage() {
             <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
               Full-Spectrum IT & Technology Services
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
+            <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
               From application development to managed services — one partner, every technology need.
             </p>
           </div>
@@ -201,7 +201,7 @@ export default function ITSolutionsPage() {
               <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900">
                 A Top-Ranked Public Sector Partner
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-gray-600">
+              <p className="mt-4 text-base leading-relaxed text-gray-600">
                 As a Service Disabled Veterans Owned Small Business (SDVOSB) and
                 top-ranked government contract holder, we serve public sector
                 entities across all 50 states — from state agencies to federal
@@ -245,10 +245,10 @@ export default function ITSolutionsPage() {
           <h2 className="font-heading text-3xl font-bold text-white">
             Ready to Modernize Your Technology?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-brand-blue-200">
+          <p className="mx-auto mt-4 max-w-xl text-base text-brand-blue-200">
             Our technology consultants are ready to assess your needs and design
             solutions that fit your organization&apos;s goals and compliance
-            requirements. Available Mon–Fri, 8 am–10 pm CST.
+            requirements. Available Mon–Fri, 7 am–8 pm CST.
           </p>
           <Link
             href="/contact"

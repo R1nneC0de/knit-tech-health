@@ -85,15 +85,15 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange-400" />
-                832-251-5160
+                (832) 205-8542
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange-400" />
-                hr@ktihealth.com
+                Suresh@knittechinc.com
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange-400" />
-                <span>KNITTECH INC<br />2901 Wilcrest Dr<br />Houston, TX 77042</span>
+                <span>KNITTECH INC<br />2901 Wilcrest Dr, STE 515<br />Houston, TX 77042</span>
               </li>
             </ul>
           </div>

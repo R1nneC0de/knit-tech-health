@@ -23,16 +23,15 @@ const initial: FormData = {
 };
 
 const contactInfo = [
-  { icon: Phone, label: 'Phone', value: '832-251-5160' },
-  { icon: Mail, label: 'General / Staffing', value: 'hr@ktihealth.com' },
-  { icon: Mail, label: 'Medical Equipment', value: 'suresh@ktihealth.com' },
-  { icon: Mail, label: 'IT Solutions', value: 'nepstaffhr@nepstaff.com' },
+  { icon: Phone, label: 'Phone', value: '(832) 205-8542' },
+  { icon: Mail, label: 'General / Medical Equipment', value: 'Suresh@knittechinc.com' },
+  { icon: Mail, label: 'IT Solutions (Nepstaff)', value: 'nepstaffhr@nepstaff.com' },
   {
     icon: MapPin,
     label: 'Address',
-    value: 'KNITTECH INC\n2901 Wilcrest Dr\nHouston, TX 77042',
+    value: 'KNITTECH INC\n2901 Wilcrest Dr, STE 515\nHouston, TX 77042',
   },
-  { icon: Clock, label: 'Hours', value: 'Mon–Fri: 8 am – 10 pm CST\nSat–Sun: Closed' },
+  { icon: Clock, label: 'Hours', value: 'Mon–Fri: 7 am – 8 pm CST\nSat–Sun: Closed' },
 ];
 
 export default function ContactPage() {

@@ -19,7 +19,7 @@ const values = [
     icon: Headset,
     title: 'Service',
     description:
-      'From equipment sourcing to staffing placement, our team provides personalized support — Monday through Friday, 8 am to 10 pm CST.',
+      'From equipment sourcing to staffing placement, our team provides personalized support — Monday through Friday, 7 am to 8 pm CST.',
   },
   {
     icon: Heart,
@@ -52,7 +52,7 @@ export default function AboutPage() {
             <h1 className="mt-4 font-heading text-4xl font-bold text-white sm:text-5xl">
               About KnitTech Inc
             </h1>
-            <p className="mt-4 text-lg text-brand-blue-200">
+            <p className="mt-4 text-base text-brand-blue-200">
               A Service Disabled Veteran Owned Small Business (SDVOSB) delivering
               healthcare staffing, medical equipment, and IT solutions to government
               agencies, hospitals, and healthcare organizations across the United States.
@@ -79,12 +79,12 @@ export default function AboutPage() {
       <section className="bg-white py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl font-bold text-brand-blue-900">Our Mission</h2>
-          <p className="mt-6 text-lg leading-relaxed text-gray-600">
+          <p className="mt-6 text-base leading-relaxed text-gray-600">
             We specialize in healthcare technology and solutions — including staffing services and
             placement of physicians, healthcare leaders, Advanced Practice RNs, physician assistants,
             and travel nurses — connecting the right talent with the right facilities across America.
           </p>
-          <p className="mt-4 text-lg leading-relaxed text-gray-600">
+          <p className="mt-4 text-base leading-relaxed text-gray-600">
             Beyond staffing, our medical equipment division simplifies procurement for government
             agencies, hospitals, and specialty clinics. Our IT solutions division (Nepstaff) delivers
             application development, managed services, and government contracting support nationwide.

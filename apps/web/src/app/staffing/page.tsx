@@ -241,7 +241,7 @@ export default function StaffingPage() {
               Your Partner in the{' '}
               <span className="text-brand-orange-500">Mission of Care</span>
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-brand-blue-600">
+            <p className="mt-6 text-base leading-relaxed text-brand-blue-600">
               KnitTech Inc (KNITTECH INC) connects qualified healthcare professionals
               with leading facilities from coast to coast — placing travel nurses,
               allied health, advanced practice providers, and physicians under one
@@ -313,8 +313,8 @@ export default function StaffingPage() {
           </div>
           <div className="mt-8 rounded-2xl bg-brand-orange-50 p-6 text-center">
             <p className="text-sm font-medium text-brand-blue-700">
-              We accept applications Mon–Fri, 8 am – 10 pm CST. &nbsp;•&nbsp; Direct pay available via pay card. &nbsp;•&nbsp; Contact:{' '}
-              <a href="mailto:hr@ktihealth.com" className="font-semibold text-brand-orange-600 underline underline-offset-2">hr@ktihealth.com</a>
+              We accept applications Mon–Fri, 7 am – 8 pm CST. &nbsp;•&nbsp; Direct pay available via pay card. &nbsp;•&nbsp; Contact:{' '}
+              <a href="mailto:Suresh@knittechinc.com" className="font-semibold text-brand-orange-600 underline underline-offset-2">Suresh@knittechinc.com</a>
             </p>
           </div>
         </div>
@@ -329,7 +329,7 @@ export default function StaffingPage() {
               <h2 className="mt-2 font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">Open Positions</h2>
               <p className="mt-2 text-gray-600">Current openings across travel nursing, allied health, locum tenens, and permanent roles.</p>
             </div>
-            <Link href="/contact" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold text-brand-blue-700 transition hover:text-brand-orange-500">
+            <Link href="/apply" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold text-brand-blue-700 transition hover:text-brand-orange-500">
               Submit Your Resume <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -382,7 +382,7 @@ export default function StaffingPage() {
 
                 <div className="mt-4">
                   <Link
-                    href="/contact"
+                    href="/apply"
                     className="inline-flex items-center gap-1.5 rounded-lg bg-brand-blue-50 px-4 py-2 text-sm font-semibold text-brand-blue-700 transition hover:bg-brand-blue-100"
                   >
                     Apply Now <ArrowRight className="h-3.5 w-3.5" />
@@ -395,7 +395,7 @@ export default function StaffingPage() {
           <div className="mt-10 rounded-2xl bg-brand-blue-50 p-8 text-center">
             <p className="font-heading text-lg font-semibold text-brand-blue-900">Don&apos;t see the right fit?</p>
             <p className="mt-1 text-gray-600">Submit your resume and a recruiter will match you with positions that fit your specialty, preferred location, and schedule.</p>
-            <Link href="/contact" className="mt-4 inline-block rounded-lg bg-brand-blue-700 px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800">
+            <Link href="/apply" className="mt-4 inline-block rounded-lg bg-brand-blue-700 px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800">
               Submit Your Resume
             </Link>
           </div>
@@ -473,7 +473,7 @@ export default function StaffingPage() {
             <div className="rounded-2xl bg-brand-blue-700 p-10">
               <h3 className="font-heading text-2xl font-bold text-white">I&apos;m a Healthcare Professional</h3>
               <p className="mt-3 text-brand-blue-200">Explore travel assignments, per diem shifts, and permanent roles across the country.</p>
-              <Link href="/contact" className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-7 py-3 font-semibold text-white transition hover:bg-brand-orange-600">
+              <Link href="/apply" className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-7 py-3 font-semibold text-white transition hover:bg-brand-orange-600">
                 Find My Next Assignment
               </Link>
             </div>
@@ -492,7 +492,7 @@ export default function StaffingPage() {
       <section className="bg-brand-blue-700 py-16">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl font-bold text-white">Ready to Get Started?</h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-brand-blue-200">
+          <p className="mx-auto mt-4 max-w-xl text-base text-brand-blue-200">
             Our staffing specialists are standing by — whether you need one nurse tomorrow or a full managed workforce program.
           </p>
           <Link href="/contact" className="mt-8 inline-block rounded-lg bg-brand-orange-500 px-10 py-3 font-semibold text-white transition hover:bg-brand-orange-600">
