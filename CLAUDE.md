@@ -13,7 +13,7 @@ Medical equipment e-commerce + healthcare staffing + IT solutions, under the Kni
 - **Backend:** Express.js + Prisma ORM + PostgreSQL
 - **Auth:** JWT (access + refresh tokens), bcryptjs
 - **Payments:** Stripe + PayPal (both wired, webhooks at `/api/webhooks`)
-- **Email:** Nodemailer (SMTP)
+- **Email:** Resend SDK (`apps/api/src/lib/mailer.ts`)
 - **Validation:** Zod (shared schemas)
 
 ## Color Scheme
@@ -58,7 +58,7 @@ knit-tech-health/
 │   ├── api/          # Express API server (port 3001)
 │   │   ├── prisma/   # Schema + seed script
 │   │   └── src/
-│   │       ├── lib/        # prisma, mailer, stripe, paypal clients
+│   │       ├── lib/        # prisma, mailer (Resend), stripe, paypal clients
 │   │       ├── routes/     # auth, products, orders, cart, checkout, contact, webhooks, admin
 │   │       ├── services/   # auth, cart, checkout, email, order, product services
 │   │       └── middleware/ # auth (JWT + role check), errorHandler, validate
@@ -139,8 +139,17 @@ pnpm lint                 # Lint all packages
 
 ### Purchase / Inquiry Flow
 Equipment is quote-only — no public prices displayed. Two paths:
-1. **Inquiry (no login):** "Request a Quote" → inquiry form → `InquiryOrder` record + vendor email
+1. **Inquiry (no login):** "Request a Quote" → inquiry form → `InquiryOrder` record + two emails fired (vendor + customer confirmation)
 2. **E-commerce (logged-in):** Cart → checkout → Stripe/PayPal → `Order` record (internal/backend use)
+
+Email sending in `order.service.ts` is fire-and-forget: the HTTP response returns the saved record immediately, then `Promise.all([sendVendorOrderNotification, sendCustomerConfirmation])` runs in the background and updates `emailSent: true` on success.
+
+### Email (Resend)
+`apps/api/src/lib/mailer.ts` wraps the Resend SDK. Required env vars in `apps/api/.env`:
+- `RESEND_API_KEY` — API key from resend.com dashboard
+- `RESEND_FROM` — verified sender address, e.g. `KTI Health <noreply@knittechhealth.com>`
+
+If `RESEND_API_KEY` is missing, emails are silently skipped (logged only). The `from` domain must be verified in the Resend dashboard, or use `onboarding@resend.dev` for initial testing.
 
 ### Role-Based Access
 - `requireAuth()` middleware — validates JWT, adds `req.user` (`{ id, email, role }`)
