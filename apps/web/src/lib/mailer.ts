@@ -1,20 +1,29 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT) || 587,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-});
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const FROM_EMAIL = process.env.RESEND_FROM || 'KTI Health <noreply@knittechhealth.com>';
+const VENDOR_EMAIL = process.env.VENDOR_EMAIL || 'info@knittechhealth.com';
 
 export async function sendMail(options: { to: string; subject: string; html: string }) {
-  if (!process.env.SMTP_HOST) {
-    console.log('[Email] SMTP not configured — skipping:', options.subject);
+  if (!resend) {
+    console.log('[Email] RESEND_API_KEY not configured — skipping:', options.subject);
     return null;
   }
-  return transporter.sendMail({ from: `"KTI Health" <${process.env.SMTP_USER}>`, ...options });
-}
 
-const VENDOR_EMAIL = process.env.VENDOR_EMAIL || 'info@knittechhealth.com';
+  const { data, error } = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: options.to,
+    subject: options.subject,
+    html: options.html,
+  });
+
+  if (error) {
+    console.error('[Email] Resend error:', JSON.stringify(error));
+    throw new Error(`[Email] Resend error: ${JSON.stringify(error)}`);
+  }
+
+  return data;
+}
 
 export async function sendVendorOrderNotification(order: {
   id: string; firstName: string; lastName: string; email: string; phone: string;
