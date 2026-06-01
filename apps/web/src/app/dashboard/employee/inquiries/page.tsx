@@ -54,6 +54,7 @@ export default function InquiriesPage() {
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
                 <th className="w-8 px-4 py-3" />
+                <th className="px-4 py-3 text-left font-semibold text-gray-500">Ref #</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Product</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Requester</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Organization</th>
@@ -73,6 +74,9 @@ export default function InquiriesPage() {
                     >
                       <td className="px-4 py-3 text-gray-400">
                         {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                      </td>
+                      <td className="px-4 py-3 font-mono text-xs text-gray-500">
+                        #{inq.id.slice(0, 8).toUpperCase()}
                       </td>
                       <td className="px-4 py-3 font-medium text-brand-blue-800">
                         {(inq.product as { name: string } | undefined)?.name ?? inq.productId}
@@ -97,7 +101,7 @@ export default function InquiriesPage() {
                     {isExpanded && (
                       <tr key={`${inq.id}-detail`} className="bg-brand-blue-50 border-b border-gray-100">
                         <td />
-                        <td colSpan={5} className="px-4 py-4">
+                        <td colSpan={6} className="px-4 py-4">
                           <div className="grid gap-3 sm:grid-cols-2 text-sm">
                             <div>
                               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Phone</p>

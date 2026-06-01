@@ -52,6 +52,7 @@ export default function OrdersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
+                <th className="px-4 py-3 text-left font-semibold text-gray-500">Order #</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Customer</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Items</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Total</th>
@@ -66,6 +67,9 @@ export default function OrdersPage() {
                 const items = (order as any).items as Array<{ quantity: number; product?: { name: string } }> | undefined;
                 return (
                   <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50">
+                    <td className="px-4 py-3 font-mono text-xs text-gray-500">
+                      #{order.id.slice(0, 8).toUpperCase()}
+                    </td>
                     <td className="px-4 py-3 text-gray-700">
                       {user ? `${user.firstName} ${user.lastName}` : '—'}
                       <br />

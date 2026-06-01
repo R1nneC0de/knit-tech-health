@@ -39,6 +39,7 @@ export default function MyQuotesPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
+                <th className="px-4 py-3 text-left font-semibold text-gray-500">Ref #</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Product</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Organization</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-500">Date</th>
@@ -48,6 +49,9 @@ export default function MyQuotesPage() {
             <tbody>
               {quotes.map((q) => (
                 <tr key={q.id} className="border-b border-gray-50 last:border-0">
+                  <td className="px-4 py-3 font-mono text-xs text-gray-500">
+                    #{q.id.slice(0, 8).toUpperCase()}
+                  </td>
                   <td className="px-4 py-3 font-medium text-brand-blue-800">
                     {(q.product as { name: string } | undefined)?.name ?? q.productId}
                   </td>
