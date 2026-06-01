@@ -26,17 +26,17 @@ export async function sendMail(options: { to: string; subject: string; html: str
 }
 
 export async function sendVendorOrderNotification(order: {
-  id: string; firstName: string; lastName: string; email: string; phone: string;
+  id: string; orderNumber: number; firstName: string; lastName: string; email: string; phone: string;
   organization: string | null; message: string | null; product: { name: string; slug: string };
 }) {
   return sendMail({
     to: VENDOR_EMAIL,
-    subject: `New Equipment Request — ${order.product.name}`,
+    subject: `New Equipment Request #${order.orderNumber} — ${order.product.name}`,
     html: `<div style="font-family:Arial,sans-serif;max-width:600px">
       <h2 style="color:#1a365d">New Equipment Request</h2>
       <p>A new inquiry for <strong>${order.product.name}</strong>.</p>
       <table style="width:100%;border-collapse:collapse">
-        <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:bold">ID</td><td style="padding:8px;border-bottom:1px solid #e2e8f0">${order.id}</td></tr>
+        <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:bold">Ref #</td><td style="padding:8px;border-bottom:1px solid #e2e8f0">#${order.orderNumber}</td></tr>
         <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:bold">Name</td><td style="padding:8px;border-bottom:1px solid #e2e8f0">${order.firstName} ${order.lastName}</td></tr>
         <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:bold">Email</td><td style="padding:8px;border-bottom:1px solid #e2e8f0">${order.email}</td></tr>
         <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:bold">Phone</td><td style="padding:8px;border-bottom:1px solid #e2e8f0">${order.phone}</td></tr>
@@ -47,7 +47,7 @@ export async function sendVendorOrderNotification(order: {
 }
 
 export async function sendCustomerConfirmation(order: {
-  id: string; firstName: string; email: string; product: { name: string };
+  id: string; orderNumber: number; firstName: string; email: string; product: { name: string };
 }) {
   return sendMail({
     to: order.email,
@@ -55,7 +55,7 @@ export async function sendCustomerConfirmation(order: {
     html: `<div style="font-family:Arial,sans-serif;max-width:600px">
       <h2 style="color:#1a365d">Thank You, ${order.firstName}!</h2>
       <p>We've received your request for <strong>${order.product.name}</strong>.</p>
-      <p>Reference: <strong>${order.id}</strong></p>
+      <p>Reference: <strong>#${order.orderNumber}</strong></p>
       <p>Our team will reach out within <strong>24 hours</strong>.</p>
       <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0">
       <p style="color:#718096;font-size:14px">KTI Health — Premium Healthcare &amp; Technology Solutions</p>
