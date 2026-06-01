@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, ShoppingBag, Mail, Users } from 'lucide-react';
+import { FileText, ShoppingBag, Mail } from 'lucide-react';
 import { useAdminStats } from '@/hooks/useAdmin';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -36,7 +36,7 @@ export default function EmployeeDashboardPage() {
       </h1>
       <p className="mt-1 text-sm text-gray-500">Here&apos;s a snapshot of what needs your attention.</p>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard
           label="Pending Quote Requests"
           value={isLoading ? undefined : stats?.pendingInquiries}
@@ -58,13 +58,6 @@ export default function EmployeeDashboardPage() {
           icon={Mail}
           color="bg-brand-blue-400"
         />
-        <StatCard
-          label="New Applications"
-          value={isLoading ? undefined : stats?.newApplications}
-          href="/dashboard/employee/applications"
-          icon={Users}
-          color="bg-brand-orange-600"
-        />
       </div>
 
       <div className="mt-10 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -73,8 +66,8 @@ export default function EmployeeDashboardPage() {
           <Link href="/dashboard/employee/inquiries?status=PENDING" className="rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-orange-600">
             Review Pending Quotes
           </Link>
-          <Link href="/dashboard/employee/applications?status=PENDING" className="rounded-lg bg-brand-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-blue-800">
-            Review Applications
+          <Link href="/dashboard/employee/contacts" className="rounded-lg bg-brand-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-blue-800">
+            View Contacts
           </Link>
           <Link href="/shop-medical" className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">
             View Shop

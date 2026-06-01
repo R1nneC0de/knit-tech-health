@@ -28,6 +28,7 @@ export type OrderStatus = 'PENDING' | 'CONTACTED' | 'COMPLETED' | 'CANCELLED';
 
 export interface InquiryOrder {
   id: string;
+  orderNumber: number;
   productId: string;
   product?: Product;
   userId: string | null;

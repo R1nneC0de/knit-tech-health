@@ -1,11 +1,12 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CheckCircle, Package } from 'lucide-react';
 import { useProduct } from '@/hooks/useProducts';
-import { apiFetch } from '@/lib/api';
+import { apiFetch, authApiFetch } from '@/lib/api';
+import { useAuth } from '@/contexts/AuthContext';
 import ProductImage from '@/components/ui/ProductImage';
 
 interface FormData {
@@ -29,11 +30,24 @@ const initial: FormData = {
 export default function RequestPage() {
   const { productSlug } = useParams<{ productSlug: string }>();
   const { data: product, isLoading } = useProduct(productSlug);
+  const { user, accessToken } = useAuth();
   const [form, setForm] = useState<FormData>(initial);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setForm(prev => ({
+        ...prev,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        ...(user.phone ? { phone: user.phone } : {}),
+      }));
+    }
+  }, [user]);
 
   function validate(): boolean {
     const e: Partial<FormData> = {};
@@ -54,18 +68,20 @@ export default function RequestPage() {
     setServerError('');
 
     try {
-      await apiFetch('/orders', {
-        method: 'POST',
-        body: JSON.stringify({
-          productId: product.id,
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
-          phone: form.phone,
-          organization: form.organization || undefined,
-          message: form.message || undefined,
-        }),
-      });
+      const payload = {
+        productId: product.id,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        organization: form.organization || undefined,
+        message: form.message || undefined,
+      };
+      if (accessToken) {
+        await authApiFetch('/orders', accessToken, { method: 'POST', body: JSON.stringify(payload) });
+      } else {
+        await apiFetch('/orders', { method: 'POST', body: JSON.stringify(payload) });
+      }
       setSuccess(true);
     } catch (err) {
       setServerError(
@@ -186,6 +202,11 @@ export default function RequestPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 lg:col-span-3">
+          {user && (
+            <div className="rounded-lg border border-brand-blue-100 bg-brand-blue-50 px-4 py-3 text-sm text-brand-blue-700">
+              Signed in as <strong>{user.firstName} {user.lastName}</strong> ({user.email}) — fields pre-filled from your account.
+            </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             {field('firstName', 'First Name', true)}
             {field('lastName', 'Last Name', true)}

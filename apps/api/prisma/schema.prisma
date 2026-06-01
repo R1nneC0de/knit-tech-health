@@ -105,6 +105,7 @@ model OrderItem {
 
 model InquiryOrder {
   id           String   @id @default(cuid())
+  orderNumber  Int      @default(autoincrement()) @unique
   productId    String
   product      Product  @relation(fields: [productId], references: [id])
   userId       String?

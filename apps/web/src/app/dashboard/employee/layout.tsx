@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileText, ShoppingBag, Mail, Users } from 'lucide-react';
+import { LayoutDashboard, FileText, ShoppingBag, Mail } from 'lucide-react';
 import RoleProtectedRoute from '@/components/auth/RoleProtectedRoute';
 
 const nav = [
@@ -10,7 +10,6 @@ const nav = [
   { href: '/dashboard/employee/inquiries', label: 'Quote Requests', icon: FileText },
   { href: '/dashboard/employee/orders', label: 'Orders', icon: ShoppingBag },
   { href: '/dashboard/employee/contacts', label: 'Contacts', icon: Mail },
-  { href: '/dashboard/employee/applications', label: 'Job Applications', icon: Users },
 ];
 
 export default function EmployeeDashboardLayout({ children }: { children: React.ReactNode }) {

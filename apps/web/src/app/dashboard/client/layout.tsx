@@ -2,14 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileText, ShoppingBag, Briefcase } from 'lucide-react';
+import { LayoutDashboard, FileText, ShoppingBag } from 'lucide-react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 const nav = [
   { href: '/dashboard/client', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/client/quotes', label: 'My Quotes', icon: FileText },
   { href: '/dashboard/client/orders', label: 'My Orders', icon: ShoppingBag },
-  { href: '/dashboard/client/applications', label: 'Applications', icon: Briefcase },
 ];
 
 export default function ClientDashboardLayout({ children }: { children: React.ReactNode }) {

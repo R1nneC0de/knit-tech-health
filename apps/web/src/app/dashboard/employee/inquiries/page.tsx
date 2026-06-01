@@ -76,13 +76,16 @@ export default function InquiriesPage() {
                         {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                       </td>
                       <td className="px-4 py-3 font-mono text-xs text-gray-500">
-                        #{inq.id.slice(0, 8).toUpperCase()}
+                        #{inq.orderNumber}
                       </td>
                       <td className="px-4 py-3 font-medium text-brand-blue-800">
                         {(inq.product as { name: string } | undefined)?.name ?? inq.productId}
                       </td>
                       <td className="px-4 py-3 text-gray-700">
                         {inq.firstName} {inq.lastName}
+                        {!inq.userId && (
+                          <span className="ml-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-xs text-gray-400">Guest</span>
+                        )}
                         <br />
                         <span className="text-xs text-gray-400">{inq.email}</span>
                       </td>
@@ -117,6 +120,16 @@ export default function InquiriesPage() {
                                 <p className="mt-0.5 whitespace-pre-wrap text-gray-700">{inq.message}</p>
                               </div>
                             )}
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Email Notification</p>
+                              <p className="mt-0.5">
+                                {inq.emailSent ? (
+                                  <span className="text-xs font-medium text-green-600">✓ Sent</span>
+                                ) : (
+                                  <span className="text-xs font-medium text-orange-500">Pending</span>
+                                )}
+                              </p>
+                            </div>
                           </div>
                         </td>
                       </tr>

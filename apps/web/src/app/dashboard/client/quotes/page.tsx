@@ -50,7 +50,7 @@ export default function MyQuotesPage() {
               {quotes.map((q) => (
                 <tr key={q.id} className="border-b border-gray-50 last:border-0">
                   <td className="px-4 py-3 font-mono text-xs text-gray-500">
-                    #{q.id.slice(0, 8).toUpperCase()}
+                    #{q.orderNumber}
                   </td>
                   <td className="px-4 py-3 font-medium text-brand-blue-800">
                     {(q.product as { name: string } | undefined)?.name ?? q.productId}

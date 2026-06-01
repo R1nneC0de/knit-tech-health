@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, ShoppingBag, Briefcase } from 'lucide-react';
-import { useMyQuotes, useMyOrders, useMyApplications } from '@/hooks/useClientDashboard';
+import { FileText, ShoppingBag } from 'lucide-react';
+import { useMyQuotes, useMyOrders } from '@/hooks/useClientDashboard';
 import { useAuth } from '@/contexts/AuthContext';
 
 function StatCard({ label, value, href, icon: Icon, color }: {
@@ -29,7 +29,6 @@ export default function ClientDashboardPage() {
   const { user } = useAuth();
   const { data: quotes, isLoading: loadingQuotes } = useMyQuotes();
   const { data: orders, isLoading: loadingOrders } = useMyOrders();
-  const { data: applications, isLoading: loadingApps } = useMyApplications();
 
   return (
     <div>
@@ -38,7 +37,7 @@ export default function ClientDashboardPage() {
       </h1>
       <p className="mt-1 text-sm text-gray-500">Here&apos;s a summary of your activity with KnitTech Inc.</p>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-3">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2">
         <StatCard
           label="Quote Requests"
           value={loadingQuotes ? undefined : quotes?.length}
@@ -52,13 +51,6 @@ export default function ClientDashboardPage() {
           href="/dashboard/client/orders"
           icon={ShoppingBag}
           color="bg-brand-blue-600"
-        />
-        <StatCard
-          label="Job Applications"
-          value={loadingApps ? undefined : applications?.length}
-          href="/dashboard/client/applications"
-          icon={Briefcase}
-          color="bg-brand-blue-400"
         />
       </div>
 
