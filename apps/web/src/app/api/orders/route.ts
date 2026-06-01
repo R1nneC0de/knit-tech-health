@@ -24,11 +24,12 @@ export async function POST(request: NextRequest) {
       include: { product: true },
     });
 
-    Promise.all([sendVendorOrderNotification(order), sendCustomerConfirmation(order)])
-      .then(async () => {
-        await prisma.inquiryOrder.update({ where: { id: order.id }, data: { emailSent: true } });
-      })
-      .catch((err) => console.error('[Email] Failed to send order emails:', err));
+    try {
+      await Promise.all([sendVendorOrderNotification(order), sendCustomerConfirmation(order)]);
+      await prisma.inquiryOrder.update({ where: { id: order.id }, data: { emailSent: true } });
+    } catch (emailErr) {
+      console.error('[Email] Failed to send order emails:', emailErr);
+    }
 
     return NextResponse.json(order, { status: 201 });
   } catch (err) {
