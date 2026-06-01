@@ -16,7 +16,7 @@ export default function ClientDashboardLayout({ children }: { children: React.Re
 
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen flex-col bg-gray-50 lg:flex-row">
         {/* Sidebar */}
         <aside className="hidden w-64 shrink-0 border-r border-gray-200 bg-white lg:block">
           <div className="sticky top-0 p-6">
