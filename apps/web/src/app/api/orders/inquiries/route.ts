@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const user = requireAuth(request);
     const inquiries = await prisma.inquiryOrder.findMany({
-      where: { userId: user.id },
+      where: { OR: [{ userId: user.id }, { email: user.email }] },
       include: { product: { select: { name: true, imageUrl: true, slug: true } } },
       orderBy: { createdAt: 'desc' },
     });
