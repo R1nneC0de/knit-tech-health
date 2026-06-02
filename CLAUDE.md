@@ -32,11 +32,11 @@ Three roles exist in the system:
 |------|-------------|
 | `CUSTOMER` | Default public user — can browse, request quotes, apply to jobs |
 | `KTI_EMPLOYEE` | Internal KTI staff — full dashboard: orders, quotes, contact submissions, job apps |
-| `ADMIN` | Reserved for super-admin capabilities (same as KTI_EMPLOYEE for now) |
+| `ADMIN` | Super-admin — everything KTI_EMPLOYEE has + user management tab (`/dashboard/employee/users`). Seeded user: `suresh@knittechinc.com`. |
 
 Role-based redirect after login: `CUSTOMER` → `/dashboard/client` (quotes, orders, applications), `KTI_EMPLOYEE`/`ADMIN` → `/dashboard/employee`.
-Employee/admin routes protected by `requireRole('KTI_EMPLOYEE', 'ADMIN')` middleware on the API.
-Frontend uses `<RoleProtectedRoute allowedRoles={[...]}>` wrapper.
+Employee/admin routes protected by `requireRole('KTI_EMPLOYEE', 'ADMIN')` middleware on the API. User management endpoints (`/admin/users`) use `requireRole('ADMIN')` only.
+Frontend uses `<RoleProtectedRoute allowedRoles={[...]}>` wrapper. The "Users" nav item in the employee layout is only rendered when `user.role === 'ADMIN'`.
 
 ## Site Divisions
 
@@ -114,12 +114,16 @@ knit-tech-health/
 - `PATCH /api/admin/orders/:id` — update order status
 - `PATCH /api/admin/contacts/:id` — mark contact as responded (`{ responded: boolean }`)
 
+**Admin-Only** (`/api/admin/users`, requires `ADMIN` role)
+- `GET /api/admin/users` — all Users (id, firstName, lastName, email, role, createdAt)
+- `PATCH /api/admin/users/:id/role` — update a user's role (`{ role: 'CUSTOMER'|'KTI_EMPLOYEE'|'ADMIN' }`)
+
 ## Database
 
 - PostgreSQL via Docker (`kth:kth@localhost:5433/kth`) — port 5433
 - Models: `Category`, `Product`, `User`, `Cart`, `CartItem`, `Order`, `OrderItem`, `InquiryOrder`, `ContactSubmission`, `JobApplication`
 - `Order` = completed purchase (Stripe/PayPal); `InquiryOrder` = equipment quote request
-- Seed script: 8 categories, ~92 products
+- Seed script: 8 categories, ~92 products + admin user `suresh@knittechinc.com` (upserted, idempotent)
 
 ## Commands
 

@@ -6,6 +6,7 @@ import { requireAuth, requireRole } from '../middleware/auth';
 const router: IRouter = Router();
 
 const guard = [requireAuth, requireRole('KTI_EMPLOYEE', 'ADMIN')];
+const adminOnlyGuard = [requireAuth, requireRole('ADMIN')];
 
 // Dashboard stats
 router.get('/admin/stats', ...guard, async (_req, res, next) => {
@@ -129,6 +130,39 @@ router.patch('/admin/applications/:id', ...guard, async (req, res, next) => {
       data: { status },
     });
     res.json(application);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// User management (ADMIN only)
+const ALLOWED_ROLES = ['CUSTOMER', 'KTI_EMPLOYEE', 'ADMIN'];
+
+router.get('/admin/users', ...adminOnlyGuard, async (_req, res, next) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: { id: true, firstName: true, lastName: true, email: true, role: true, createdAt: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.patch('/admin/users/:id/role', ...adminOnlyGuard, async (req, res, next) => {
+  try {
+    const { role } = req.body as { role: string };
+    if (!ALLOWED_ROLES.includes(role)) {
+      res.status(400).json({ error: 'Invalid role' });
+      return;
+    }
+    const updated = await prisma.user.update({
+      where: { id: req.params.id },
+      data: { role },
+      select: { id: true, email: true, role: true },
+    });
+    res.json(updated);
   } catch (err) {
     next(err);
   }

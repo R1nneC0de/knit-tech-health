@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { authApiFetch } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
-import type { InquiryOrder, PurchaseOrder, ContactSubmission, JobApplication, AdminStats } from '@kth/shared';
+import type { InquiryOrder, PurchaseOrder, ContactSubmission, JobApplication, AdminStats, UserRole } from '@kth/shared';
 
 function useToken() {
   const { accessToken } = useAuth();
@@ -93,5 +93,33 @@ export function useMarkContactResponded() {
     mutationFn: ({ id, responded }: { id: string; responded: boolean }) =>
       authApiFetch('/admin/contacts/' + id, token, { method: 'PATCH', body: JSON.stringify({ responded }) }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'contacts'] }),
+  });
+}
+
+export interface AdminUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: UserRole;
+  createdAt: string;
+}
+
+export function useAdminUsers() {
+  const token = useToken();
+  return useQuery({
+    queryKey: ['admin', 'users'],
+    queryFn: () => authApiFetch<AdminUser[]>('/admin/users', token),
+    enabled: !!token,
+  });
+}
+
+export function useUpdateUserRole() {
+  const token = useToken();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, role }: { id: string; role: string }) =>
+      authApiFetch('/admin/users/' + id + '/role', token, { method: 'PATCH', body: JSON.stringify({ role }) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'users'] }),
   });
 }

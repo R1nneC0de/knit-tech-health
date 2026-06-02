@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileText, ShoppingBag, Mail } from 'lucide-react';
+import { LayoutDashboard, FileText, ShoppingBag, Mail, Users } from 'lucide-react';
 import RoleProtectedRoute from '@/components/auth/RoleProtectedRoute';
+import { useAuth } from '@/contexts/AuthContext';
 
-const nav = [
+const baseNav = [
   { href: '/dashboard/employee', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/employee/inquiries', label: 'Quote Requests', icon: FileText },
   { href: '/dashboard/employee/orders', label: 'Orders', icon: ShoppingBag },
@@ -14,6 +15,10 @@ const nav = [
 
 export default function EmployeeDashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const nav = user?.role === 'ADMIN'
+    ? [...baseNav, { href: '/dashboard/employee/users', label: 'Users', icon: Users }]
+    : baseNav;
 
   return (
     <RoleProtectedRoute allowedRoles={['KTI_EMPLOYEE', 'ADMIN']}>

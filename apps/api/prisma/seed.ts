@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 const FDA_API = 'https://api.fda.gov/device/classification.json';
@@ -535,6 +536,21 @@ async function main() {
   }
 
   console.log(`\nDone! Seeded 20 categories and ${totalProducts} products from FDA device database.`);
+
+  // Seed admin user (idempotent)
+  const adminPasswordHash = await bcrypt.hash('KTI@Admin2024!', 10);
+  await prisma.user.upsert({
+    where: { email: 'suresh@knittechinc.com' },
+    update: {},
+    create: {
+      email: 'suresh@knittechinc.com',
+      firstName: 'Suresh',
+      lastName: 'KTI',
+      passwordHash: adminPasswordHash,
+      role: 'ADMIN',
+    },
+  });
+  console.log('  ✓ Admin user seeded: suresh@knittechinc.com');
 }
 
 main()
