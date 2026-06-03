@@ -34,28 +34,28 @@ function ShopContent() {
   return (
     <div>
       {/* Hero / intro banner */}
-      <div className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-orange-50 border-b border-gray-100 py-12">
+      <div className="bg-brand-blue-900 border-b border-brand-blue-800 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <span className="inline-block rounded-full bg-brand-orange-100 px-4 py-1 text-sm font-semibold text-brand-orange-600">
                 Medical Equipment Division
               </span>
-              <h1 className="mt-3 font-heading text-3xl font-bold text-brand-blue-900 sm:text-4xl">
+              <h1 className="mt-3 font-heading text-3xl font-bold text-white sm:text-4xl">
                 Medical, Dental & Hospital Equipment
               </h1>
-              <p className="mt-3 max-w-xl text-gray-600">
+              <p className="mt-3 max-w-xl text-brand-blue-200">
                 Trusted distributor of medical, dental, and hospital equipment for government agencies, hospitals,
                 and healthcare facilities across the United States. SDVOSB-certified. State of Texas approved vendor.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                   🎖️ SDVOSB Certified
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                   ✓ TX State Approved Vendor
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                   🏛️ Government Contract Eligible
                 </span>
               </div>
@@ -77,7 +77,7 @@ function ShopContent() {
 
           {/* Facilities served */}
           <div className="mt-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Facilities We Serve</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-blue-300">Facilities We Serve</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {[
                 'Hospitals',
@@ -89,7 +89,7 @@ function ShopContent() {
                 'Long-Term Care Facilities',
                 'Diagnostic Imaging Centers',
               ].map((f) => (
-                <span key={f} className="flex items-center gap-1 rounded-lg bg-brand-blue-50 px-3 py-1.5 text-sm text-brand-blue-700">
+                <span key={f} className="flex items-center gap-1 rounded-lg bg-brand-blue-800 border border-brand-blue-600 px-3 py-1.5 text-sm text-white">
                   <Building2 className="h-3.5 w-3.5 shrink-0 text-brand-orange-500" /> {f}
                 </span>
               ))}

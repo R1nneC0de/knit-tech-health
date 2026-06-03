@@ -1,8 +1,8 @@
 const stats = [
-  { value: '500+', label: 'Partner Facilities' },
-  { value: '90+', label: 'Medical Products' },
-  { value: '5,000+', label: 'Healthcare Professionals Placed' },
-  { value: '7+', label: 'States Served' },
+  { value: '25+', label: 'Partner Facilities' },
+  { value: '8,000+', label: 'Medical Products' },
+  { value: '5,000+', label: 'Vetted Professionals' },
+  { value: '14+', label: 'State Clients Served' },
 ];
 
 export default function TrustBar() {

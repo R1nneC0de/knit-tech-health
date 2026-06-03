@@ -12,7 +12,7 @@ export default function MultiDivisionHero() {
           <span className="inline-block rounded-full bg-brand-orange-500/15 px-4 py-1.5 text-sm font-semibold text-brand-orange-400 ring-1 ring-brand-orange-500/30">
             KnitTech Inc — Technology + Healthcare
           </span>
-          <h1 className="mt-5 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Empowering the Future of{' '}
             <span className="text-brand-orange-400">Technology &amp; Healthcare</span>
           </h1>

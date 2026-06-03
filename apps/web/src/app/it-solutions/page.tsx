@@ -114,30 +114,30 @@ export default function ITSolutionsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-orange-50 py-20">
+      <section className="bg-brand-blue-900 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="inline-block rounded-full bg-brand-blue-100 px-4 py-1 text-sm font-semibold text-brand-blue-700">
-              IT Solutions Division — Powered by Nepstaff
+            <span className="inline-block rounded-full bg-brand-blue-800 px-4 py-1 text-sm font-semibold text-brand-blue-200 ring-1 ring-brand-blue-600">
+              IT Solutions Division
             </span>
-            <h1 className="mt-4 font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl">
+            <h1 className="mt-4 font-heading text-4xl font-bold text-white sm:text-5xl">
               Trusted Government IT &{' '}
-              <span className="text-brand-orange-500">Healthcare Technology</span>
+              <span className="text-brand-orange-400">Healthcare Technology</span>
             </h1>
-            <p className="mt-6 text-base leading-relaxed text-brand-blue-600">
-              KNITTECH INC (DBA Nepstaff) delivers healthcare and IT services and
+            <p className="mt-6 text-base leading-relaxed text-brand-blue-200">
+              KNITTECH INC delivers healthcare and IT services and
               products to government agencies, hospitals, and enterprises across the
               USA. Veteran-owned. Government-certified. Available Monday–Friday,
               7 am–8 pm CST.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                 🎖️ SDVOSB Certified
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                 🏛️ Government Contract Holder
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                 ✓ DIR — Texas Approved
               </span>
             </div>
@@ -150,7 +150,7 @@ export default function ITSolutionsPage() {
               </Link>
               <Link
                 href="/contact"
-                className="rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50"
+                className="rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800"
               >
                 Request a Quote
               </Link>
@@ -227,8 +227,8 @@ export default function ITSolutionsPage() {
                 <p className="mt-1 font-semibold">Grady Hospitals · Experis · DIR (Texas) · Madrin · Bastil</p>
               </div>
               <div className="mt-6 space-y-2 text-sm">
-                <a href="mailto:nepstaffhr@nepstaff.com" className="flex items-center gap-2 text-brand-orange-300 hover:text-white">
-                  <Mail className="h-4 w-4 shrink-0" /> nepstaffhr@nepstaff.com
+                <a href="mailto:sales@knittechinc.com" className="flex items-center gap-2 text-brand-orange-300 hover:text-white">
+                  <Mail className="h-4 w-4 shrink-0" /> sales@knittechinc.com
                 </a>
                 <a href="tel:8322058542" className="flex items-center gap-2 text-brand-orange-300 hover:text-white">
                   <Phone className="h-4 w-4 shrink-0" /> (832) 205-8542

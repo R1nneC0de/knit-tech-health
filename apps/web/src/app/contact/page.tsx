@@ -25,7 +25,7 @@ const initial: FormData = {
 const contactInfo = [
   { icon: Phone, label: 'Phone', value: '(832) 205-8542' },
   { icon: Mail, label: 'General / Medical Equipment', value: 'Suresh@knittechinc.com' },
-  { icon: Mail, label: 'IT Solutions (Nepstaff)', value: 'nepstaffhr@nepstaff.com' },
+  { icon: Mail, label: 'IT Solutions', value: 'sales@knittechinc.com' },
   {
     icon: MapPin,
     label: 'Address',

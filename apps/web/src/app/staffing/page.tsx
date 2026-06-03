@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Heart,
   Stethoscope,
@@ -232,39 +231,30 @@ export default function StaffingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-blue-50 via-white to-brand-orange-50 py-24">
+      <section className="bg-brand-blue-900 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="mb-6 inline-block rounded-xl bg-white px-4 py-3 shadow-sm">
-              <Image
-                src="/logo.png"
-                alt="KnitTech Inc"
-                width={180}
-                height={58}
-                className="h-14 w-auto object-contain"
-              />
-            </div>
             <span className="inline-block rounded-full bg-brand-orange-100 px-4 py-1 text-sm font-semibold text-brand-orange-600">
               Healthcare Staffing Division
             </span>
-            <h1 className="mt-4 font-heading text-4xl font-bold text-brand-blue-900 sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 font-heading text-4xl font-bold text-white sm:text-5xl">
               Your Partner in the{' '}
-              <span className="text-brand-orange-500">Mission of Care</span>
+              <span className="text-brand-orange-400">Mission of Care</span>
             </h1>
-            <p className="mt-6 text-base leading-relaxed text-brand-blue-600">
+            <p className="mt-6 text-base leading-relaxed text-brand-blue-200">
               KnitTech Inc (KNITTECH INC) connects qualified healthcare professionals
               with leading facilities from coast to coast — placing travel nurses,
               allied health, advanced practice providers, and physicians under one
               trusted, veteran-owned partner.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                 🎖️ SDVOSB Certified
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                 ✓ Texas Approved Vendor
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-200 bg-white px-3 py-1 text-sm font-medium text-brand-blue-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-blue-600 bg-brand-blue-800 px-3 py-1 text-sm font-medium text-white">
                 📍 Nationwide Placements
               </span>
             </div>
@@ -272,7 +262,7 @@ export default function StaffingPage() {
               <a href="#open-positions" className="rounded-lg bg-brand-blue-700 px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800">
                 Browse Open Positions
               </a>
-              <Link href="/contact" className="rounded-lg border-2 border-brand-blue-700 px-8 py-3 font-semibold text-brand-blue-700 transition hover:bg-brand-blue-50">
+              <Link href="/contact" className="rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition hover:bg-brand-blue-800">
                 Talk to a Recruiter
               </Link>
             </div>
