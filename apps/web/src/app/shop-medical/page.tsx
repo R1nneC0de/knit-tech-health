@@ -65,8 +65,8 @@ function ShopContent() {
               <p className="mt-2 font-heading text-2xl font-bold text-brand-blue-900">Within 1 Hour</p>
               <p className="mt-1 text-sm text-gray-500">Our dedicated procurement team responds fast.</p>
               <div className="mt-4 space-y-2 text-sm">
-                <a href="mailto:suresh@ktihealth.com" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
-                  <Mail className="h-4 w-4 shrink-0" /> suresh@ktihealth.com
+                <a href="mailto:suresh@knittechinc.com" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
+                  <Mail className="h-4 w-4 shrink-0" /> suresh@knittechinc.com
                 </a>
                 <a href="tel:8322515160" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
                   <Phone className="h-4 w-4 shrink-0" /> 832-251-5160

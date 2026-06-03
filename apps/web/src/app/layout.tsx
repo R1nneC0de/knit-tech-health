@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: 'KnitTech Inc — Technology + Healthcare',
   description:
     'KnitTech Inc — a veteran-owned company delivering medical equipment, healthcare staffing, and IT solutions for hospitals, clinics, and government agencies nationwide.',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({

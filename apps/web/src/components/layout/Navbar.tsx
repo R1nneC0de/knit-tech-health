@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/logo.png" alt="KnitTech Inc" width={260} height={96} className="h-24 w-auto object-contain" />
+          <Image src="/logo.png" alt="KnitTech Inc" width={300} height={112} className="h-28 w-auto object-contain" />
         </Link>
 
         {/* Desktop nav */}
