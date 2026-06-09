@@ -152,4 +152,4 @@ export const ORDER_STATUSES: OrderStatus[] = [
 ];
 
 export const VENDOR_COMPANY = 'KnitTech Inc';
-export const VENDOR_EMAIL = 'Suresh@knittechinc.com';
+export const VENDOR_EMAIL = 'sales@knittechinc.com';

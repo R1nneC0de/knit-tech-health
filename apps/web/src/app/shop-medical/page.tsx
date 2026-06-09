@@ -1,10 +1,23 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useMemo } from 'react';
 import { Search, X, Building2, Clock, ShieldCheck, Phone, Mail } from 'lucide-react';
 import { useProducts, useCategories } from '@/hooks/useProducts';
 import ProductCard from '@/components/shop/ProductCard';
+import type { Product } from '@kth/shared';
+
+// Excluded from display — cardiac/high-risk devices outside our distribution scope
+const EXCLUDED_CATEGORY_SLUGS = new Set(['defibrillators']);
+
+// Top-selling categories: one product from each surfaces first when browsing "All"
+const TOP_SELLER_CATEGORY_SLUGS = [
+  'mobility',
+  'diagnostic-equipment',
+  'ppe',
+  'wound-care',
+  'bath-safety',
+];
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -23,6 +36,38 @@ function ShopContent() {
     category: activeCategory || undefined,
     search: debouncedSearch || undefined,
   });
+
+  // Exclude heart-related categories from the filter nav
+  const displayCategories = useMemo(
+    () => categories?.filter(c => !EXCLUDED_CATEGORY_SLUGS.has(c.slug)),
+    [categories],
+  );
+
+  // Filter: remove excluded categories and Class 3 (high-risk) devices.
+  // When no category filter is active, promote one product per top-seller category
+  // to the first five slots so popular items are immediately visible.
+  const displayProducts = useMemo((): Product[] => {
+    if (!products) return [];
+
+    const filtered = products.filter(p => {
+      if (EXCLUDED_CATEGORY_SLUGS.has(p.category?.slug ?? '')) return false;
+      const deviceClass = (p.specifications as Record<string, string>)?.['Device Class'];
+      if (deviceClass === 'Class 3') return false;
+      return true;
+    });
+
+    if (!activeCategory) {
+      const topSellers: Product[] = [];
+      for (const slug of TOP_SELLER_CATEGORY_SLUGS) {
+        const match = filtered.find(p => p.category?.slug === slug);
+        if (match) topSellers.push(match);
+      }
+      const topIds = new Set(topSellers.map(p => p.id));
+      return [...topSellers, ...filtered.filter(p => !topIds.has(p.id))];
+    }
+
+    return filtered;
+  }, [products, activeCategory]);
 
   function setCategory(slug: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -65,8 +110,8 @@ function ShopContent() {
               <p className="mt-2 font-heading text-2xl font-bold text-brand-blue-900">Within 1 Hour</p>
               <p className="mt-1 text-sm text-gray-500">Our dedicated procurement team responds fast.</p>
               <div className="mt-4 space-y-2 text-sm">
-                <a href="mailto:suresh@knittechinc.com" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
-                  <Mail className="h-4 w-4 shrink-0" /> suresh@knittechinc.com
+                <a href="mailto:sales@knittechinc.com" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
+                  <Mail className="h-4 w-4 shrink-0" /> sales@knittechinc.com
                 </a>
                 <a href="tel:8322515160" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
                   <Phone className="h-4 w-4 shrink-0" /> 832-251-5160
@@ -153,7 +198,7 @@ function ShopContent() {
         >
           All
         </button>
-        {categories?.map((cat) => (
+        {displayCategories?.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setCategory(cat.slug)}
@@ -178,9 +223,9 @@ function ShopContent() {
             />
           ))}
         </div>
-      ) : products && products.length > 0 ? (
+      ) : displayProducts.length > 0 ? (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((product) => (
+          {displayProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
