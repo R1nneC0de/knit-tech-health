@@ -188,8 +188,8 @@ function ShopContent() {
                 <a href="mailto:sales@knittechinc.com" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
                   <Mail className="h-4 w-4 shrink-0" /> sales@knittechinc.com
                 </a>
-                <a href="tel:8322515160" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
-                  <Phone className="h-4 w-4 shrink-0" /> 832-251-5160
+                <a href="tel:8322058542" className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500">
+                  <Phone className="h-4 w-4 shrink-0" /> (832) 205-8542
                 </a>
               </div>
             </div>
@@ -661,10 +661,10 @@ function ShopContent() {
                         <Mail className="h-4 w-4 shrink-0" /> sales@knittechinc.com
                       </a>
                       <a
-                        href="tel:8322515160"
+                        href="tel:8322058542"
                         className="flex items-center gap-2 text-brand-blue-700 hover:text-brand-orange-500"
                       >
-                        <Phone className="h-4 w-4 shrink-0" /> 832-251-5160
+                        <Phone className="h-4 w-4 shrink-0" /> (832) 205-8542
                       </a>
                     </div>
                   </div>
