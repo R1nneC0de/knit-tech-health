@@ -1,4 +1,4 @@
-import { ShieldCheck, Headset, Heart, Award, MapPin, Building2, Users } from 'lucide-react';
+import { ShieldCheck, Headset, Heart, Award, MapPin, Building2, Users, Flag, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
@@ -109,6 +109,39 @@ export default function AboutPage() {
                 <p className="mt-1 text-sm text-brand-blue-200">{item.sub}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Freedom 250 pledge */}
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-8 rounded-2xl border border-brand-blue-100 bg-brand-blue-50/40 p-8 sm:grid-cols-[auto_1fr] sm:p-10">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-brand-blue-100">
+              <Flag className="h-9 w-9 text-brand-blue-700" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-brand-orange-500">
+                Encouraging Entrepreneurial Excellence
+              </p>
+              <h2 className="mt-2 font-heading text-2xl font-bold text-brand-blue-900">
+                A Proud Freedom 250 Small Business
+              </h2>
+              <p className="mt-3 leading-relaxed text-gray-600">
+                KnitTech Inc has pledged to be a Freedom 250 Small Business — committing to
+                build in America, put American workers first, and support American strength
+                for the next 250 years.
+              </p>
+              <a
+                href="/freedom-250-certificate.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue-700 transition hover:text-brand-blue-900"
+              >
+                View certificate
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
