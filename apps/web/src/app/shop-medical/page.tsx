@@ -4,16 +4,70 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect, Suspense, useMemo } from 'react';
 import {
   Search, X, Building2, Clock, ShieldCheck, Phone, Mail,
-  CheckCircle, ClipboardList, Truck, Globe, Layers,
+  CheckCircle, ClipboardList, Truck, Globe, Layers, Star,
 } from 'lucide-react';
 import { useProducts, useCategories } from '@/hooks/useProducts';
 import ProductCard from '@/components/shop/ProductCard';
+import ProductImage from '@/components/ui/ProductImage';
 import type { Product } from '@kth/shared';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiFetch, authApiFetch } from '@/lib/api';
 
-// Excluded from display — cardiac/high-risk devices outside our distribution scope
-const EXCLUDED_CATEGORY_SLUGS = new Set(['defibrillators']);
+// Distribution policy — what we are licensed to distribute:
+//   Class 1 & Class 2 devices, OTC drugs, diagnostic kits,
+//   non-controlled pharmaceuticals, and medical consumables.
+// What we may NOT distribute (filtered out of the catalog below):
+//   Class 3 devices, controlled substances (Schedule II–V),
+//   prescription drugs requiring a pharmacy license, and sterile
+//   compounding products.
+const DISALLOWED_CATEGORY_SLUGS = new Set(['defibrillators']);
+const DISALLOWED_DEVICE_CLASSES = new Set(['class 3', 'class iii', '3', 'iii']);
+const DISALLOWED_NAME_PATTERNS =
+  /controlled substance|schedule\s*(ii|iii|iv|v|2|3|4|5)\b|compounded sterile|sterile compounding/i;
+
+function isDistributable(p: Product): boolean {
+  if (DISALLOWED_CATEGORY_SLUGS.has(p.category?.slug ?? '')) return false;
+  const deviceClass = ((p.specifications as Record<string, string> | undefined)?.['Device Class'] ?? '')
+    .toLowerCase()
+    .trim();
+  if (DISALLOWED_DEVICE_CLASSES.has(deviceClass)) return false;
+  if (DISALLOWED_NAME_PATTERNS.test(p.name)) return false;
+  return true;
+}
+
+// Seller-verified equipment surfaced in the catalog's top row. Every item sits
+// within our permitted distribution scope. imageUrl points to the vendor's
+// product photo; if it fails to load, ProductImage shows a branded placeholder.
+const FEATURED_PRODUCTS = [
+  {
+    slug: 'pharma-sat-sterile-ipa-wipes',
+    name: 'Pharma-Sat Sterile 70% IPA Wipes',
+    category: 'Medical Consumables',
+    deviceClass: 'Class 1',
+    imageUrl:
+      'https://www.mountainside-medical.com/cdn/shop/products/Pharma-Sat-Plus-Pre-Saturated-Sterile-Wipers-ISO-Class-5-Non-Woven_600x.jpg?v=1663614020',
+    description:
+      'Low-endotoxin, lint-free polyester/cellulose wipes saturated with sterile 70% IPA — 810 wipes per case. For cleanroom, pharmaceutical compounding, and manufacturing surface prep.',
+  },
+  {
+    slug: 'manifold-multiport-q2-iv-needle-free',
+    name: 'Manifold Multiport Q2 IV Needle-Free (6-Port)',
+    category: 'Medical Consumables',
+    deviceClass: 'Class 2',
+    imageUrl: 'https://b2b.concordancehealthcare.com/images/items/jene194998.jpg',
+    description:
+      'Progressive Medical 6-port needle-free IV manifold with an integrated gravity-activated check valve that prevents retrograde flow. High flow, minimal deadspace — for OR, ICU, oncology, and critical care.',
+  },
+  {
+    slug: 'smart-omniline-plus-sampling-line',
+    name: 'Covidien Smart OmniLine Plus Oral-Nasal Sampling Line',
+    category: 'Medical Consumables',
+    deviceClass: 'Class 2',
+    imageUrl: 'https://s.turbifycdn.com/aah/yhst-12533177228474/newitem-342849.gif',
+    description:
+      'Adult oral-nasal EtCO₂ sampling line with integrated O₂ delivery tubing for non-intubated capnography monitoring. Non-sterile, 25 per case.',
+  },
+] as const;
 
 // Top-selling categories: one product from each surfaces first when browsing "All"
 const TOP_SELLER_CATEGORY_SLUGS = [
@@ -24,8 +78,8 @@ const TOP_SELLER_CATEGORY_SLUGS = [
   'bath-safety',
 ];
 
-// LICENSE GATE: flip to true once distribution licenses are obtained
-const SHOW_PRODUCT_CATALOG = false;
+// LICENSE GATE: catalog restored for our permitted distribution scope
+const SHOW_PRODUCT_CATALOG = true;
 
 const INQUIRY_INITIAL = {
   firstName: '', lastName: '', email: '',
@@ -51,24 +105,19 @@ function ShopContent() {
     search: debouncedSearch || undefined,
   });
 
-  // Exclude heart-related categories from the filter nav
+  // Hide categories outside our permitted distribution scope from the filter nav
   const displayCategories = useMemo(
-    () => categories?.filter(c => !EXCLUDED_CATEGORY_SLUGS.has(c.slug)),
+    () => categories?.filter(c => !DISALLOWED_CATEGORY_SLUGS.has(c.slug)),
     [categories],
   );
 
-  // Filter: remove excluded categories and Class 3 (high-risk) devices.
+  // Filter to only distributable equipment (per our distribution policy above).
   // When no category filter is active, promote one product per top-seller category
-  // to the first five slots so popular items are immediately visible.
+  // to the first slots so popular items are immediately visible.
   const displayProducts = useMemo((): Product[] => {
     if (!products) return [];
 
-    const filtered = products.filter(p => {
-      if (EXCLUDED_CATEGORY_SLUGS.has(p.category?.slug ?? '')) return false;
-      const deviceClass = (p.specifications as Record<string, string>)?.['Device Class'];
-      if (deviceClass === 'Class 3') return false;
-      return true;
-    });
+    const filtered = products.filter(isDistributable);
 
     if (!activeCategory) {
       const topSellers: Product[] = [];
@@ -108,6 +157,12 @@ function ShopContent() {
       }));
     }
   }, [user]);
+
+  function requestFeaturedQuote(name: string) {
+    setInquiryForm(prev => ({ ...prev, equipmentNeeded: name }));
+    setInquirySuccess(false);
+    document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' });
+  }
 
   function validateInquiry() {
     const e: Partial<typeof INQUIRY_INITIAL> = {};
@@ -237,6 +292,59 @@ function ShopContent() {
 
       {SHOW_PRODUCT_CATALOG && (
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          {/* Featured equipment — seller-verified, in-scope items surfaced first */}
+          {!activeCategory && !debouncedSearch && (
+            <div className="mb-12">
+              <div className="flex items-center gap-2">
+                <Star className="h-5 w-5 text-brand-orange-500" />
+                <h2 className="font-heading text-2xl font-bold text-brand-blue-900">Featured Equipment</h2>
+              </div>
+              <p className="mt-1 text-gray-600">
+                Verified, in-stock equipment from our sourcing partners — ready to quote.
+              </p>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {FEATURED_PRODUCTS.map((p) => (
+                  <button
+                    key={p.slug}
+                    type="button"
+                    onClick={() => requestFeaturedQuote(p.name)}
+                    className="group flex flex-col overflow-hidden rounded-xl border border-brand-orange-100 bg-white text-left shadow-sm transition hover:shadow-md"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                      <ProductImage
+                        src={p.imageUrl}
+                        slug={p.slug}
+                        name={p.name}
+                        className="h-full w-full object-cover transition group-hover:scale-105"
+                      />
+                      <span className="absolute left-3 top-3 rounded-full bg-brand-orange-500 px-2.5 py-0.5 text-xs font-semibold text-white shadow">
+                        Featured
+                      </span>
+                    </div>
+                    <div className="flex flex-1 flex-col p-4">
+                      <span className="mb-2 w-fit rounded-full bg-brand-orange-50 px-3 py-0.5 text-xs font-medium text-brand-orange-600">
+                        {p.category} · {p.deviceClass}
+                      </span>
+                      <h3 className="font-heading text-lg font-semibold text-brand-blue-800 group-hover:text-brand-orange-500">
+                        {p.name}
+                      </h3>
+                      <p className="mt-1 text-xs font-medium uppercase tracking-wide text-brand-orange-600">
+                        Request a Quote
+                      </p>
+                      <p className="mt-2 line-clamp-3 flex-1 text-sm text-gray-600">
+                        {p.description}
+                      </p>
+                      <span className="mt-4 text-sm font-semibold text-brand-blue-700">
+                        Request a Quote &rarr;
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="mt-10 border-t border-gray-100" />
+            </div>
+          )}
+
           <h2 className="font-heading text-2xl font-bold text-brand-blue-900">Browse Catalog</h2>
           <p className="mt-1 text-gray-600">
             Browse our full catalog and request the equipment you need.
@@ -440,8 +548,10 @@ function ShopContent() {
               </div>
             </div>
           </section>
+        </>
+      )}
 
-          {/* Section D: Compliance & Standards */}
+      {/* Section D: Compliance & Standards — always shown (catalog on or off) */}
           <section className="border-y border-gray-100 bg-white py-12">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-400">
@@ -690,8 +800,6 @@ function ShopContent() {
               </div>
             </div>
           </section>
-        </>
-      )}
     </div>
   );
 }
