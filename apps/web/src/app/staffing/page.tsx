@@ -314,7 +314,7 @@ export default function StaffingPage() {
           <div className="mt-8 rounded-2xl bg-brand-orange-50 p-6 text-center">
             <p className="text-sm font-medium text-brand-blue-700">
               We accept applications Mon–Fri, 7 am – 8 pm CST. &nbsp;•&nbsp; Direct pay available via pay card. &nbsp;•&nbsp; Contact:{' '}
-              <a href="mailto:Suresh@knittechinc.com" className="font-semibold text-brand-orange-600 underline underline-offset-2">Suresh@knittechinc.com</a>
+              <a href="mailto:sales@knittechinc.com" className="font-semibold text-brand-orange-600 underline underline-offset-2">sales@knittechinc.com</a>
             </p>
           </div>
         </div>
