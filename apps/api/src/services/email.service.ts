@@ -1,6 +1,10 @@
-import { sendMail } from '../lib/mailer';
+import { sendMail, parseRecipients } from '../lib/mailer';
 
-const VENDOR_EMAIL = process.env.VENDOR_EMAIL || 'info@knittechhealth.com';
+// Comma-separated list, e.g. VENDOR_EMAIL=sales@knittechinc.com,suresh@knittechinc.com
+const VENDOR_RECIPIENTS = parseRecipients(process.env.VENDOR_EMAIL);
+const VENDOR_EMAIL = VENDOR_RECIPIENTS.length
+  ? VENDOR_RECIPIENTS
+  : ['sales@knittechinc.com'];
 
 export async function sendVendorOrderNotification(order: {
   id: string;
@@ -14,6 +18,7 @@ export async function sendVendorOrderNotification(order: {
 }) {
   return sendMail({
     to: VENDOR_EMAIL,
+    replyTo: order.email,
     subject: `New Equipment Request — ${order.product.name}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -65,6 +70,7 @@ export async function sendContactNotification(contact: {
 }) {
   return sendMail({
     to: VENDOR_EMAIL,
+    replyTo: contact.email,
     subject: `New Contact Inquiry — ${contact.subject}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

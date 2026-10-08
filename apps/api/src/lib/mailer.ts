@@ -1,14 +1,25 @@
 import { Resend } from 'resend';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const FROM_EMAIL = process.env.RESEND_FROM || 'sales@knittechinc.com';
+const FROM_EMAIL = process.env.RESEND_FROM || 'KnitTech Inc <sales@knittechinc.com>';
 
 console.log('[Email] Mailer init — RESEND_API_KEY set:', !!process.env.RESEND_API_KEY, '| FROM:', FROM_EMAIL);
 
+/** Split a comma-separated env var into a clean recipient list. */
+export function parseRecipients(value: string | undefined): string[] {
+  return (value || '')
+    .split(',')
+    .map((addr) => addr.trim())
+    .filter(Boolean);
+}
+
 export async function sendMail(options: {
-  to: string;
+  to: string | string[];
   subject: string;
   html: string;
+  cc?: string | string[];
+  bcc?: string | string[];
+  replyTo?: string | string[];
 }) {
   console.log('[Email] sendMail called — to:', options.to, '| subject:', options.subject);
 
@@ -23,6 +34,9 @@ export async function sendMail(options: {
     to: options.to,
     subject: options.subject,
     html: options.html,
+    ...(options.cc ? { cc: options.cc } : {}),
+    ...(options.bcc ? { bcc: options.bcc } : {}),
+    ...(options.replyTo ? { replyTo: options.replyTo } : {}),
   });
 
   if (error) {

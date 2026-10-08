@@ -68,7 +68,7 @@ export default function AboutPage() {
                 ✓ Texas Approved Vendor
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-white ring-1 ring-white/20">
-                🏛️ SBA Certified · CAGE: 8UU52
+                🏛️ SBA Certified · CAGE: 8MAJ5
               </span>
             </div>
           </div>

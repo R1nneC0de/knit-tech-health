@@ -1,10 +1,30 @@
 import { Resend } from 'resend';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const FROM_EMAIL = process.env.RESEND_FROM || 'sales@knittechinc.com';
-const VENDOR_EMAIL = process.env.VENDOR_EMAIL || 'info@knittechhealth.com';
+const FROM_EMAIL = process.env.RESEND_FROM || 'KnitTech Inc <sales@knittechinc.com>';
 
-export async function sendMail(options: { to: string; subject: string; html: string }) {
+/** Split a comma-separated env var into a clean recipient list. */
+export function parseRecipients(value: string | undefined): string[] {
+  return (value || '')
+    .split(',')
+    .map((addr) => addr.trim())
+    .filter(Boolean);
+}
+
+// Comma-separated list, e.g. VENDOR_EMAIL=sales@knittechinc.com,suresh@knittechinc.com
+const VENDOR_RECIPIENTS = parseRecipients(process.env.VENDOR_EMAIL);
+const VENDOR_EMAIL = VENDOR_RECIPIENTS.length
+  ? VENDOR_RECIPIENTS
+  : ['sales@knittechinc.com'];
+
+export async function sendMail(options: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  cc?: string | string[];
+  bcc?: string | string[];
+  replyTo?: string | string[];
+}) {
   if (!resend) {
     console.log('[Email] RESEND_API_KEY not configured — skipping:', options.subject);
     return null;
@@ -15,6 +35,9 @@ export async function sendMail(options: { to: string; subject: string; html: str
     to: options.to,
     subject: options.subject,
     html: options.html,
+    ...(options.cc ? { cc: options.cc } : {}),
+    ...(options.bcc ? { bcc: options.bcc } : {}),
+    ...(options.replyTo ? { replyTo: options.replyTo } : {}),
   });
 
   if (error) {
@@ -31,6 +54,7 @@ export async function sendVendorOrderNotification(order: {
 }) {
   return sendMail({
     to: VENDOR_EMAIL,
+    replyTo: order.email,
     subject: `New Equipment Request #${order.orderNumber} — ${order.product.name}`,
     html: `<div style="font-family:Arial,sans-serif;max-width:600px">
       <h2 style="color:#1a365d">New Equipment Request</h2>
@@ -58,7 +82,7 @@ export async function sendCustomerConfirmation(order: {
       <p>Reference: <strong>#${order.orderNumber}</strong></p>
       <p>Our team will reach out within <strong>24 hours</strong>.</p>
       <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0">
-      <p style="color:#718096;font-size:14px">KTI Health — Premium Healthcare &amp; Technology Solutions</p>
+      <p style="color:#718096;font-size:14px">KnitTech Inc — Medical Equipment, Healthcare Staffing &amp; IT Solutions</p>
     </div>`,
   });
 }
@@ -69,6 +93,7 @@ export async function sendContactNotification(contact: {
 }) {
   return sendMail({
     to: VENDOR_EMAIL,
+    replyTo: contact.email,
     subject: `New Contact — ${contact.subject}`,
     html: `<div style="font-family:Arial,sans-serif;max-width:600px">
       <h2 style="color:#1a365d">New Contact Form Submission</h2>
