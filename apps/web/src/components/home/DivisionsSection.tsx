@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Stethoscope, Users, Cpu, ArrowRight } from 'lucide-react';
+import { Stethoscope, Cpu, ArrowRight } from 'lucide-react';
+// import { Users } from 'lucide-react'; // restore with Staffing card
 
 const divisions = [
   {
@@ -13,17 +14,18 @@ const divisions = [
     border: 'border-brand-orange-200',
     bg: 'bg-brand-orange-50',
   },
-  {
-    icon: Users,
-    title: 'Healthcare Staffing',
-    description:
-      'Connecting qualified healthcare professionals — travel nurses, locum tenens, allied health, and permanent placements — with top facilities nationwide.',
-    href: '/staffing',
-    cta: 'Explore Staffing',
-    accent: 'text-brand-blue-500',
-    border: 'border-brand-blue-200',
-    bg: 'bg-brand-blue-50',
-  },
+  // Staffing temporarily hidden — uncomment to restore (and set grid back to md:grid-cols-3)
+  // {
+  //   icon: Users,
+  //   title: 'Healthcare Staffing',
+  //   description:
+  //     'Connecting qualified healthcare professionals — travel nurses, locum tenens, allied health, and permanent placements — with top facilities nationwide.',
+  //   href: '/staffing',
+  //   cta: 'Explore Staffing',
+  //   accent: 'text-brand-blue-500',
+  //   border: 'border-brand-blue-200',
+  //   bg: 'bg-brand-blue-50',
+  // },
   {
     icon: Stethoscope,
     title: 'Medical Equipment Supplies',
@@ -49,11 +51,11 @@ export default function DivisionsSection() {
             Multiple Divisions. One Integrated Ecosystem.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
-            Three specialized divisions, one integrated partner for healthcare excellence.
+            Specialized divisions, one integrated partner for healthcare excellence.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-8 md:grid-cols-3">
+        <div className="mt-14 grid gap-8 md:grid-cols-2">
           {divisions.map((div) => (
             <div
               key={div.title}

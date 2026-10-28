@@ -3,7 +3,8 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 
 const divisions = [
   { href: '/shop-medical', label: 'Medical Equipment' },
-  { href: '/staffing', label: 'Healthcare Staffing' },
+  // Staffing temporarily hidden — uncomment to restore
+  // { href: '/staffing', label: 'Healthcare Staffing' },
   { href: '/it-solutions', label: 'IT Solutions' },
 ];
 

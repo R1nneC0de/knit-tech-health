@@ -63,12 +63,14 @@ export default function ClientDashboardPage() {
           >
             Browse Medical Equipment
           </Link>
+          {/* Staffing temporarily hidden — uncomment to restore
           <Link
             href="/staffing"
             className="rounded-lg bg-brand-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-blue-800"
           >
             View Staffing Services
           </Link>
+          */}
           <Link
             href="/contact"
             className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50"

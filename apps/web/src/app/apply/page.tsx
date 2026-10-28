@@ -95,8 +95,13 @@ function ApplyForm() {
           <p className="mt-2 text-gray-500">
             Thank you for applying to KnitTech Inc. Our staffing team will review your application and reach out within 2–3 business days.
           </p>
+          {/* Staffing temporarily hidden — restore this link and remove the Home link below
           <Link href="/staffing" className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-6 py-3 font-semibold text-white hover:bg-brand-orange-600">
             Back to Staffing
+          </Link>
+          */}
+          <Link href="/" className="mt-6 inline-block rounded-lg bg-brand-orange-500 px-6 py-3 font-semibold text-white hover:bg-brand-orange-600">
+            Back to Home
           </Link>
         </div>
       </div>

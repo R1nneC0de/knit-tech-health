@@ -32,12 +32,14 @@ export default function MyApplicationsPage() {
         <div className="mt-16 text-center">
           <Briefcase className="mx-auto h-14 w-14 text-gray-300" />
           <p className="mt-4 text-gray-500">No applications yet.</p>
+          {/* Staffing temporarily hidden — uncomment to restore
           <Link
             href="/staffing"
             className="mt-6 inline-block rounded-lg bg-brand-blue-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-blue-800"
           >
             View Open Positions
           </Link>
+          */}
         </div>
       ) : (
         <div className="mt-6 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
