@@ -10,7 +10,8 @@ import { useCart } from '@/contexts/CartContext';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/it-solutions', label: 'IT Solutions' },
-  { href: '/staffing', label: 'Staffing' },
+  // Staffing temporarily hidden — uncomment to restore
+  // { href: '/staffing', label: 'Staffing' },
   { href: '/shop-medical', label: 'Medical' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },

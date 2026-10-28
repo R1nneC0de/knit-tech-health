@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import {
   Heart,
   Stethoscope,
@@ -227,7 +228,12 @@ const stats = [
   { value: '15+', label: 'Years of Experience' },
 ];
 
+// Staffing page temporarily hidden — set to true to restore
+const STAFFING_ENABLED = false;
+
 export default function StaffingPage() {
+  if (!STAFFING_ENABLED) notFound();
+
   return (
     <>
       {/* Hero */}
